@@ -35,12 +35,12 @@ public class Map(int width, int height, bool[,] field)
                 {
                     // вертикальная стена
                     endX = startX + 1;
-                    endY = startY + random.Next(minWallSize, maxWallSize);
+                    endY = startY + random.Next(minWallSize, maxWallSize + 1);
                 }
                 else
                 {
                     // горизонтальная стена
-                    endX = startX + random.Next(minWallSize, maxWallSize);
+                    endX = startX + random.Next(minWallSize, maxWallSize + 1);
                     endY = startY + 1;
                 }
                 
