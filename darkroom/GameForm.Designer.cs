@@ -1,6 +1,6 @@
 ﻿namespace darkroom;
 
-partial class Form1
+partial class GameForm
 {
     /// <summary>
     ///  Required designer variable.
@@ -21,6 +21,14 @@ partial class Form1
         base.Dispose(disposing);
     }
 
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        var graphics = e.Graphics;
+        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        
+        PaintMap(graphics);
+    }
+
     #region Windows Form Designer generated code
 
     /// <summary>
@@ -31,8 +39,9 @@ partial class Form1
     {
         this.components = new System.ComponentModel.Container();
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
+        this.ClientSize = new System.Drawing.Size(FormWidth, FormHeight);
+        this.Text = "Darkroom";
+        this.FormBorderStyle = FormBorderStyle.FixedSingle;
     }
 
     #endregion

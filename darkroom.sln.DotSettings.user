@@ -13,7 +13,7 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9eaa8365_002D65fb_002D4ccc_002D92de_002D705ac11d2946/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests.Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a294389a_002D754d_002D4d8e_002Da2af_002D19aa971918d6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MapTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
