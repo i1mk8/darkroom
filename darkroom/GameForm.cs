@@ -23,7 +23,6 @@ public partial class GameForm : Form
 
         foreach (var wall in _map.Walls)
         {
-            Console.WriteLine(wall);
             graphics.FillRectangle(Brushes.Black, Rectangle.FromLTRB(wall.Left * ratioX,
                 wall.Top * ratioY,
                 wall.Right * ratioX,

@@ -18,8 +18,19 @@ public sealed class MapTests
     {
         var map = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
         
-        Assert.AreEqual(width, map.Width);
-        Assert.AreEqual(height, map.Height);
-        Assert.AreNotEqual(0, map.Walls.Count);
+        CheckMapSize(map, width, height);
+        CheckWallSize(map, minWallSize, maxWallSize);
+    }
+
+    private void CheckMapSize(Map map, int expectedWidth, int expectedHeight)
+    {
+        Assert.AreEqual(expectedWidth, map.Width);
+        Assert.AreEqual(expectedHeight, map.Height);
+    }
+
+    private void CheckWallSize(Map map, int minWallSize, int maxWallSize)
+    {
+        Assert.IsTrue(map.Walls.All(w => w.Width <= maxWallSize && w.Height <= maxWallSize));
+        Assert.IsTrue(map.Walls.Any(w => w.Width >= minWallSize || w.Height >= minWallSize));
     }
 }

@@ -80,6 +80,7 @@ public class Map(int width, int height, List<Rectangle> walls)
                 
                 var wall = Rectangle.FromLTRB(wallStartX, wallStartY, endX, endY);
                 walls.Add(wall);
+                Console.WriteLine(wall);
             }
         }
 
