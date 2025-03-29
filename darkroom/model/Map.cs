@@ -1,33 +1,33 @@
 ﻿namespace darkroom.model;
 
 /// <summary>
-///  Класс, предстовляющий игровую карту
+///  Игровая карта
 /// </summary>
 /// <param name="width">Длина карты</param>
 /// <param name="height">Ширина карты</param>
 /// <param name="walls">Стены, расположенные на карте</param>
-public class Map(int width, int height, List<Rectangle> walls)
+public class Map(int width, int height, List<RectangleF> walls)
 {
     public readonly int Width = width;
     public readonly int Height = height;
-    public readonly List<Rectangle> Walls = walls;
+    public readonly List<RectangleF> Walls = walls;
     
     /// <summary>
-    /// Метод, создающих игровую карту
+    /// Создает игровую карту
     /// </summary>
     /// <param name="width">Длина карты</param>
     /// <param name="height">Ширина карты</param>
     /// <param name="wallOffset">Расстояние между стенами</param>
     /// <param name="minWallSize">Минимальный размер стены (может не соблюдаться при выходе за границы карты)</param>
     /// <param name="maxWallSize">Максимальный размер стены</param>
-    /// <returns>Возвращает игровую карту</returns>
+    /// <returns>Игровая карта</returns>
     public static Map Generate(int width,
         int height,
         int wallOffset,
         int minWallSize,
         int maxWallSize)
     {
-        var walls = new List<Rectangle>();
+        var walls = new List<RectangleF>();
         var random = new Random();
 
         // Рассчитываем количество стен по горизонтали и вертикали
@@ -78,9 +78,9 @@ public class Map(int width, int height, List<Rectangle> walls)
                 endX = Math.Min(endX, width);
                 endY = Math.Min(endY, height);
                 
-                var wall = Rectangle.FromLTRB(wallStartX, wallStartY, endX, endY);
+                var wall = RectangleF.FromLTRB(wallStartX, wallStartY, endX, endY);
                 walls.Add(wall);
-                Console.WriteLine(wall);
+                Console.WriteLine($"Wall: {wall}");
             }
         }
 

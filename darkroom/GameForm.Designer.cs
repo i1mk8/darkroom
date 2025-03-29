@@ -27,6 +27,7 @@ partial class GameForm
         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
         
         PaintMap(graphics);
+        PaintPlayers(graphics);
     }
 
     #region Windows Form Designer generated code
@@ -39,7 +40,7 @@ partial class GameForm
     {
         this.components = new System.ComponentModel.Container();
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(FormWidth, FormHeight);
+        this.ClientSize = new System.Drawing.Size(800, 800);
         this.Text = "Darkroom";
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
     }

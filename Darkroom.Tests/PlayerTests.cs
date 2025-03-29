@@ -7,13 +7,14 @@ public class PlayerTests
 {
     
     [DataTestMethod]
-    [DataRow(2, 2, new[] { 1, 2 })]
-    [DataRow(2, 4, new[] { 1, 2 })]
-    [DataRow(10000, 10000, new[] { 1, 2 })]
-    [DataRow(10000, 20000, new[] { 1, 2 })]
-    [DataRow(2, 2, new[] { 0, 0 })]
-    [DataRow(2, 2, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })]
-    public void Test(int width, int height, int[] moves)
+    [DataRow(2, 2, new float[] { 1, 2 })]
+    [DataRow(2, 4, new float[] { 1, 2 })]
+    [DataRow(10000, 10000, new float[] { 1, 2 })]
+    [DataRow(10000, 20000, new float[] { 1, 2 })]
+    [DataRow(2, 2, new[] { 1.1f, 2.2f })]
+    [DataRow(2, 2, new float[] { 0, 0 })]
+    [DataRow(2, 2, new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })]
+    public void Test(int width, int height, float[] moves)
     {
         var player = new Player(width, height);
 
@@ -27,9 +28,10 @@ public class PlayerTests
         }
     }
 
-    private void CheckPlayerMovement(Player player, int expectedX, int expectedY)
+    private void CheckPlayerMovement(Player player, float expectedX, float expectedY)
     {
         Assert.AreEqual(expectedX, player.Box.X);
+        Assert.AreEqual(expectedY, player.Box.Y);
     }
 
     private void CheckPlayerSize(Player player, int expectedWidth, int expectedHeight)

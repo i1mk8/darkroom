@@ -6,27 +6,39 @@ public partial class GameForm : Form
 {
     private const int FormWidth = 800;
     private const int FormHeight = 800;
-
-    private readonly Map _map;
+    
+    private readonly Game _game;
+    
+    private readonly int _ratioX;
+    private readonly int _ratioY;
     
     public GameForm()
     {
-        _map = Map.Generate(50, 50, 3, 5, 10);
+        _game = new Game();
+        
+        _ratioX = FormWidth / _game.Map.Width;
+        _ratioY = FormHeight / _game.Map.Height;
         
         InitializeComponent();
     }
 
     private void PaintMap(Graphics graphics)
     {
-        var ratioX = FormWidth / _map.Width;
-        var ratioY = FormHeight / _map.Height;
+        foreach (var wall in _game.Map.Walls) 
+            PaintRectangle(wall, graphics, Brushes.Black);
+    }
 
-        foreach (var wall in _map.Walls)
-        {
-            graphics.FillRectangle(Brushes.Black, Rectangle.FromLTRB(wall.Left * ratioX,
-                wall.Top * ratioY,
-                wall.Right * ratioX,
-                wall.Bottom * ratioY));
-        }
+    private void PaintPlayers(Graphics graphics)
+    {
+        foreach (var player in _game.Players) 
+            PaintRectangle(player.Box, graphics, Brushes.DodgerBlue);
+    }
+
+    private void PaintRectangle(RectangleF rectangle, Graphics graphics, Brush color)
+    {
+        graphics.FillRectangle(color, RectangleF.FromLTRB(rectangle.Left * _ratioX,
+            rectangle.Top * _ratioY,
+            rectangle.Right * _ratioX,
+            rectangle.Bottom * _ratioY));
     }
 }
