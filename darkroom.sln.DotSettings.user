@@ -1,6 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AAssert_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Ffab0941fb32e821fdd804c3d7d851e2774f52c0724f7d7bb4931be23bee60cb_003FAssert_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AAsyncTaskMethodBuilder_00601_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fc73b3c6c598640c592fd3c6fa226c286e90908_003F9e_003F1bc5da82_003FAsyncTaskMethodBuilder_00601_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ABrushes_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F2517e3cc10badb8f7e3c478ff07294b45db17cf9cdc3d96873ff9efedc16be_003FBrushes_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=130da5c8_002Dd238_002D4c84_002Da035_002D61e91860ef5e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MapTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests&lt;/TestId&gt;&#xD;
@@ -11,9 +12,10 @@
     &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9eaa8365_002D65fb_002D4ccc_002D92de_002D705ac11d2946/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9eaa8365_002D65fb_002D4ccc_002D92de_002D705ac11d2946/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.PlayerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a294389a_002D754d_002D4d8e_002Da2af_002D19aa971918d6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MapTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -24,8 +26,9 @@
 	
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ed75be48_002D398c_002D4641_002D9919_002Dfb713a34a8a9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MapTests #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ed75be48_002D398c_002D4641_002D9919_002Dfb713a34a8a9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MapTests #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.MapTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.PlayerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

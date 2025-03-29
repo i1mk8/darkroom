@@ -1,7 +1,7 @@
 ﻿namespace darkroom.model;
 
 /// <summary>
-///  Класс, предстовляющий Игровая карта
+///  Класс, предстовляющий игровую карту
 /// </summary>
 /// <param name="width">Длина карты</param>
 /// <param name="height">Ширина карты</param>
