@@ -1,6 +1,6 @@
 ﻿namespace darkroom;
 
-partial class GameForm
+sealed partial class GameForm
 {
     /// <summary>
     ///  Required designer variable.
@@ -23,11 +23,10 @@ partial class GameForm
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        var graphics = e.Graphics;
         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
         
-        PaintMap(graphics);
-        PaintPlayers(graphics);
+        PaintMap(e.Graphics);
+        PaintPlayers(e.Graphics);
     }
 
     #region Windows Form Designer generated code
