@@ -12,6 +12,7 @@ public class Game
     {
         Map = Map.Generate(50, 50, 3, 5, 10);
         var player = new Player(1, 1);
+        
         Players.Add(player);
         SpawnPlayer(player);
     }
@@ -37,7 +38,7 @@ public class Game
             
             player.MoveTo(x, y);
             
-            if (!Map.Walls.Any(w => w.Contains(player.Box)))
+            if (Map.IsWithin(player.Box))
                 break;
         }
         

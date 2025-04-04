@@ -86,4 +86,15 @@ public class Map(int width, int height, List<RectangleF> walls)
 
         return new Map(width, height, walls);
     }
+    
+    /// <summary>
+    /// Проверяет, что объект находится в пределах игровой карты и вне ее стен 
+    /// </summary>
+    /// <param name="box">Бокс объекта</param>
+    /// <returns></returns>
+    public bool IsWithin(RectangleF box)
+    {
+        return box.Left >= 0 && box.Right <= Width && box.Top >= 0 && box.Bottom <= Height
+               && !Walls.Any(w => w.Contains(box));
+    }
 }
