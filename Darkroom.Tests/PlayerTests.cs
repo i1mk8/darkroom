@@ -10,7 +10,7 @@ public class PlayerTests
     public void MoveTo_ValidPosition_ReturnsTrueAndUpdatesBox()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var player = new Player(map, 10, 10, 0.1f);
         
         var result = player.MoveTo(50, 50);
         
@@ -22,7 +22,7 @@ public class PlayerTests
     public void MoveTo_OutsideMap_ReturnsFalse()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var player = new Player(map, 10, 10, 0.1f);
         
         Assert.IsFalse(player.MoveTo(-10, 50)); // За левой границей
         Assert.IsFalse(player.MoveTo(50, -10)); // За верхней границей
@@ -35,7 +35,7 @@ public class PlayerTests
     {
         var walls = new List<RectangleF> { new(50, 50, 20, 20) };
         var wallMap = new Map(100, 100, walls);
-        var wallPlayer = new Player(10, 10, wallMap);
+        var wallPlayer = new Player(wallMap, 10, 10, 0.1f);
         
         Assert.IsFalse(wallPlayer.MoveTo(45, 45)); // Пересекается с стеной
         Assert.IsTrue(wallPlayer.MoveTo(30, 30));  // Не пересекается со стеной
@@ -45,63 +45,67 @@ public class PlayerTests
     public void MoveForward_ValidMove_UpdatesPosition()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var speed = 0.1f;
+        var player = new Player(map, 10, 10, speed);
         
         player.MoveTo(50, 50);
         var initialY = player.Box.Y;
         
         player.MoveForward();
         
-        Assert.AreEqual(initialY + Player.Speed, player.Box.Y);
+        Assert.AreEqual(initialY + speed, player.Box.Y);
     }
 
     [TestMethod]
     public void MoveBack_ValidMove_UpdatesPosition()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var speed = 0.1f;
+        var player = new Player(map, 10, 10, speed);
         
         player.MoveTo(50, 50);
         var initialY = player.Box.Y;
         
         player.MoveBack();
         
-        Assert.AreEqual(initialY - Player.Speed, player.Box.Y);
+        Assert.AreEqual(initialY - speed, player.Box.Y);
     }
 
     [TestMethod]
     public void MoveRight_ValidMove_UpdatesPosition()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var speed = 0.1f;
+        var player = new Player(map, 10, 10, speed);
         
         player.MoveTo(50, 50);
         var initialX = player.Box.X;
         
         player.MoveRight();
         
-        Assert.AreEqual(initialX + Player.Speed, player.Box.X);
+        Assert.AreEqual(initialX + speed, player.Box.X);
     }
 
     [TestMethod]
     public void MoveLeft_ValidMove_UpdatesPosition()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var speed = 0.1f;
+        var player = new Player(map, 10, 10, speed);
         
         player.MoveTo(50, 50);
         var initialX = player.Box.X;
         
         player.MoveLeft();
         
-        Assert.AreEqual(initialX - Player.Speed, player.Box.X);
+        Assert.AreEqual(initialX - speed, player.Box.X);
     }
 
     [TestMethod]
     public void SpawnPlayer_PlacesPlayerWithinMapBounds()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var player = new Player(map, 10, 10, 0.2f);
         
         player.SpawnPlayer();
         
@@ -116,7 +120,7 @@ public class PlayerTests
     {
         var walls = new List<RectangleF> { new(40, 40, 20, 20) };
         var wallMap = new Map(100, 100, walls);
-        var wallPlayer = new Player(10, 10, wallMap);
+        var wallPlayer = new Player(wallMap, 10, 10, 0.2f);
         
         wallPlayer.SpawnPlayer();
         
@@ -127,7 +131,7 @@ public class PlayerTests
     public void InitialPosition_IsInvalid()
     {
         var map = new Map(100, 100, new List<RectangleF>());
-        var player = new Player(10, 10, map);
+        var player = new Player(map, 10, 10, 0.2f);
         
         Assert.AreEqual(new RectangleF(-1, -1, 10, 10), player.Box);
     }

@@ -1,4 +1,4 @@
-﻿namespace darkroom;
+﻿namespace darkroom.UI;
 
 sealed partial class GameForm
 {

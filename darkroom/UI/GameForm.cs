@@ -1,38 +1,47 @@
 using darkroom.model;
 using Timer = System.Windows.Forms.Timer;
 
-namespace darkroom;
+namespace darkroom.UI;
 
 public sealed partial class GameForm : Form
 {
     private const int FormWidth = 800;
     private const int FormHeight = 800;
     
-    private readonly Game _game;
-    
     private readonly int _ratioX;
     private readonly int _ratioY;
+
+    private readonly KeyEvent _keyEvent;
+    
+    private readonly Game _game;
     
     public GameForm()
     {
+        DoubleBuffered = true;
+        KeyPreview = true;
+        
         _game = new Game();
         
         _ratioX = FormWidth / _game.Map.Width;
         _ratioY = FormHeight / _game.Map.Height;
+
+        _keyEvent = new KeyEvent(_game.Player);
         
         InitializeComponent();
-        DoubleBuffered = true;
+
+        KeyDown += _keyEvent.KeyDown;
+        KeyUp += _keyEvent.KeyUp;
+        
         InitializeTimer(60);
     }
 
     private void InitializeTimer(int fps)
     {
-        const double fpsCoefficient = 3.75;
-        
         var timer = new Timer();
-        timer.Interval = (int)(fps / fpsCoefficient);
+        timer.Interval = 1000 / fps;
         timer.Tick += (_, _) =>
         {
+            _keyEvent.ProcessMovement();
             Invalidate();
         };
         timer.Start();

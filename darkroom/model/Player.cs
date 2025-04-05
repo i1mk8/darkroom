@@ -3,14 +3,12 @@
 /// <summary>
 /// Игрок
 /// </summary>
-/// <param name="playerWidth">Длина игрока</param>
-/// <param name="playerHeight">Ширина игрока</param>
+/// <param name="width">Длина игрока</param>
+/// <param name="height">Ширина игрока</param>
 /// <param name="map">Игровая карта</param>
-public class Player(int playerWidth, int playerHeight, Map map)
+public class Player(Map map, int width, int height, float speed)
 {
-    public const float Speed = 0.1f;
-    
-    public RectangleF Box { get; private set; } = new(-1, -1, playerWidth, playerHeight);
+    public RectangleF Box { get; private set; } = new(-1, -1, width, height);
 
     /// <summary>
     /// Перемещает игрока в заданные координаты
@@ -20,7 +18,7 @@ public class Player(int playerWidth, int playerHeight, Map map)
     /// <returns>true - перемещение успешно; false - перемещение невозможно</returns>
     public bool MoveTo(float x, float y)
     {
-        var box = new RectangleF(x, y, playerWidth, playerHeight);
+        var box = new RectangleF(x, y, width, height);
         if (!map.IsWithin(box))
             return false;
         Box = box;
@@ -30,19 +28,19 @@ public class Player(int playerWidth, int playerHeight, Map map)
     /// <summary>
     /// Перемещение игрока вперед
     /// </summary>
-    public void MoveForward() => MoveTo(Box.X, Box.Y + Speed);
+    public void MoveForward() => MoveTo(Box.X, Box.Y + speed);
     /// <summary>
     /// Перемещение игрока назад
     /// </summary>
-    public void MoveBack() => MoveTo(Box.X, Box.Y - Speed);
+    public void MoveBack() => MoveTo(Box.X, Box.Y - speed);
     /// <summary>
     /// Перемещение игрока вправо
     /// </summary>
-    public void MoveRight() => MoveTo(Box.X + Speed, Box.Y);
+    public void MoveRight() => MoveTo(Box.X + speed, Box.Y);
     /// <summary>
     /// Перемещение игрока влево
     /// </summary>
-    public void MoveLeft() => MoveTo(Box.X - Speed, Box.Y);
+    public void MoveLeft() => MoveTo(Box.X - speed, Box.Y);
     
 
     /// <summary>
