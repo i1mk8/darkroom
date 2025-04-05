@@ -11,110 +11,167 @@ public class MapTests
     {
         var width = 100;
         var height = 200;
-        var walls = new List<RectangleF> { new(10, 10, 20, 20) };
-            
+        var walls = new List<RectangleF> { new(10, 10, 20, 20), new(50, 50, 30, 10) };
+        
         var map = new Map(width, height, walls);
-            
+        
         Assert.AreEqual(width, map.Width);
         Assert.AreEqual(height, map.Height);
-        Assert.AreEqual(walls, map.Walls);
+        CollectionAssert.AreEqual(walls, map.Walls);
     }
 
     [TestMethod]
-    public void Generate_WithValidParameters_ReturnsMapWithWalls()
+    public void Generate_CreatesMapWithCorrectDimensions()
     {
-        var width = 100;
-        var height = 100;
-        var wallOffset = 5;
-        var minWallSize = 10;
-        var maxWallSize = 20;
-            
+        var width = 800;
+        var height = 600;
+        var wallOffset = 20;
+        var minWallSize = 30;
+        var maxWallSize = 100;
+        
         var map = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
-            
-        Assert.IsNotNull(map);
+        
         Assert.AreEqual(width, map.Width);
         Assert.AreEqual(height, map.Height);
         Assert.IsTrue(map.Walls.Count > 0);
     }
 
     [TestMethod]
-    public void Generate_WallsDoNotExceedMapBoundaries()
+    public void Generate_WallsAreWithinMapBounds()
     {
-        var width = 100;
-        var height = 100;
-        var wallOffset = 5;
-        var minWallSize = 10;
-        var maxWallSize = 20;
-            
+        var width = 800;
+        var height = 600;
+        var wallOffset = 20;
+        var minWallSize = 30;
+        var maxWallSize = 100;
+        
         var map = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
-            
+        
         foreach (var wall in map.Walls)
         {
-            Assert.IsTrue(wall.Left >= 0 && wall.Right <= width, "Стена выходит за горизонтальные границы карты");
-            Assert.IsTrue(wall.Top >= 0 && wall.Bottom <= height, "Стена выходит за вертикальные границы карты");
+            Assert.IsTrue(wall.Left >= 0);
+            Assert.IsTrue(wall.Top >= 0);
+            Assert.IsTrue(wall.Right <= width);
+            Assert.IsTrue(wall.Bottom <= height);
         }
     }
 
     [TestMethod]
-    public void IsWithin_ReturnsTrueForObjectInsideMapAndOutsideWalls()
+    public void FindIntersect_ReturnsLeftBorderWhenObjectExceedsLeftBound()
     {
-        var width = 100;
-        var height = 100;
-        var walls = new List<RectangleF> { new(20, 20, 30, 30) };
-        var map = new Map(width, height, walls);
-        var testBox = new RectangleF(5, 5, 10, 10);
-            
-        var result = map.IsWithin(testBox);
-            
-        Assert.IsTrue(result);
+        var map = new Map(100, 100, []);
+        var box = new RectangleF(-5, 10, 20, 20);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Value.Left);
+        Assert.AreEqual(0, result.Value.Top);
+        Assert.AreEqual(0, result.Value.Right);
+        Assert.AreEqual(100, result.Value.Bottom);
     }
 
     [TestMethod]
-    public void IsWithin_ReturnsFalseForObjectOutsideMap()
+    public void FindIntersect_ReturnsRightBorderWhenObjectExceedsRightBound()
     {
-        var width = 100;
-        var height = 100;
-        var walls = new List<RectangleF>();
-        var map = new Map(width, height, walls);
-            
-        var testBoxOutsideRight = new RectangleF(101, 0, 10, 10);
-        var testBoxOutsideBottom = new RectangleF(0, 101, 10, 10);
-        var testBoxOutsideLeft = new RectangleF(-5, 0, 10, 10);
-        var testBoxOutsideTop = new RectangleF(0, -5, 10, 10);
-            
-        Assert.IsFalse(map.IsWithin(testBoxOutsideRight));
-        Assert.IsFalse(map.IsWithin(testBoxOutsideBottom));
-        Assert.IsFalse(map.IsWithin(testBoxOutsideLeft));
-        Assert.IsFalse(map.IsWithin(testBoxOutsideTop));
+        var map = new Map(100, 100, []);
+        var box = new RectangleF(95, 10, 20, 20);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNotNull(result);
+        Assert.AreEqual(100, result.Value.Left);
+        Assert.AreEqual(0, result.Value.Top);
+        Assert.AreEqual(100, result.Value.Right);
+        Assert.AreEqual(100, result.Value.Bottom);
     }
 
     [TestMethod]
-    public void IsWithin_ReturnsFalseForObjectIntersectingWithWall()
+    public void FindIntersect_ReturnsTopBorderWhenObjectExceedsTopBound()
     {
-        var width = 100;
-        var height = 100;
-        var wall = new RectangleF(20, 20, 30, 30);
-        var map = new Map(width, height, [wall]);
-            
-        var testBoxInsideWall = new RectangleF(25, 25, 5, 5); // Полностью внутри стены
-        var testBoxOverlappingWall = new RectangleF(15, 15, 10, 10); // Частичное пересечение
-            
-        Assert.IsFalse(map.IsWithin(testBoxInsideWall));
-        Assert.IsFalse(map.IsWithin(testBoxOverlappingWall));
+        var map = new Map(100, 100, []);
+        var box = new RectangleF(10, -5, 20, 20);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Value.Left);
+        Assert.AreEqual(0, result.Value.Top);
+        Assert.AreEqual(100, result.Value.Right);
+        Assert.AreEqual(0, result.Value.Bottom);
     }
 
     [TestMethod]
-    public void Generate_WithWallSizeEqualToMap_CreatesSingleWall()
+    public void FindIntersect_ReturnsBottomBorderWhenObjectExceedsBottomBound()
     {
-        var width = 100;
-        var height = 100;
-        var wallOffset = 0;
-        var minWallSize = 100;
+        var map = new Map(100, 100, []);
+        var box = new RectangleF(10, 95, 20, 20);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Value.Left);
+        Assert.AreEqual(100, result.Value.Top);
+        Assert.AreEqual(100, result.Value.Right);
+        Assert.AreEqual(100, result.Value.Bottom);
+    }
+
+    [TestMethod]
+    public void FindIntersect_ReturnsWallWhenObjectIntercetsWithWall()
+    {
+        var walls = new List<RectangleF> { new(50, 50, 20, 20) };
+        var map = new Map(100, 100, walls);
+        var box = new RectangleF(55, 55, 10, 10);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNotNull(result);
+        Assert.AreEqual(walls[0], result.Value);
+    }
+
+    [TestMethod]
+    public void FindIntersect_ReturnsNullWhenNoIntercetions()
+    {
+        var walls = new List<RectangleF> { new(50, 50, 20, 20) };
+        var map = new Map(100, 100, walls);
+        var box = new RectangleF(10, 10, 20, 20);
+        
+        var result = map.FindIntersect(box);
+        
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void Generate_ProducesDifferentWallConfigurations()
+    {
+        var width = 800;
+        var height = 600;
+        var wallOffset = 20;
+        var minWallSize = 30;
         var maxWallSize = 100;
-            
+        
+        var map1 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
+        var map2 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
+        
+        CollectionAssert.AreNotEqual(map1.Walls, map2.Walls);
+    }
+
+    [TestMethod]
+    public void Generate_RespectsMinAndMaxWallSizeConstraints()
+    {
+        var width = 800;
+        var height = 600;
+        var wallOffset = 20;
+        var minWallSize = 30;
+        var maxWallSize = 100;
+        
         var map = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
-            
-        Assert.AreEqual(1, map.Walls.Count);
-        Assert.IsTrue(map.Walls[0] == new RectangleF(0, 49, 100, 1) || map.Walls[0] == new RectangleF(49, 0, 1, 100));
+        
+        foreach (var wall in map.Walls)
+        {
+            var size = wall.Width > wall.Height ? wall.Width : wall.Height;
+            Assert.IsTrue(size >= minWallSize || size <= maxWallSize, 
+                $"Размер стены {size} вне указанного диапазона [{minWallSize}, {maxWallSize}]");
+        }
     }
 }

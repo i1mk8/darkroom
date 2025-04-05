@@ -11,38 +11,63 @@ public class Player(Map map, int width, int height, float speed)
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
 
     /// <summary>
-    /// Перемещает игрока в заданные координаты
+    /// Перемещает игрока в заданные координаты, если это возможно
     /// </summary>
     /// <param name="x">Координата по X</param>
     /// <param name="y">Координата по Y</param>
-    /// <returns>true - перемещение успешно; false - перемещение невозможно</returns>
-    public bool MoveTo(float x, float y)
+    /// <returns>Объект, помешавший перемещению (если он была)</returns>
+    public RectangleF? MoveTo(float x, float y)
     {
         var box = new RectangleF(x, y, width, height);
-        if (!map.IsWithin(box))
-            return false;
+        var intersect = map.FindIntersect(box);
+
+        if (intersect != null)
+            return intersect;
+
         Box = box;
-        return true;
+        return null;
     }
 
     /// <summary>
     /// Перемещение игрока вперед
     /// </summary>
-    public void MoveForward() => MoveTo(Box.X, Box.Y + speed);
+    public void MoveForward()
+    {
+        var intersect = MoveTo(Box.X, Box.Y + speed);
+        if (intersect != null)
+            MoveTo(Box.X, Box.Y + (intersect.Value.Top - Box.Bottom));
+    }
+    
     /// <summary>
     /// Перемещение игрока назад
     /// </summary>
-    public void MoveBack() => MoveTo(Box.X, Box.Y - speed);
+    public void MoveBack()
+    {
+        var intersect = MoveTo(Box.X, Box.Y - speed);
+        if (intersect != null) 
+            MoveTo(Box.X, Box.Y - (Box.Top - intersect.Value.Bottom));
+    }
+
     /// <summary>
     /// Перемещение игрока вправо
     /// </summary>
-    public void MoveRight() => MoveTo(Box.X + speed, Box.Y);
+    public void MoveRight()
+    {
+        var intersect = MoveTo(Box.X + speed, Box.Y);
+        if (intersect != null)
+            MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
+    }
+
     /// <summary>
     /// Перемещение игрока влево
     /// </summary>
-    public void MoveLeft() => MoveTo(Box.X - speed, Box.Y);
+    public void MoveLeft()
+    {
+        var intersect = MoveTo(Box.X - speed, Box.Y);
+        if (intersect != null)
+            MoveTo(Box.X - (Box.Left - intersect.Value.Right), Box.Y);
+    }
     
-
     /// <summary>
     /// Спавнит игрока в рандомной точке игровой карты
     /// </summary>
@@ -61,7 +86,7 @@ public class Player(Map map, int width, int height, float speed)
             var x = Math.Clamp(random.Next(0, map.Width + 1), minX, maxX);
             var y = Math.Clamp(random.Next(0, map.Height + 1), minY, maxY);
             
-            if (MoveTo(x, y))
+            if (MoveTo(x, y) == null)
                 break;
         }
         

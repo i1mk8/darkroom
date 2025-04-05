@@ -88,13 +88,26 @@ public class Map(int width, int height, List<RectangleF> walls)
     }
     
     /// <summary>
-    /// Проверяет, что объект находится в пределах игровой карты и вне ее стен 
+    /// Ищет пересечение объекта со стенами или выход за пределы игровой карты
     /// </summary>
     /// <param name="box">Бокс объекта</param>
-    /// <returns></returns>
-    public bool IsWithin(RectangleF box)
+    /// <returns>Стена или граница, с которой пересекается объект (если пересечение существует)</returns>
+    public RectangleF? FindIntersect(RectangleF box)
     {
-        return box.Left >= 0 && box.Right <= Width && box.Top >= 0 && box.Bottom <= Height
-               && !Walls.Any(w => w.IntersectsWith(box));
+        // Границы карты представляются как стены
+        if (box.Left < 0)
+            return new RectangleF(0, 0, 0, Height);
+        if (box.Right > Width)
+            return new RectangleF(Width, 0, 0, Height);
+        if (box.Top < 0)
+            return new RectangleF(0, 0, Width, 0);
+        if (box.Bottom > Height)
+            return new RectangleF(0, Height, Width, 0);
+
+        foreach (var wall in Walls)
+            if (wall.IntersectsWith(box))
+                return wall;
+
+        return null;
     }
 }
