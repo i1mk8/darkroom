@@ -95,6 +95,6 @@ public class Map(int width, int height, List<RectangleF> walls)
     public bool IsWithin(RectangleF box)
     {
         return box.Left >= 0 && box.Right <= Width && box.Top >= 0 && box.Bottom <= Height
-               && !Walls.Any(w => w.Contains(box));
+               && !Walls.Any(w => w.IntersectsWith(box));
     }
 }
