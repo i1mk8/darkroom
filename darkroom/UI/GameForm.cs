@@ -41,7 +41,7 @@ public sealed partial class GameForm : Form
         timer.Interval = 1000 / fps;
         timer.Tick += (_, _) =>
         {
-            _keyEvent.ProcessMovement();
+            _keyEvent.ProceedMovement();
             Invalidate();
         };
         timer.Start();

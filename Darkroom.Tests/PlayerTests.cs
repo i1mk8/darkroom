@@ -12,7 +12,7 @@ namespace darkroom.tests
         [TestInitialize]
         public void Initialize()
         {
-            _map = new Map(100, 100, new List<RectangleF>());
+            _map = new Map(100, 100, []);
             _player = new Player(_map, 10, 10, 5);
         }
 

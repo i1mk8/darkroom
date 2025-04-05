@@ -4,38 +4,39 @@ namespace darkroom.UI;
 
 public class KeyEvent(Player player)
 {
-    private bool _wPressed;
-    private bool _aPressed;
-    private bool _sPressed;
-    private bool _dPressed;
+    private readonly List<Keys> _pressedKeys = new();
     
     public void KeyDown(object? sender, KeyEventArgs e)
     {
-        switch (e.KeyCode)
-        {
-            case Keys.W: _wPressed = true; break;
-            case Keys.A: _aPressed = true; break;
-            case Keys.S: _sPressed = true; break;
-            case Keys.D: _dPressed = true; break;
-        }
+        if (!_pressedKeys.Contains(e.KeyCode))
+            _pressedKeys.Add(e.KeyCode);
     }
 
     public void KeyUp(object? sender, KeyEventArgs e)
     {
-        switch (e.KeyCode)
-        {
-            case Keys.W: _wPressed = false; break;
-            case Keys.A: _aPressed = false; break;
-            case Keys.S: _sPressed = false; break;
-            case Keys.D: _dPressed = false; break;
-        }
+        if (_pressedKeys.Contains(e.KeyCode))
+            _pressedKeys.Remove(e.KeyCode);
     }
     
-    public void ProcessMovement()
+    public void ProceedMovement()
     {
-        if (_wPressed) player.MoveBack();
-        if (_aPressed) player.MoveLeft();
-        if (_sPressed) player.MoveForward();
-        if (_dPressed) player.MoveRight();
+        foreach (var key in _pressedKeys)
+        {
+            switch (key)
+            {
+                case Keys.W:
+                    player.MoveBack();
+                    break;
+                case Keys.A:
+                    player.MoveLeft();
+                    break;
+                case Keys.S:
+                    player.MoveForward();
+                    break;
+                case Keys.D:
+                    player.MoveRight();
+                    break;
+            }
+        }
     }
 }
