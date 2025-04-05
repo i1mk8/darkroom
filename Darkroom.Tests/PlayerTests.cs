@@ -1,42 +1,134 @@
 ﻿using darkroom.model;
+using System.Drawing;
 
-namespace Darkroom.Tests;
+namespace darkroom.tests;
 
 [TestClass]
 public class PlayerTests
 {
-    
-    [DataTestMethod]
-    [DataRow(2, 2, new float[] { 1, 2 })]
-    [DataRow(2, 4, new float[] { 1, 2 })]
-    [DataRow(10000, 10000, new float[] { 1, 2 })]
-    [DataRow(10000, 20000, new float[] { 1, 2 })]
-    [DataRow(2, 2, new[] { 1.1f, 2.2f })]
-    [DataRow(2, 2, new float[] { 0, 0 })]
-    [DataRow(2, 2, new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })]
-    public void Test(int width, int height, float[] moves)
+    [TestMethod]
+    public void MoveTo_ValidPosition_ReturnsTrueAndUpdatesBox()
     {
-        var player = new Player(width, height);
-
-        var rows = moves.GetUpperBound(0) + 1;
-        for (var i = 0; i < rows; i += 2)
-        {
-            player.MoveTo(moves[i], moves[i + 1]);
-            
-            CheckPlayerSize(player, width, height);
-            CheckPlayerMovement(player, moves[i], moves[i + 1]);
-        }
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        var result = player.MoveTo(50, 50);
+        
+        Assert.IsTrue(result);
+        Assert.AreEqual(new RectangleF(50, 50, 10, 10), player.Box);
     }
 
-    private void CheckPlayerMovement(Player player, float expectedX, float expectedY)
+    [TestMethod]
+    public void MoveTo_OutsideMap_ReturnsFalse()
     {
-        Assert.AreEqual(expectedX, player.Box.X);
-        Assert.AreEqual(expectedY, player.Box.Y);
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        Assert.IsFalse(player.MoveTo(-10, 50)); // За левой границей
+        Assert.IsFalse(player.MoveTo(50, -10)); // За верхней границей
+        Assert.IsFalse(player.MoveTo(95, 50));  // За правой границей (95+10 > 100)
+        Assert.IsFalse(player.MoveTo(50, 95));  // За нижней границей (95+10 > 100)
     }
 
-    private void CheckPlayerSize(Player player, int expectedWidth, int expectedHeight)
+    [TestMethod]
+    public void MoveTo_IntoWall_ReturnsFalse()
     {
-        Assert.AreEqual(expectedWidth, player.Box.Width);
-        Assert.AreEqual(expectedHeight, player.Box.Height);
+        var walls = new List<RectangleF> { new(50, 50, 20, 20) };
+        var wallMap = new Map(100, 100, walls);
+        var wallPlayer = new Player(10, 10, wallMap);
+        
+        Assert.IsFalse(wallPlayer.MoveTo(45, 45)); // Пересекается с стеной
+        Assert.IsTrue(wallPlayer.MoveTo(30, 30));  // Не пересекается со стеной
+    }
+
+    [TestMethod]
+    public void MoveForward_ValidMove_UpdatesPosition()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        player.MoveTo(50, 50);
+        var initialY = player.Box.Y;
+        
+        player.MoveForward();
+        
+        Assert.AreEqual(initialY + Player.Speed, player.Box.Y);
+    }
+
+    [TestMethod]
+    public void MoveBack_ValidMove_UpdatesPosition()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        player.MoveTo(50, 50);
+        var initialY = player.Box.Y;
+        
+        player.MoveBack();
+        
+        Assert.AreEqual(initialY - Player.Speed, player.Box.Y);
+    }
+
+    [TestMethod]
+    public void MoveRight_ValidMove_UpdatesPosition()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        player.MoveTo(50, 50);
+        var initialX = player.Box.X;
+        
+        player.MoveRight();
+        
+        Assert.AreEqual(initialX + Player.Speed, player.Box.X);
+    }
+
+    [TestMethod]
+    public void MoveLeft_ValidMove_UpdatesPosition()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        player.MoveTo(50, 50);
+        var initialX = player.Box.X;
+        
+        player.MoveLeft();
+        
+        Assert.AreEqual(initialX - Player.Speed, player.Box.X);
+    }
+
+    [TestMethod]
+    public void SpawnPlayer_PlacesPlayerWithinMapBounds()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        player.SpawnPlayer();
+        
+        Assert.IsTrue(player.Box.X >= 0);
+        Assert.IsTrue(player.Box.Y >= 0);
+        Assert.IsTrue(player.Box.Right <= map.Width);
+        Assert.IsTrue(player.Box.Bottom <= map.Height);
+    }
+
+    [TestMethod]
+    public void SpawnPlayer_WithWalls_PlacesPlayerOutsideWalls()
+    {
+        var walls = new List<RectangleF> { new(40, 40, 20, 20) };
+        var wallMap = new Map(100, 100, walls);
+        var wallPlayer = new Player(10, 10, wallMap);
+        
+        wallPlayer.SpawnPlayer();
+        
+        Assert.IsFalse(walls[0].IntersectsWith(wallPlayer.Box));
+    }
+
+    [TestMethod]
+    public void InitialPosition_IsInvalid()
+    {
+        var map = new Map(100, 100, new List<RectangleF>());
+        var player = new Player(10, 10, map);
+        
+        Assert.AreEqual(new RectangleF(-1, -1, 10, 10), player.Box);
     }
 }

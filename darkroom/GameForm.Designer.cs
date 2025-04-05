@@ -26,7 +26,7 @@ sealed partial class GameForm
         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
         
         PaintMap(e.Graphics);
-        PaintPlayers(e.Graphics);
+        PaintPlayer(e.Graphics);
     }
 
     #region Windows Form Designer generated code

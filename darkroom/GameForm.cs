@@ -44,10 +44,9 @@ public sealed partial class GameForm : Form
             PaintRectangle(wall, graphics, Brushes.Black);
     }
 
-    private void PaintPlayers(Graphics graphics)
+    private void PaintPlayer(Graphics graphics)
     {
-        foreach (var player in _game.Players) 
-            PaintRectangle(player.Box, graphics, Brushes.DodgerBlue);
+        PaintRectangle(_game.Player.Box, graphics, Brushes.DodgerBlue);
     }
 
     private void PaintRectangle(RectangleF rectangle, Graphics graphics, Brush color)
