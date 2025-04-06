@@ -36,6 +36,13 @@ public class KeyEvent(Player player)
                 case Keys.D:
                     player.MoveRight();
                     break;
+                
+                case Keys.Right:
+                    player.Fov.MoveRight();
+                    break;
+                case Keys.Left:
+                    player.Fov.MoveLeft();
+                    break;
             }
         }
     }

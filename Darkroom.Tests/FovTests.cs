@@ -12,7 +12,7 @@ public class FovTests
         var map = new Map(100, 100, [new RectangleF(50, 50, 20, 20)]);
         var player = new Player(map, 10, 10, 5);
         player.MoveTo(50, 30);
-        var fov = new Fov(map, player, 10f, 90f);
+        var fov = new Fov(map, player, 10f, 90f, 1);
         
         var polygon = fov.GetFov();
             
@@ -25,7 +25,7 @@ public class FovTests
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
         player.MoveTo(10, 10);
-        var fov = new Fov(map, player, 15f, 90f);
+        var fov = new Fov(map, player, 15f, 90f, 1);
         
         var polygon = fov.GetFov();
             
@@ -39,7 +39,7 @@ public class FovTests
         var map = new Map(100, 100, [new RectangleF(50, 50, 20, 20)]);
         var player = new Player(map, 10, 10, 5);
         player.MoveTo(50, 30);
-        var fov = new Fov(map, player, 20f, 90f);
+        var fov = new Fov(map, player, 20f, 90f, 1);
         
         var polygon = fov.GetFov();
             

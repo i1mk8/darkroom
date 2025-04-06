@@ -17,9 +17,10 @@ public class Player(Map map, int width, int height, float speed)
     {
         const float viewDistance = 10f;
         const float viewAngle = 90f;
+        const float baseAngleSpeed = 5f;
         
         SpawnPlayer();
-        Fov = new Fov(map, this, viewDistance, viewAngle);
+        Fov = new Fov(map, this, viewDistance, viewAngle, baseAngleSpeed);
     }
 
     /// <summary>
