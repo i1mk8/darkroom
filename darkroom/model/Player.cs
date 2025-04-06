@@ -3,12 +3,24 @@
 /// <summary>
 /// Игрок
 /// </summary>
+/// <param name="map">Игровая карта</param>
 /// <param name="width">Длина игрока</param>
 /// <param name="height">Ширина игрока</param>
-/// <param name="map">Игровая карта</param>
+/// <param name="speed">Скорость игрока</param>
 public class Player(Map map, int width, int height, float speed)
 {
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
+    public Fov Fov { get; private set; }
+
+
+    public void Initialize()
+    {
+        const float viewDistance = 10f;
+        const float viewAngle = 90f;
+        
+        SpawnPlayer();
+        Fov = new Fov(map, this, viewDistance, viewAngle);
+    }
 
     /// <summary>
     /// Перемещает игрока в заданные координаты, если это возможно

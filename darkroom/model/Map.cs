@@ -110,4 +110,14 @@ public class Map(int width, int height, List<RectangleF> walls)
 
         return null;
     }
+    
+    /// <summary>
+    /// Ищет пересечение точки со стенами или выход за пределы игровой карты
+    /// </summary>
+    /// <param name="point">Точка</param>
+    /// <returns>Стена или граница, с которой пересекается точка (если пересечение существует)</returns>
+    public RectangleF? FindIntersect(PointF point)
+    {
+        return FindIntersect(new RectangleF(point.X, point.Y, 0, 0));
+    }
 }

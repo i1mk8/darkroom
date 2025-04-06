@@ -49,13 +49,27 @@ public sealed partial class GameForm : Form
 
     private void PaintMap(Graphics graphics)
     {
+        PaintRectangle(RectangleF.FromLTRB(0, 0, FormWidth, FormHeight), graphics, Brushes.Black);
         foreach (var wall in _game.Map.Walls) 
-            PaintRectangle(wall, graphics, Brushes.Black);
+            PaintRectangle(wall, graphics, Brushes.Gray);
     }
 
     private void PaintPlayer(Graphics graphics)
     {
         PaintRectangle(_game.Player.Box, graphics, Brushes.DodgerBlue);
+    }
+
+    private void PaintFov(Graphics graphics)
+    {
+        var fov = _game.Player.Fov.GetFov();
+        if (fov.Vertices.Count < 3)
+            return;
+        
+        var path = new System.Drawing.Drawing2D.GraphicsPath();
+        var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
+
+        path.AddPolygon(vertices);
+        graphics.FillPath(Brushes.White, path);
     }
 
     private void PaintRectangle(RectangleF rectangle, Graphics graphics, Brush color)

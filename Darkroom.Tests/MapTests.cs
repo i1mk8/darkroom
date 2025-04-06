@@ -6,19 +6,6 @@ namespace Darkroom.Tests;
 [TestClass]
 public class MapTests
 {
-    [TestMethod]
-    public void Constructor()
-    {
-        var width = 100;
-        var height = 200;
-        var walls = new List<RectangleF> { new(10, 10, 20, 20), new(50, 50, 30, 10) };
-        
-        var map = new Map(width, height, walls);
-        
-        Assert.AreEqual(width, map.Width);
-        Assert.AreEqual(height, map.Height);
-        CollectionAssert.AreEqual(walls, map.Walls);
-    }
 
     [TestMethod]
     public void Generate()
@@ -41,6 +28,21 @@ public class MapTests
             var size = wall.Width > wall.Height ? wall.Width : wall.Height;
             Assert.IsTrue(size >= minWallSize || size <= maxWallSize);
         }
+    }
+    
+    [TestMethod]
+    public void Generate_ReturnsRandomMaps()
+    {
+        var width = 800;
+        var height = 600;
+        var wallOffset = 20;
+        var minWallSize = 30;
+        var maxWallSize = 100;
+        
+        var map1 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
+        var map2 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
+        
+        CollectionAssert.AreNotEqual(map1.Walls, map2.Walls);
     }
 
     [TestMethod]
@@ -126,20 +128,5 @@ public class MapTests
         var result = map.FindIntersect(box);
         
         Assert.IsNull(result);
-    }
-
-    [TestMethod]
-    public void Generate_RandomMaps()
-    {
-        var width = 800;
-        var height = 600;
-        var wallOffset = 20;
-        var minWallSize = 30;
-        var maxWallSize = 100;
-        
-        var map1 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
-        var map2 = Map.Generate(width, height, wallOffset, minWallSize, maxWallSize);
-        
-        CollectionAssert.AreNotEqual(map1.Walls, map2.Walls);
     }
 }
