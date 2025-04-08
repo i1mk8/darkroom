@@ -1,3 +1,4 @@
+using System.Drawing.Drawing2D;
 using darkroom.model;
 using Timer = System.Windows.Forms.Timer;
 
@@ -10,6 +11,26 @@ public sealed partial class GameForm : Form
     
     private readonly int _ratioX;
     private readonly int _ratioY;
+    
+    private readonly Brush _backgroundFillColor = new SolidBrush(ColorTranslator.FromHtml("#1E2124"));
+    
+    private readonly Brush _wallFillColor = new HatchBrush(
+        HatchStyle.LightUpwardDiagonal, 
+        ColorTranslator.FromHtml("#4A4C51"), 
+        Color.Transparent
+    );
+    private readonly Pen _wallColor = new(ColorTranslator.FromHtml("#4A4C51"), 1.2f);
+    
+    private readonly Brush _playerFillColor = new SolidBrush(ColorTranslator.FromHtml("#6495ED"));
+    
+    private readonly Brush _playerFovFillColor = new HatchBrush(
+        HatchStyle.LightUpwardDiagonal,
+        Color.FromArgb(80, ColorTranslator.FromHtml("#FFFFFF")),
+        Color.Transparent
+    );
+    private readonly Pen _playerFovColor = new(ColorTranslator.FromHtml("#FFFFFF"), 1.2f){
+        LineJoin = LineJoin.Round
+    };
 
     private readonly KeyEvent _keyEvent;
     
@@ -17,7 +38,9 @@ public sealed partial class GameForm : Form
     
     public GameForm()
     {
-        DoubleBuffered = true;
+        SetStyle(ControlStyles.OptimizedDoubleBuffer
+                 | ControlStyles.AllPaintingInWmPaint
+                 |ControlStyles.UserPaint, true);
         KeyPreview = true;
         
         _game = new Game();
@@ -49,14 +72,18 @@ public sealed partial class GameForm : Form
 
     private void PaintMap(Graphics graphics)
     {
-        PaintRectangle(RectangleF.FromLTRB(0, 0, FormWidth, FormHeight), graphics, Brushes.Black);
-        foreach (var wall in _game.Map.Walls) 
-            PaintRectangle(wall, graphics, Brushes.Gray);
+        graphics.FillRectangle(_backgroundFillColor, RectangleF.FromLTRB(0, 0, FormWidth, FormHeight));
+        foreach (var wall in _game.Map.Walls)
+        {
+            var wallBox = ResizeRectangle(wall);
+            graphics.DrawRectangle(_wallColor, wallBox.X, wallBox.Y, wallBox.Width, wallBox.Height);
+            graphics.FillRectangle(_wallFillColor, wallBox);
+        }
     }
 
     private void PaintPlayer(Graphics graphics)
     {
-        PaintRectangle(_game.Player.Box, graphics, Brushes.DodgerBlue);
+        graphics.FillRectangle(_playerFillColor, ResizeRectangle(_game.Player.Box));
     }
 
     private void PaintFov(Graphics graphics)
@@ -64,19 +91,17 @@ public sealed partial class GameForm : Form
         var fov = _game.Player.Fov.GetFov();
         if (fov.Vertices.Count < 3)
             return;
-        
-        var path = new System.Drawing.Drawing2D.GraphicsPath();
+
         var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
-
-        path.AddPolygon(vertices);
-        graphics.FillPath(Brushes.White, path);
+    
+        graphics.FillPolygon(_playerFovFillColor, vertices);
+        graphics.DrawPolygon(_playerFovColor, vertices);
     }
-
-    private void PaintRectangle(RectangleF rectangle, Graphics graphics, Brush color)
+    private RectangleF ResizeRectangle(RectangleF rectangle)
     {
-        graphics.FillRectangle(color, RectangleF.FromLTRB(rectangle.Left * _ratioX,
+        return RectangleF.FromLTRB(rectangle.Left * _ratioX,
             rectangle.Top * _ratioY,
             rectangle.Right * _ratioX,
-            rectangle.Bottom * _ratioY));
+            rectangle.Bottom * _ratioY);
     }
 }

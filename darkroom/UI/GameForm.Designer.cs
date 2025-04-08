@@ -1,4 +1,6 @@
-﻿namespace darkroom.UI;
+﻿using System.Drawing.Drawing2D;
+
+namespace darkroom.UI;
 
 sealed partial class GameForm
 {
@@ -23,7 +25,8 @@ sealed partial class GameForm
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+        e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
         
         PaintMap(e.Graphics);
         PaintFov(e.Graphics);
@@ -33,16 +36,24 @@ sealed partial class GameForm
     #region Windows Form Designer generated code
 
     /// <summary>
-    ///  Required method for Designer support - do not modify
-    ///  the contents of this method with the code editor.
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 800);
-        this.Text = "Darkroom";
-        this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
+        SuspendLayout();
+        // 
+        // GameForm
+        // 
+        AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        ClientSize = new System.Drawing.Size(800, 800);
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+        Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
+        MaximizeBox = false;
+        Text = "Darkroom";
+        ResumeLayout(false);
     }
 
     #endregion
