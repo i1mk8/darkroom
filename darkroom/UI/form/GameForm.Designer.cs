@@ -1,6 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 
-namespace darkroom.UI;
+namespace darkroom.UI.form;
 
 sealed partial class GameForm
 {
@@ -30,7 +30,7 @@ sealed partial class GameForm
         
         PaintMap(e.Graphics);
         PaintFov(e.Graphics);
-        PaintPlayer(e.Graphics);
+        PaintPlayers(e.Graphics);
     }
 
     #region Windows Form Designer generated code

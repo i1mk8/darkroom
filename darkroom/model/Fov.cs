@@ -12,16 +12,16 @@ namespace darkroom.model;
 /// <param name="baseAngleSpeed">Скорость поворота направления взгляда</param>
 public class Fov(Map map, Player player, float viewDistance, float viewAngle, float baseAngleSpeed)
 {
-    private float _baseAngle; // Угол, характеризующий направление взгляда
+    public float BaseAngle; // Угол, характеризующий направление взгляда
     
     /// <summary>
     /// Поворачивает взгляд направо
     /// </summary>
-    public void MoveRight() => SetBaseAngle(_baseAngle + baseAngleSpeed);
+    public void MoveRight() => SetBaseAngle(BaseAngle + baseAngleSpeed);
     /// <summary>
     /// Поворачивает взгляд налево
     /// </summary>
-    public void MoveLeft() => SetBaseAngle(_baseAngle - baseAngleSpeed);
+    public void MoveLeft() => SetBaseAngle(BaseAngle - baseAngleSpeed);
     
     /// <summary>
     /// Получение FOV игрока
@@ -31,15 +31,15 @@ public class Fov(Map map, Player player, float viewDistance, float viewAngle, fl
     {
         var polygonVertices = new List<PointF>();
         
-        var originX = player.Box.X + player.Box.Width / 2;
-        var originY = player.Box.Y + player.Box.Height / 2;
+        var originX = player.Box.CenterX();
+        var originY = player.Box.CenterY();
         
         var origin = new PointF(originX, originY);
         polygonVertices.Add(origin);
 
         const float angleOffset = 0.5f;
-        for (var angle = _baseAngle - viewAngle / 2; angle <= _baseAngle + viewAngle / 2; angle += angleOffset)
-            polygonVertices.Add(GetRayEndPoint(angle * MathF.PI / 180, originX, originY));
+        for (var angle = BaseAngle - viewAngle / 2; angle <= BaseAngle + viewAngle / 2; angle += angleOffset)
+            polygonVertices.Add(GetRayEndPoint(Utils.ToRadians(angle), originX, originY));
         
         polygonVertices.Add(origin);
         return new Polygon(polygonVertices);
@@ -77,6 +77,6 @@ public class Fov(Map map, Player player, float viewDistance, float viewAngle, fl
             angle -= 360 * (int)(angle / 360);
         else if (angle < -360)
             angle += 360 * (int)(angle / -360);
-        _baseAngle = angle;
+        BaseAngle = angle;
     }
 }

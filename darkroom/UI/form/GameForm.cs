@@ -1,8 +1,8 @@
-using System.Drawing.Drawing2D;
 using darkroom.model;
+using darkroom.UI.KeyEvent;
 using Timer = System.Windows.Forms.Timer;
 
-namespace darkroom.UI;
+namespace darkroom.UI.form;
 
 public sealed partial class GameForm : Form
 {
@@ -11,28 +11,11 @@ public sealed partial class GameForm : Form
     
     private readonly int _ratioX;
     private readonly int _ratioY;
-    
-    private readonly Brush _backgroundFillColor = new SolidBrush(ColorTranslator.FromHtml("#1E2124"));
-    
-    private readonly Brush _wallFillColor = new HatchBrush(
-        HatchStyle.LightUpwardDiagonal, 
-        ColorTranslator.FromHtml("#4A4C51"), 
-        Color.Transparent
-    );
-    private readonly Pen _wallColor = new(ColorTranslator.FromHtml("#4A4C51"), 1.2f);
-    
-    private readonly Brush _playerFillColor = new SolidBrush(ColorTranslator.FromHtml("#6495ED"));
-    
-    private readonly Brush _playerFovFillColor = new HatchBrush(
-        HatchStyle.LightUpwardDiagonal,
-        Color.FromArgb(80, ColorTranslator.FromHtml("#FFFFFF")),
-        Color.Transparent
-    );
-    private readonly Pen _playerFovColor = new(ColorTranslator.FromHtml("#FFFFFF"), 1.2f){
-        LineJoin = LineJoin.Round
-    };
 
-    private readonly KeyEvent _keyEvent;
+    private readonly KeyEvent.KeyEvent _keyEvent;
+    private readonly SingleKeyEvent _singleKeyEvent;
+    
+    private readonly List<PlayerWrapper> _wrappedPlayers;
     
     private readonly Game _game;
     
@@ -48,13 +31,17 @@ public sealed partial class GameForm : Form
         _ratioX = FormWidth / _game.Map.Width;
         _ratioY = FormHeight / _game.Map.Height;
 
-        _keyEvent = new KeyEvent(_game.Player);
-        
-        InitializeComponent();
+        _keyEvent = new KeyEvent.KeyEvent(_game.MainPlayer);
+        _singleKeyEvent = new SingleKeyEvent(_game.MainPlayer);
 
         KeyDown += _keyEvent.KeyDown;
         KeyUp += _keyEvent.KeyUp;
+        KeyDown += _singleKeyEvent.KeyDown;
+        KeyUp += _singleKeyEvent.KeyUp;
         
+        _wrappedPlayers = PlayerWrapper.Wrap(_game.Players);
+        
+        InitializeComponent();
         InitializeTimer(60);
     }
 
@@ -64,7 +51,8 @@ public sealed partial class GameForm : Form
         timer.Interval = 1000 / fps;
         timer.Tick += (_, _) =>
         {
-            _keyEvent.ProceedMovement();
+            _game.Tick();
+            _keyEvent.Proceed();
             Invalidate();
         };
         timer.Start();
@@ -72,30 +60,31 @@ public sealed partial class GameForm : Form
 
     private void PaintMap(Graphics graphics)
     {
-        graphics.FillRectangle(_backgroundFillColor, RectangleF.FromLTRB(0, 0, FormWidth, FormHeight));
+        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 0, FormWidth, FormHeight));
         foreach (var wall in _game.Map.Walls)
         {
             var wallBox = ResizeRectangle(wall);
-            graphics.DrawRectangle(_wallColor, wallBox.X, wallBox.Y, wallBox.Width, wallBox.Height);
-            graphics.FillRectangle(_wallFillColor, wallBox);
+            graphics.DrawRectangle(Colors.Wall, wallBox.X, wallBox.Y, wallBox.Width, wallBox.Height);
+            graphics.FillRectangle(Colors.WallFill, wallBox);
         }
     }
 
-    private void PaintPlayer(Graphics graphics)
+    private void PaintPlayers(Graphics graphics)
     {
-        graphics.FillRectangle(_playerFillColor, ResizeRectangle(_game.Player.Box));
+        foreach (var player in _wrappedPlayers)
+            graphics.FillRectangle(player.Color, ResizeRectangle(player.Player.Box));
     }
 
     private void PaintFov(Graphics graphics)
     {
-        var fov = _game.Player.Fov.GetFov();
+        var fov = _game.MainPlayer.Fov.GetFov();
         if (fov.Vertices.Count < 3)
             return;
 
         var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
     
-        graphics.FillPolygon(_playerFovFillColor, vertices);
-        graphics.DrawPolygon(_playerFovColor, vertices);
+        graphics.FillPolygon(Colors.PlayerFovFill, vertices);
+        graphics.DrawPolygon(Colors.PlayerFov, vertices);
     }
     private RectangleF ResizeRectangle(RectangleF rectangle)
     {

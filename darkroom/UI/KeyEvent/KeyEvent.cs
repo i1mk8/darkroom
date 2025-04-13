@@ -1,10 +1,10 @@
 ﻿using darkroom.model;
 
-namespace darkroom.UI;
+namespace darkroom.UI.KeyEvent;
 
 public class KeyEvent(Player player)
 {
-    private readonly List<Keys> _pressedKeys = new();
+    private readonly List<Keys> _pressedKeys = [];
     
     public void KeyDown(object? sender, KeyEventArgs e)
     {
@@ -18,7 +18,7 @@ public class KeyEvent(Player player)
             _pressedKeys.Remove(e.KeyCode);
     }
     
-    public void ProceedMovement()
+    public void Proceed()
     {
         foreach (var key in _pressedKeys)
         {

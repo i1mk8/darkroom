@@ -7,17 +7,25 @@
 /// <param name="width">Длина игрока</param>
 /// <param name="height">Ширина игрока</param>
 /// <param name="speed">Скорость игрока</param>
-public class Player(Map map, int width, int height, float speed)
+public class Player(Map map, float width, float height, float speed)
 {
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; private set; }
+    private BulletProcessor _bulletProcessor;
 
 
-    public void Initialize()
+    /// <summary>
+    /// Инициализирует поле зрения, обработчик полета пуль и спавнит игрока
+    /// <param name="bulletProcessor">Обработчик полета пуль</param>
+    /// </summary>
+    public void Initialize(BulletProcessor bulletProcessor)
     {
         const float viewDistance = 10f;
         const float viewAngle = 90f;
         const float baseAngleSpeed = 5f;
+        
+        _bulletProcessor = bulletProcessor;
+        _bulletProcessor.AddPlayer(this);
         
         SpawnPlayer();
         Fov = new Fov(map, this, viewDistance, viewAngle, baseAngleSpeed);
@@ -104,5 +112,18 @@ public class Player(Map map, int width, int height, float speed)
         }
         
         Console.WriteLine($"Player: {Box}");
+    }
+
+    public void Shoot()
+    {
+        const float bulletWidth = 0.5f;
+        const float bulletHeight = 0.5f;
+        const float bulletSpeed = 10f;
+
+        var bullet = new Bullet(this,
+            bulletWidth,
+            bulletHeight,
+            bulletSpeed);
+        _bulletProcessor.AddBullet(bullet);
     }
 }
