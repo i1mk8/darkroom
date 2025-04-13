@@ -113,7 +113,10 @@ public class Player(Map map, float width, float height, float speed)
         
         Console.WriteLine($"Player: {Box}");
     }
-
+    
+    /// <summary>
+    /// Стреляет от лица игрока. Тракетория полета пули - BaseAngle из Fov (угол, характеризующий направление взгляда)
+    /// </summary>
     public void Shoot()
     {
         const float bulletWidth = 0.5f;

@@ -30,7 +30,8 @@ public class PolygonTests
             new PointF(0, 0)]);
         
         Assert.IsTrue(polygon.Contains(new RectangleF(2, 2, 2, 2)));
-        Assert.IsFalse(polygon.Contains(new RectangleF(8, 8, 3, 3)));
+        Assert.IsTrue(polygon.Contains(new RectangleF(8, 8, 3, 3)));
+        Assert.IsFalse(polygon.Contains(new RectangleF(11, 11, 3, 3)));
     }
     
 }

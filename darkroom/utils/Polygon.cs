@@ -9,15 +9,15 @@ public class Polygon(List<PointF> vertices)
     public readonly List<PointF> Vertices = vertices;
     
     /// <summary>
-    /// Проверяет наличие объекта внутри полигона
+    /// Проверяет пересечение объекта с полигоном
     /// </summary>
     /// <param name="box">Бокс объекта</param>
     /// <returns></returns>
     public bool Contains(RectangleF box) {
         return Contains(box.Location)
-               && Contains(new PointF(box.Right, box.Top))
-               && Contains(new PointF(box.Right, box.Bottom))
-               && Contains(new PointF(box.Left, box.Bottom)); 
+               || Contains(new PointF(box.Right, box.Top))
+               || Contains(new PointF(box.Right, box.Bottom))
+               || Contains(new PointF(box.Left, box.Bottom)); 
     }
     
     /// <summary>

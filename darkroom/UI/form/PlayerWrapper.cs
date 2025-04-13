@@ -7,8 +7,7 @@ public class PlayerWrapper(Player player, Brush color)
     private static readonly List<Brush> Colors = [form.Colors.PlayerFillPurple,
         form.Colors.PlayerFillYellow,
         form.Colors.PlayerFillRed,
-        form.Colors.PlayerFillGreen,
-        form.Colors.PlayerFillBlue];
+        form.Colors.PlayerFillGreen];
     
     public Player Player => player;
     public Brush Color => color;

@@ -2,7 +2,7 @@
 
 namespace darkroom.UI.KeyEvent;
 
-public class SingleKeyEvent(Player player)
+public class SingleKeyEvent(Player player, Action onTilda)
 {
     private readonly List<Keys> _pressedKeys = [];
     
@@ -27,6 +27,10 @@ public class SingleKeyEvent(Player player)
         {
             case Keys.Up:
                 player.Shoot();
+                break;
+            
+            case Keys.Oemtilde:
+                onTilda();
                 break;
         }
     }

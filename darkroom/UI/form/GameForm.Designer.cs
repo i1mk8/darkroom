@@ -29,8 +29,13 @@ sealed partial class GameForm
         e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
         
         PaintMap(e.Graphics);
-        PaintFov(e.Graphics);
-        PaintPlayers(e.Graphics);
+
+        var fov = _game.MainPlayer.Fov.GetFov();
+        if (fov.Vertices.Count >= 3)
+        {
+            PaintFov(e.Graphics, fov);
+            PaintPlayers(e.Graphics, fov);
+        }
     }
 
     #region Windows Form Designer generated code

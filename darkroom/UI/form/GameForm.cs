@@ -1,5 +1,6 @@
 using darkroom.model;
 using darkroom.UI.KeyEvent;
+using darkroom.utils;
 using Timer = System.Windows.Forms.Timer;
 
 namespace darkroom.UI.form;
@@ -17,6 +18,8 @@ public sealed partial class GameForm : Form
     
     private readonly List<PlayerWrapper> _wrappedPlayers;
     
+    private bool _debug = false;
+    
     private readonly Game _game;
     
     public GameForm()
@@ -32,7 +35,7 @@ public sealed partial class GameForm : Form
         _ratioY = FormHeight / _game.Map.Height;
 
         _keyEvent = new KeyEvent.KeyEvent(_game.MainPlayer);
-        _singleKeyEvent = new SingleKeyEvent(_game.MainPlayer);
+        _singleKeyEvent = new SingleKeyEvent(_game.MainPlayer, ToggleDebug);
 
         KeyDown += _keyEvent.KeyDown;
         KeyUp += _keyEvent.KeyUp;
@@ -69,18 +72,15 @@ public sealed partial class GameForm : Form
         }
     }
 
-    private void PaintPlayers(Graphics graphics)
+    private void PaintPlayers(Graphics graphics, Polygon fov)
     {
-        foreach (var player in _wrappedPlayers)
+        graphics.FillRectangle(Colors.PlayerFillBlue, ResizeRectangle(_game.MainPlayer.Box));
+        foreach (var player in _wrappedPlayers.Where(player => _debug || fov.Contains(player.Player.Box)))
             graphics.FillRectangle(player.Color, ResizeRectangle(player.Player.Box));
     }
 
-    private void PaintFov(Graphics graphics)
+    private void PaintFov(Graphics graphics, Polygon fov)
     {
-        var fov = _game.MainPlayer.Fov.GetFov();
-        if (fov.Vertices.Count < 3)
-            return;
-
         var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
     
         graphics.FillPolygon(Colors.PlayerFovFill, vertices);
@@ -93,4 +93,6 @@ public sealed partial class GameForm : Form
             rectangle.Right * _ratioX,
             rectangle.Bottom * _ratioY);
     }
+    
+    private void ToggleDebug() => _debug = !_debug;
 }

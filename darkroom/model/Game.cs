@@ -27,7 +27,6 @@ public class Game
         
         MainPlayer = new Player(Map, playerWidth, playerHeight, playerSpeed);
         MainPlayer.Initialize(_bulletProcessor);
-        Players.Add(MainPlayer);
         
         var player = new Player(Map, playerWidth, playerHeight, playerSpeed);
         player.Initialize(_bulletProcessor);
