@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using darkroom.model;
+using darkroom.UI.sound;
 
 namespace Darkroom.Tests;
 
@@ -12,7 +13,8 @@ public class BulletProcessorTests
         var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
         var player = new Player(map, 1f, 1f, 0.2f);
-        player.Initialize(processor);
+        var soundController = new SoundController(player);
+        player.Initialize(processor, soundController);
         
         var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
         
@@ -42,7 +44,8 @@ public class BulletProcessorTests
         var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
         var player = new Player(map, 1f, 1f, 0.2f);
-        player.Initialize(processor);
+        var soundController = new SoundController(player);
+        player.Initialize(processor, soundController);
         
         var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
         var originalPosition = bullet.Box.Location;
@@ -61,7 +64,8 @@ public class BulletProcessorTests
         var map = new Map(50, 50, walls);
         var processor = new BulletProcessor(map);
         var player = new Player(map, 1f, 1f, 0.2f);
-        player.Initialize(processor);
+        var soundController = new SoundController(player);
+        player.Initialize(processor, soundController);
         
         player.MoveTo(5, 12);
         var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
@@ -79,11 +83,12 @@ public class BulletProcessorTests
         var processor = new BulletProcessor(map);
         
         var originPlayer = new Player(map, 1f, 1f, 0.2f);
-        originPlayer.Initialize(processor);
+        var soundController = new SoundController(originPlayer);
+        originPlayer.Initialize(processor, soundController);
         originPlayer.MoveTo(0, 0);
         
         var target = new Player(map, 1f, 1f, 0.2f);
-        target.Initialize(processor);
+        target.Initialize(processor, new SoundController(originPlayer));
         target.MoveTo(5, 0);
         
         var bullet = new Bullet(originPlayer, 0.5f, 0.5f, 10f);
@@ -101,7 +106,8 @@ public class BulletProcessorTests
         var processor = new BulletProcessor(map);
         
         var player = new Player(map, 1f, 1f, 0.2f);
-        player.Initialize(processor);
+        var soundController = new SoundController(player);
+        player.Initialize(processor, soundController);
         player.MoveTo(0, 0);
         
         var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
@@ -119,7 +125,8 @@ public class BulletProcessorTests
         var processor = new BulletProcessor(map);
         
         var player = new Player(map, 1f, 1f, 0.2f);
-        player.Initialize(processor);
+        var soundController = new SoundController(player);
+        player.Initialize(processor, soundController);
         player.MoveTo(0, 0);
         
         var bullet = new Bullet(player, 0.5f, 0.5f, 60f);

@@ -1,4 +1,6 @@
-﻿namespace darkroom.model;
+﻿using darkroom.UI.sound;
+
+namespace darkroom.model;
 
 /// <summary>
 /// Игровой мир, совокупность игровых моделей
@@ -26,10 +28,11 @@ public class Game
         const float playerSpeed = 0.2f;
         
         MainPlayer = new Player(Map, playerWidth, playerHeight, playerSpeed);
-        MainPlayer.Initialize(_bulletProcessor);
+        var soundController = new SoundController(MainPlayer);
+        MainPlayer.Initialize(_bulletProcessor, soundController);
         
         var player = new Player(Map, playerWidth, playerHeight, playerSpeed);
-        player.Initialize(_bulletProcessor);
+        player.Initialize(_bulletProcessor, soundController);
         Players.Add(player);
     }
 

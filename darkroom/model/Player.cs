@@ -1,4 +1,6 @@
-﻿namespace darkroom.model;
+﻿using darkroom.UI.sound;
+
+namespace darkroom.model;
 
 /// <summary>
 /// Игрок
@@ -12,13 +14,13 @@ public class Player(Map map, float width, float height, float speed)
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; private set; }
     private BulletProcessor _bulletProcessor;
-
+    private SoundController _soundController;
 
     /// <summary>
     /// Инициализирует поле зрения, обработчик полета пуль и спавнит игрока
     /// <param name="bulletProcessor">Обработчик полета пуль</param>
     /// </summary>
-    public void Initialize(BulletProcessor bulletProcessor)
+    public void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
     {
         const float viewDistance = 10f;
         const float viewAngle = 90f;
@@ -26,6 +28,8 @@ public class Player(Map map, float width, float height, float speed)
         
         _bulletProcessor = bulletProcessor;
         _bulletProcessor.AddPlayer(this);
+        
+        _soundController = soundController;
         
         SpawnPlayer();
         Fov = new Fov(map, this, viewDistance, viewAngle, baseAngleSpeed);
@@ -55,8 +59,11 @@ public class Player(Map map, float width, float height, float speed)
     public void MoveForward()
     {
         var intersect = MoveTo(Box.X, Box.Y + speed);
-        if (intersect != null)
-            MoveTo(Box.X, Box.Y + (intersect.Value.Top - Box.Bottom));
+        if (intersect == null)
+            return;
+        _soundController.PlayWalkSound(this);
+        MoveTo(Box.X, Box.Y + (intersect.Value.Top - Box.Bottom));
+
     }
     
     /// <summary>
@@ -65,8 +72,11 @@ public class Player(Map map, float width, float height, float speed)
     public void MoveBack()
     {
         var intersect = MoveTo(Box.X, Box.Y - speed);
-        if (intersect != null) 
-            MoveTo(Box.X, Box.Y - (Box.Top - intersect.Value.Bottom));
+        if (intersect == null)
+            return;
+        _soundController.PlayWalkSound(this);
+        MoveTo(Box.X, Box.Y - (Box.Top - intersect.Value.Bottom));
+
     }
 
     /// <summary>
@@ -75,8 +85,11 @@ public class Player(Map map, float width, float height, float speed)
     public void MoveRight()
     {
         var intersect = MoveTo(Box.X + speed, Box.Y);
-        if (intersect != null)
-            MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
+        if (intersect == null)
+            return;
+        _soundController.PlayWalkSound(this);
+        MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
+
     }
 
     /// <summary>
@@ -85,8 +98,10 @@ public class Player(Map map, float width, float height, float speed)
     public void MoveLeft()
     {
         var intersect = MoveTo(Box.X - speed, Box.Y);
-        if (intersect != null)
-            MoveTo(Box.X - (Box.Left - intersect.Value.Right), Box.Y);
+        if (intersect == null)
+            return;
+        _soundController.PlayWalkSound(this);
+        MoveTo(Box.X - (Box.Left - intersect.Value.Right), Box.Y);
     }
     
     /// <summary>
@@ -128,5 +143,7 @@ public class Player(Map map, float width, float height, float speed)
             bulletHeight,
             bulletSpeed);
         _bulletProcessor.AddBullet(bullet);
+        
+        _soundController.PlayShootSound(this);
     }
 }

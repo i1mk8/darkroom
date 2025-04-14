@@ -1,3 +1,4 @@
+using System.Windows.Forms.PropertyGridInternal;
 using darkroom.model;
 using darkroom.UI.KeyEvent;
 using darkroom.utils;
@@ -18,7 +19,7 @@ public sealed partial class GameForm : Form
     
     private readonly List<PlayerWrapper> _wrappedPlayers;
     
-    private bool _debug = false;
+    private bool _debug;
     
     private readonly Game _game;
     

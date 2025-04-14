@@ -57,6 +57,7 @@ sealed partial class GameForm
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
         Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
         MaximizeBox = false;
+        StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         Text = "Darkroom";
         ResumeLayout(false);
     }

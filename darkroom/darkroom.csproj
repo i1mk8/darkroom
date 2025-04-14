@@ -10,6 +10,18 @@
 
     <ItemGroup>
       <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+      <PackageReference Include="NAudio" Version="2.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="UI\resources\shoot-sound.wav" />
+      <EmbeddedResource Include="UI\resources\ShootSound.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="UI\resources\WalkSound.wav" />
+      <EmbeddedResource Include="UI\resources\WalkSound.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
