@@ -12,10 +12,9 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003APointF_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fe0601aa75a7462ad24e6c0cb86717b769ac1f02c19fd3f8cb2bcb66056b9ac_003FPointF_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ARectangleF_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F57f6ccac7473e3f09085d4e4d96272b4496aecd5c53ab3b68983178054a748e4_003FRectangleF_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATestClassAttribute_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F6562e3bc2e10dedab01eedbe2e2f66fbdea65727242aaa9d7473b0d7bebb_003FTestClassAttribute_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=47e8833f_002D1f65_002D4953_002Da424_002D400ae25f1dd1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PolygonTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::360F9D34-C505-4339-83E7-629D082B8FA0::net9.0-windows::Darkroom.Tests.PolygonTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWaveOutEvent_002Ecs_002Fl_003AC_0021_003FUsers_003Fholte_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Ff178471da6cb4e6b9dbad166e9b46bdde000_003F6d_003Facfe36f9_003FWaveOutEvent_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=47e8833f_002D1f65_002D4953_002Da424_002D400ae25f1dd1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PolygonTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="D:\c#\darkroom\Darkroom.Tests" Presentation="&amp;lt;Darkroom.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	
@@ -24,7 +23,7 @@
 	
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ed75be48_002D398c_002D4641_002D9919_002Dfb713a34a8a9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MapTests #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ed75be48_002D398c_002D4641_002D9919_002Dfb713a34a8a9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MapTests #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="D:\c#\darkroom\Darkroom.Tests" Presentation="&amp;lt;Darkroom.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=darkroom_002FUI_002Fassets_002FGameForm/@EntryIndexedValue">False</s:Boolean>

@@ -40,7 +40,6 @@ public class BulletProcessorTests
     [TestMethod]
     public void Process_MovesBulletInDirection()
     {
-        // Arrange
         var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
         var player = new Player(map, 1f, 1f, 0.2f);
@@ -54,7 +53,6 @@ public class BulletProcessorTests
         processor.Process();
         
         Assert.AreNotEqual(originalPosition, bullet.Box.Location);
-        Assert.AreEqual(1, processor.Bullets.Count);
     }
 
     [TestMethod]

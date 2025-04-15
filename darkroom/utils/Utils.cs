@@ -22,7 +22,11 @@ public static class Utils
     public static void ExtractResource(string resourceName, string destination)
     {
         using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-        using var file = new FileStream(destination, FileMode.Create, FileAccess.Write);
-        resource.CopyTo(file);
+        try
+        {
+            using var file = new FileStream(destination, FileMode.Create, FileAccess.Write);
+            resource.CopyTo(file);
+        }
+        catch (IOException) {}
     }
 }
