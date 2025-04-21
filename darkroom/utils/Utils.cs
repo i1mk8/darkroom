@@ -29,4 +29,9 @@ public static class Utils
         }
         catch (IOException) {}
     }
+
+    public static bool InaccurateEquals(float num1, float num2, float delta)
+    {
+        return Math.Abs(num1 - num2) < delta;
+    }
 }

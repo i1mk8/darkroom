@@ -10,7 +10,7 @@ public class Game
     public readonly Map Map;
     private readonly BulletProcessor _bulletProcessor;
     public readonly Player MainPlayer;
-    public readonly List<Player> Players = [];
+    public readonly List<Bot> Bots = [];
 
     public Game()
     {
@@ -31,13 +31,15 @@ public class Game
         var soundController = new SoundController(MainPlayer);
         MainPlayer.Initialize(_bulletProcessor, soundController);
         
-        var player = new Player(Map, playerWidth, playerHeight, playerSpeed);
-        player.Initialize(_bulletProcessor, soundController);
-        Players.Add(player);
+        var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
+        bot.Initialize(_bulletProcessor, soundController);
+        Bots.Add(bot);
     }
 
     public void Tick()
     {
         _bulletProcessor.Process();
+        foreach (var bot in Bots)
+            bot.Process();
     }
 }

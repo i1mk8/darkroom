@@ -7,18 +7,12 @@ public static class RectangleExtension
 {
     
     /// <summary>
-    /// Считает центр прямоугольника по X
+    /// Считает центр прямоугольника
     /// </summary>
     /// <param name="rectangle">Прямоугольник</param>
-    /// <returns>Центр прямоугольника по X</returns>
-    public static float CenterX(this RectangleF rectangle) => rectangle.X + rectangle.Width / 2;
-    
-    /// <summary>
-    /// Считает центр прямоугольника по Y
-    /// </summary>
-    /// <param name="rectangle">Прямоугольник</param>
-    /// <returns>Центр прямоугольника по Y</returns>
-    public static float CenterY(this RectangleF rectangle) => rectangle.Y + rectangle.Width / 2;
+    /// <returns>Точка, находящаеся в центре прямоугольника</returns>
+    public static PointF Center(this RectangleF rectangle) => new(rectangle.X + rectangle.Width / 2,
+        rectangle.Y + rectangle.Height / 2);
     
     /// <summary>
     /// Считает дистанцию от 1-го прямоугольника до 2-го
@@ -28,8 +22,12 @@ public static class RectangleExtension
     /// <returns>Дистанция от 1-го прямоугольника до 2-го</returns>
     public static float DistanceTo(this RectangleF from, RectangleF to)
     {
-        var dx = from.CenterX() - to.CenterX();
-        var dy = from.CenterY() - to.CenterY();
+        var centerFrom = from.Center();
+        var centerTo = to.Center();
+        
+        var dx = centerFrom.X - centerTo.X;
+        var dy = centerFrom.Y - centerTo.Y;
+        
         return (float)Math.Sqrt(dx * dx + dy * dy);
     }
 }

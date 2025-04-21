@@ -17,7 +17,7 @@ public sealed partial class GameForm : Form
     private readonly KeyEvent.KeyEvent _keyEvent;
     private readonly SingleKeyEvent _singleKeyEvent;
     
-    private readonly List<PlayerWrapper> _wrappedPlayers;
+    private readonly List<PlayerWrapper> _wrappedPlayers = new();
     
     private bool _debug;
     
@@ -42,8 +42,8 @@ public sealed partial class GameForm : Form
         KeyUp += _keyEvent.KeyUp;
         KeyDown += _singleKeyEvent.KeyDown;
         KeyUp += _singleKeyEvent.KeyUp;
-        
-        _wrappedPlayers = PlayerWrapper.Wrap(_game.Players);
+
+        _wrappedPlayers = PlayerWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
         InitializeTimer(60);

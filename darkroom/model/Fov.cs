@@ -31,15 +31,12 @@ public class Fov(Map map, Player player, float viewDistance, float viewAngle, fl
     {
         var polygonVertices = new List<PointF>();
         
-        var originX = player.Box.CenterX();
-        var originY = player.Box.CenterY();
-        
-        var origin = new PointF(originX, originY);
+        var origin = player.Box.Center();
         polygonVertices.Add(origin);
 
         const float angleOffset = 0.5f;
         for (var angle = BaseAngle - viewAngle / 2; angle <= BaseAngle + viewAngle / 2; angle += angleOffset)
-            polygonVertices.Add(GetRayEndPoint(Utils.ToRadians(angle), originX, originY));
+            polygonVertices.Add(GetRayEndPoint(Utils.ToRadians(angle), origin.X, origin.Y));
         
         polygonVertices.Add(origin);
         return new Polygon(polygonVertices);

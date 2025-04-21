@@ -2,7 +2,7 @@
 
 namespace darkroom.UI.form;
 
-public class PlayerWrapper(Player player, Brush color)
+public class PlayerWrapper(Bot player, Brush color)
 {
     private static readonly List<Brush> Colors = [form.Colors.PlayerFillPurple,
         form.Colors.PlayerFillYellow,
@@ -12,7 +12,7 @@ public class PlayerWrapper(Player player, Brush color)
     public Player Player => player;
     public Brush Color => color;
 
-    public static List<PlayerWrapper> Wrap(List<Player> players)
+    public static List<PlayerWrapper> Wrap(List<Bot> players)
     {
         var colors = new Stack<Brush>(Colors);
         var wrappedPlayers = players

@@ -47,7 +47,7 @@ public class BulletProcessor(Map map)
                         continue;
                     
                     Console.WriteLine($"Bullet Intersects Player: {player.Box}");
-                    player.SpawnPlayer();
+                    player.Spawn();
                     
                     intersects = true;
                     break;

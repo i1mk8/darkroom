@@ -210,7 +210,7 @@ public class PlayerTests
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
             
-        player.SpawnPlayer();
+        player.Spawn();
             
         Assert.IsTrue(player.Box.Left >= 0
                       && player.Box.Right <= map.Width
@@ -225,7 +225,7 @@ public class PlayerTests
         var map = new Map(100, 100, walls);
         var player = new Player(map, 10, 10, 5);
             
-        player.SpawnPlayer();
+        player.Spawn();
             
         Assert.IsFalse(player.Box.IntersectsWith(walls[0]));
         Assert.IsTrue(player.Box.Left >= 0

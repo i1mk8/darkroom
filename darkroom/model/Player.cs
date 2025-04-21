@@ -22,8 +22,8 @@ public class Player(Map map, float width, float height, float speed)
     /// </summary>
     public void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
     {
-        const float viewDistance = 10f;
-        const float viewAngle = 90f;
+        const float viewDistance = 10;
+        const float viewAngle = 60f;
         const float baseAngleSpeed = 5f;
         
         _bulletProcessor = bulletProcessor;
@@ -31,7 +31,7 @@ public class Player(Map map, float width, float height, float speed)
         
         _soundController = soundController;
         
-        SpawnPlayer();
+        Spawn();
         Fov = new Fov(map, this, viewDistance, viewAngle, baseAngleSpeed);
     }
 
@@ -60,8 +60,10 @@ public class Player(Map map, float width, float height, float speed)
     {
         var intersect = MoveTo(Box.X, Box.Y + speed);
         if (intersect == null)
+        {
+            _soundController.PlayWalkSound(this);
             return;
-        _soundController.PlayWalkSound(this);
+        }
         MoveTo(Box.X, Box.Y + (intersect.Value.Top - Box.Bottom));
 
     }
@@ -73,10 +75,11 @@ public class Player(Map map, float width, float height, float speed)
     {
         var intersect = MoveTo(Box.X, Box.Y - speed);
         if (intersect == null)
+        {
+            _soundController.PlayWalkSound(this);
             return;
-        _soundController.PlayWalkSound(this);
+        }
         MoveTo(Box.X, Box.Y - (Box.Top - intersect.Value.Bottom));
-
     }
 
     /// <summary>
@@ -86,8 +89,10 @@ public class Player(Map map, float width, float height, float speed)
     {
         var intersect = MoveTo(Box.X + speed, Box.Y);
         if (intersect == null)
+        {
+            _soundController.PlayWalkSound(this);
             return;
-        _soundController.PlayWalkSound(this);
+        }
         MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
 
     }
@@ -99,34 +104,38 @@ public class Player(Map map, float width, float height, float speed)
     {
         var intersect = MoveTo(Box.X - speed, Box.Y);
         if (intersect == null)
+        {
+            _soundController.PlayWalkSound(this);
             return;
-        _soundController.PlayWalkSound(this);
+        }
         MoveTo(Box.X - (Box.Left - intersect.Value.Right), Box.Y);
     }
     
     /// <summary>
     /// Спавнит игрока в рандомной точке игровой карты
     /// </summary>
-    public void SpawnPlayer()
+    public virtual void Spawn()
+    {
+        var position = GenerateRandomPoint();
+        MoveTo(position.X, position.Y);
+        Console.WriteLine($"Player: {Box}");
+    }
+
+    protected Point GenerateRandomPoint()
     {
         var random = new Random();
         
-        var minX = Box.Height;
         var maxX = map.Width - Box.Width;
-        
-        var minY = Box.Height;
         var maxY = map.Height - Box.Height;
-        
+
         while (true)
         {
-            var x = Math.Clamp(random.Next(0, map.Width + 1), minX, maxX);
-            var y = Math.Clamp(random.Next(0, map.Height + 1), minY, maxY);
-            
-            if (MoveTo(x, y) == null)
-                break;
+            var x = (int)Math.Min(random.Next(0, map.Width + 1), maxX);
+            var y = (int)Math.Min(random.Next(0, map.Height + 1), maxY);
+
+            if (map.FindIntersect(new RectangleF(x, y, width, height)) == null)
+                return new Point(x, y);
         }
-        
-        Console.WriteLine($"Player: {Box}");
     }
     
     /// <summary>
