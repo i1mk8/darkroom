@@ -17,7 +17,7 @@ public sealed partial class GameForm : Form
     private readonly KeyEvent.KeyEvent _keyEvent;
     private readonly SingleKeyEvent _singleKeyEvent;
     
-    private readonly List<PlayerWrapper> _wrappedPlayers = new();
+    private readonly List<BotWrapper> _wrappedPlayers = new();
     
     private bool _debug;
     
@@ -43,7 +43,7 @@ public sealed partial class GameForm : Form
         KeyDown += _singleKeyEvent.KeyDown;
         KeyUp += _singleKeyEvent.KeyUp;
 
-        _wrappedPlayers = PlayerWrapper.Wrap(_game.Bots);
+        _wrappedPlayers = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
         InitializeTimer(60);
@@ -73,19 +73,28 @@ public sealed partial class GameForm : Form
         }
     }
 
-    private void PaintPlayers(Graphics graphics, Polygon fov)
+    private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
         graphics.FillRectangle(Colors.PlayerFillBlue, ResizeRectangle(_game.MainPlayer.Box));
-        foreach (var player in _wrappedPlayers.Where(player => _debug || fov.Contains(player.Player.Box)))
-            graphics.FillRectangle(player.Color, ResizeRectangle(player.Player.Box));
+        foreach (var bot in _wrappedPlayers.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
+        {
+            if (_debug)
+            {
+                var botFov = bot.Bot.Fov.GetFov();
+                if (botFov.Vertices.Count >= 3)
+                    PaintFov(graphics, botFov);
+            }
+            
+            graphics.FillRectangle(bot.Color, ResizeRectangle(bot.Bot.Box));
+        }
     }
 
     private void PaintFov(Graphics graphics, Polygon fov)
     {
         var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
     
-        graphics.FillPolygon(Colors.PlayerFovFill, vertices);
-        graphics.DrawPolygon(Colors.PlayerFov, vertices);
+        graphics.FillPolygon(Colors.FovFill, vertices);
+        graphics.DrawPolygon(Colors.Fov, vertices);
     }
     private RectangleF ResizeRectangle(RectangleF rectangle)
     {
