@@ -14,7 +14,7 @@ public class Player(Map map, float width, float height, float speed)
 {
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; private set; }
-    private BulletProcessor _bulletProcessor;
+    protected BulletProcessor BulletProcessor;
     private SoundController _soundController;
 
     /// <summary>
@@ -27,8 +27,8 @@ public class Player(Map map, float width, float height, float speed)
         const float viewAngle = 60f;
         const float baseAngleSpeed = 5f;
         
-        _bulletProcessor = bulletProcessor;
-        _bulletProcessor.AddPlayer(this);
+        BulletProcessor = bulletProcessor;
+        BulletProcessor.AddPlayer(this);
         
         _soundController = soundController;
         
@@ -152,9 +152,9 @@ public class Player(Map map, float width, float height, float speed)
             bulletWidth,
             bulletHeight,
             bulletSpeed);
-        _bulletProcessor.AddBullet(bullet);
+        BulletProcessor.AddBullet(bullet);
         
-        foreach (var bot in _bulletProcessor.Players.OfType<Bot>())
+        foreach (var bot in BulletProcessor.Players.OfType<Bot>())
             bot.NotifyAboutShot(bullet.Shooter);
         
         _soundController.PlayShootSound(this);
