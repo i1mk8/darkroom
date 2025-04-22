@@ -43,7 +43,7 @@ public class BulletProcessor(Map map)
                 
                 foreach (var player in Players)
                 {
-                    if (player == bullet.OriginPlayer || !player.Box.IntersectsWith(bullet.Box))
+                    if (player == bullet.Shooter || !player.Box.IntersectsWith(bullet.Box))
                         continue;
                     
                     Console.WriteLine($"Bullet Intersects Player: {player.Box}");

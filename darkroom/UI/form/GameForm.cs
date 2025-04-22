@@ -1,4 +1,3 @@
-using System.Windows.Forms.PropertyGridInternal;
 using darkroom.model;
 using darkroom.UI.KeyEvent;
 using darkroom.utils;
@@ -17,7 +16,7 @@ public sealed partial class GameForm : Form
     private readonly KeyEvent.KeyEvent _keyEvent;
     private readonly SingleKeyEvent _singleKeyEvent;
     
-    private readonly List<BotWrapper> _wrappedPlayers = new();
+    private readonly List<BotWrapper> _wrappedPlayers;
     
     private bool _debug;
     

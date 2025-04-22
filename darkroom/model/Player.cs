@@ -1,4 +1,5 @@
 ﻿using darkroom.UI.sound;
+using darkroom.utils;
 
 namespace darkroom.model;
 
@@ -152,6 +153,9 @@ public class Player(Map map, float width, float height, float speed)
             bulletHeight,
             bulletSpeed);
         _bulletProcessor.AddBullet(bullet);
+        
+        foreach (var bot in _bulletProcessor.Players.OfType<Bot>())
+            bot.NotifyAboutShot(bullet.Shooter);
         
         _soundController.PlayShootSound(this);
     }
