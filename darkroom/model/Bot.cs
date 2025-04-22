@@ -30,25 +30,35 @@ public class Bot : Player
             || !Utils.InaccurateEquals(checkpoint.Position.Y, Box.Y, _speed))
 
         {
+            var angle = 0f;
                 
             switch (checkpoint.Direction)
             {
                 case Direction.Forward:
                     MoveForward();
+                    angle = 90;
                     break;
 
                 case Direction.Back:
                     MoveBack();
+                    angle = -90;
                     break;
 
                 case Direction.Right:
                     MoveRight();
+                    angle = 0;
                     break;
 
                 case Direction.Left:
                     MoveLeft();
+                    angle = 180;
                     break;
             }
+
+            if (angle - Fov.BaseAngle > 0)
+                Fov.MoveRight();
+            else
+                Fov.MoveLeft();
         }
 
         else
