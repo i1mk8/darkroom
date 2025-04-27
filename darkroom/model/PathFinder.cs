@@ -1,7 +1,19 @@
 ﻿namespace darkroom.model;
 
+/// <summary>
+/// Строит путь для бота
+/// </summary>
+/// <param name="map">Игровоая карта</param>
+/// <param name="box">Бокс бота</param>
 public class PathFinder(Map map, RectangleF box)
 {
+    
+    /// <summary>
+    /// Ищет путь из одной точки в другую
+    /// </summary>
+    /// <param name="start">Начальная точка</param>
+    /// <param name="end">Конечная точка</param>
+    /// <returns>Путь из одной точки в другую</returns>
     public List<Point> FindPath(Point start, Point end)
     {
         var nodes = new Dictionary<Point, Node>();
@@ -31,7 +43,12 @@ public class PathFinder(Map map, RectangleF box)
 
         return [];
     }
-
+    
+    /// <summary>
+    /// Восстанавливает путь
+    /// </summary>
+    /// <param name="endNode">Конечный узел пути</param>
+    /// <returns>Путь</returns>
     private List<Point> ReconstructPath(Node endNode)
     {
         var path = new List<Point>();
@@ -48,7 +65,12 @@ public class PathFinder(Map map, RectangleF box)
         
         return path;
     }
-
+    
+    /// <summary>
+    /// Получает ближайщих соседей, относительно точки
+    /// </summary>
+    /// <param name="point">Точка</param>
+    /// <returns>Ближашие соседи</returns>
     private List<Point> GetNeighbors(Point point)
     {
         var neighbors = new List<Point>
@@ -63,7 +85,13 @@ public class PathFinder(Map map, RectangleF box)
                 map.FindIntersect(new RectangleF(neighbor, new SizeF(box.Width, box.Height))) == null)
             .ToList();
     }
-
+    
+    /// <summary>
+    /// Узел пути
+    /// </summary>
+    /// <param name="cost">Цена</param>
+    /// <param name="parent">Родитель</param>
+    /// <param name="checkpoint">Точка</param>
     private class Node(int cost, Node? parent, Point checkpoint)
     {
         public readonly int Cost = cost;

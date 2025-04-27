@@ -30,10 +30,13 @@ public class Game
         MainPlayer = new Player(Map, playerWidth, playerHeight, playerSpeed);
         var soundController = new SoundController(MainPlayer);
         MainPlayer.Initialize(_bulletProcessor, soundController);
-        
-        var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
-        bot.Initialize(_bulletProcessor, soundController);
-        Bots.Add(bot);
+
+        for (var i = 0; i < 4; i++)
+        {
+            var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
+            bot.Initialize(_bulletProcessor, soundController);
+            Bots.Add(bot);
+        }
     }
 
     public void Tick()

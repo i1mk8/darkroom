@@ -13,7 +13,12 @@ public static class RectangleExtension
     /// <returns>Точка, находящаеся в центре прямоугольника</returns>
     public static PointF Center(this RectangleF rectangle) => new(rectangle.X + rectangle.Width / 2,
         rectangle.Y + rectangle.Height / 2);
-
+    
+    /// <summary>
+    /// Возвращает целочисленные координаты прямоугольника (x, y)
+    /// </summary>
+    /// <param name="rectangle">Прямоугольник</param>
+    /// <returns>Точка с целочисленными координатами</returns>
     public static Point DecimalCords(this RectangleF rectangle) => new((int)rectangle.X, (int)rectangle.Y);
     
     /// <summary>

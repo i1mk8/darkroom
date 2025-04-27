@@ -12,6 +12,10 @@ namespace darkroom.model;
 /// <param name="speed">Скорость игрока</param>
 public class Player(Map map, float width, float height, float speed)
 {
+    protected const float BulletWidth = 0.5f;
+    protected const float BulletHeight = 0.5f;
+    protected const float BulletSpeed = 10f;
+    
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; private set; }
     protected BulletProcessor BulletProcessor;
@@ -144,14 +148,7 @@ public class Player(Map map, float width, float height, float speed)
     /// </summary>
     public void Shoot()
     {
-        const float bulletWidth = 0.5f;
-        const float bulletHeight = 0.5f;
-        const float bulletSpeed = 10f;
-
-        var bullet = new Bullet(this,
-            bulletWidth,
-            bulletHeight,
-            bulletSpeed);
+        var bullet = new Bullet(this, BulletWidth, BulletHeight, BulletSpeed);
         BulletProcessor.AddBullet(bullet);
         
         foreach (var bot in BulletProcessor.Players.OfType<Bot>())
