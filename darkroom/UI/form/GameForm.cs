@@ -51,14 +51,36 @@ public sealed partial class GameForm : Form
     private void InitializeTimer(int fps)
     {
         var timer = new Timer();
-        timer.Interval = 1000 / fps;
+        var interval = 1000 / fps;
+        timer.Interval = interval;
+        
+        var stopWatch = new System.Diagnostics.Stopwatch();
+        var fpsCounter = new FpsCounter();
+
         timer.Tick += (_, _) =>
         {
-            _game.Tick();
-            _keyEvent.Proceed();
-            Invalidate();
+            stopWatch.Restart();
+
+            OnTimerTick();
+
+            stopWatch.Stop();
+            var nextInterval = (int)Math.Max(1, interval - stopWatch.ElapsedMilliseconds);
+            
+            var currentFps = fpsCounter.Update();
+            if (currentFps != null)
+                Console.WriteLine($"Current Fps: {currentFps}");
+            
+            timer.Interval = nextInterval;
         };
+    
         timer.Start();
+    }
+
+    private void OnTimerTick()
+    {
+        _game.Tick();
+        _keyEvent.Proceed();
+        Invalidate();
     }
 
     private void PaintMap(Graphics graphics)
