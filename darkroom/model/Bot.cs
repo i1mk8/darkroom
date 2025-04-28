@@ -1,4 +1,5 @@
-﻿using darkroom.utils;
+﻿using darkroom.UI.sound;
+using darkroom.utils;
 
 namespace darkroom.model;
 
@@ -24,7 +25,16 @@ public class Bot : Player
         _speed = speed;
         _pathFinder = new PathFinder(map, Box);
     }
-    
+
+    public override void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
+    {
+        base.Initialize(bulletProcessor, soundController);
+        
+        const float angleOffset = 1f;
+        const float distanceOffset = 0.1f;
+        Fov = new Fov(_map, this, ViewDistance, ViewAngle, BaseAngleSpeed, angleOffset, distanceOffset);
+    }
+
     /// <summary>
     /// Обрабатывает логику поведения бота
     /// </summary>

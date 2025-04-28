@@ -16,8 +16,12 @@ public class Player(Map map, float width, float height, float speed)
     protected const float BulletHeight = 0.5f;
     protected const float BulletSpeed = 10f;
     
+    protected const float ViewDistance = 10;
+    protected const float ViewAngle = 60f;
+    protected const float BaseAngleSpeed = 5f;
+    
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
-    public Fov Fov { get; private set; }
+    public Fov Fov { get; protected set; }
     protected BulletProcessor BulletProcessor;
     private SoundController _soundController;
 
@@ -25,19 +29,18 @@ public class Player(Map map, float width, float height, float speed)
     /// Инициализирует поле зрения, обработчик полета пуль и спавнит игрока
     /// <param name="bulletProcessor">Обработчик полета пуль</param>
     /// </summary>
-    public void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
+    public virtual void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
     {
-        const float viewDistance = 10;
-        const float viewAngle = 60f;
-        const float baseAngleSpeed = 5f;
-        
         BulletProcessor = bulletProcessor;
         BulletProcessor.AddPlayer(this);
         
         _soundController = soundController;
         
         Spawn();
-        Fov = new Fov(map, this, viewDistance, viewAngle, baseAngleSpeed);
+        
+        const float angleOffset = 0.5f;
+        const float distanceOffset = 0.05f;
+        Fov = new Fov(map, this, ViewDistance, ViewAngle, BaseAngleSpeed, angleOffset, distanceOffset);
     }
 
     /// <summary>

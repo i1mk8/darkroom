@@ -10,7 +10,14 @@ namespace darkroom.model;
 /// <param name="viewDistance">Дальность видимости</param>
 /// <param name="viewAngle">Угол обзора</param>
 /// <param name="baseAngleSpeed">Скорость поворота направления взгляда</param>
-public class Fov(Map map, Player player, float viewDistance, float viewAngle, float baseAngleSpeed)
+/// <param name="angleOffset">Смещение угла, используемое при расчете Fov, влияет на количество лучей</param>
+/// <param name="distanceOffset">Смещение дистанции, используемое при расчеете длины луча</param>
+public class Fov(Map map,
+    Player player, float viewDistance,
+    float viewAngle,
+    float baseAngleSpeed,
+    float angleOffset,
+    float distanceOffset)
 {
     public float BaseAngle; // Угол, характеризующий направление взгляда
     
@@ -33,8 +40,7 @@ public class Fov(Map map, Player player, float viewDistance, float viewAngle, fl
         
         var origin = player.Box.Center();
         polygonVertices.Add(origin);
-
-        const float angleOffset = 0.5f;
+        
         for (var angle = BaseAngle - viewAngle / 2; angle <= BaseAngle + viewAngle / 2; angle += angleOffset)
             polygonVertices.Add(GetRayEndPoint(Utils.ToRadians(angle), origin.X, origin.Y));
         
@@ -52,7 +58,6 @@ public class Fov(Map map, Player player, float viewDistance, float viewAngle, fl
     private PointF GetRayEndPoint(float angle, float originX, float originY)
     {
         var direction = new PointF(MathF.Cos(angle), MathF.Sin(angle));
-        const float distanceOffset = 0.05f;
         
         for (float distance = 0; distance < viewDistance; distance += distanceOffset)
         {

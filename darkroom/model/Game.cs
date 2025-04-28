@@ -42,7 +42,6 @@ public class Game
     public void Tick()
     {
         _bulletProcessor.Process();
-        foreach (var bot in Bots)
-            bot.Process();
+        Parallel.ForEach(Bots, bot => bot.Process());
     }
 }
