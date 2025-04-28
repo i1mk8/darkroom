@@ -33,10 +33,21 @@ public class PathFinderTests
         var end = new Point(3, 0);
 
         var path = pathFinder.FindPath(start, end);
-
-        Assert.IsTrue(path.Count > 2);
-        Assert.AreEqual(start, path[0]);
-        Assert.AreEqual(end, path[^1]);
+        
+        var expectedPath = new List<Point>
+        {
+            new(0, 0),
+            new(0, 1),
+            new(0, 2),
+            new(0, 3),
+            new(1, 3),
+            new(2, 3),
+            new(3, 3),
+            new(3, 2),
+            new(3, 1),
+            new(3, 0)
+        };
+        CollectionAssert.AreEqual(expectedPath, path);
     }
 
     [TestMethod]
@@ -78,12 +89,18 @@ public class PathFinderTests
         var end = new Point(2, 2);
 
         var path = pathFinder.FindPath(start, end);
-
-        Assert.IsTrue(path.Count > 2);
-        Assert.AreEqual(start, path[0]);
-        Assert.AreEqual(end, path[^1]);
+        
+        var expectedPath = new List<Point>
+        {
+            new(0, 0),
+            new(1, 0),
+            new(1, 1),
+            new(1, 2),
+            new(2, 2)
+        };
+        CollectionAssert.AreEqual(expectedPath, path);
     }
-
+    
     [TestMethod]
     public void FindPath_OutOfBounds()
     {
