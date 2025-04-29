@@ -31,7 +31,7 @@ public class Game
         var soundController = new SoundController(MainPlayer);
         MainPlayer.Initialize(_bulletProcessor, soundController);
 
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < 3; i++)
         {
             var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
             bot.Initialize(_bulletProcessor, soundController);

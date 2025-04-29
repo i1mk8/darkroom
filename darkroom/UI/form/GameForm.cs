@@ -49,7 +49,7 @@ public sealed partial class GameForm : Form
     {
         var timer = new Timer();
         var interval = 1000 / fps;
-        timer.Interval = interval;
+        timer.Interval = 1;
         
         var stopWatch = new System.Diagnostics.Stopwatch();
         var fpsCounter = new FpsCounter();

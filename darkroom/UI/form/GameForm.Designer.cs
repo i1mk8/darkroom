@@ -60,6 +60,7 @@ sealed partial class GameForm
         StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         Text = "Darkroom";
         ResumeLayout(false);
+        Cursor.Hide();
     }
 
     #endregion

@@ -1,5 +1,4 @@
 ﻿using darkroom.UI.sound;
-using darkroom.utils;
 
 namespace darkroom.model;
 
@@ -12,12 +11,12 @@ namespace darkroom.model;
 /// <param name="speed">Скорость игрока</param>
 public class Player(Map map, float width, float height, float speed)
 {
-    protected const float BulletWidth = 0.5f;
-    protected const float BulletHeight = 0.5f;
+    protected const float BulletWidth = 1f;
+    protected const float BulletHeight = 1f;
     protected const float BulletSpeed = 10f;
     
     protected const float ViewDistance = 10;
-    protected const float ViewAngle = 60f;
+    protected const float ViewAngle = 90f;
     protected const float BaseAngleSpeed = 5f;
     
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
