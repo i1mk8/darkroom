@@ -26,8 +26,8 @@ public class Bullet
         
         Direction = new PointF(MathF.Cos(Utils.ToRadians(shooter.Fov.BaseAngle)),
             MathF.Sin(Utils.ToRadians(shooter.Fov.BaseAngle)));
-        Box = new RectangleF(Direction.X + shooter.Box.Center().X,
-            Direction.Y + shooter.Box.Center().Y, width, height);
+        Box = new RectangleF(Direction.X + shooter.Box.Center().X - width / 2,
+            Direction.Y + shooter.Box.Center().Y - height / 2, width, height);
         Speed = speed;
     }
     

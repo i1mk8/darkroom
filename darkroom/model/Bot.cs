@@ -86,6 +86,7 @@ public class Bot : Player
     {
         var origin = Box.Center();
         var target = player.Box.Center();
+        
         var direction = new PointF(target.X - origin.X, target.Y - origin.Y);
         var distance = MathF.Sqrt(direction.X * direction.X + direction.Y * direction.Y);
         
@@ -94,11 +95,12 @@ public class Bot : Player
         
         for (float t = 0; t < distance; t += offset)
         {
-            var point = new RectangleF(
-                new PointF(origin.X + direction.X * t, origin.Y + direction.Y * t),
-                new SizeF(BulletWidth, BulletHeight));
+            var box = new RectangleF(origin.X + direction.X * t - BulletWidth / 2, 
+                origin.Y + direction.Y * t - BulletHeight / 2,
+                BulletWidth,
+                BulletHeight);
                 
-            if (_map.FindIntersect(point) != null)
+            if (_map.FindIntersect(box) != null)
             {
                 _shouldUpdatePath = false;
                 return false;
