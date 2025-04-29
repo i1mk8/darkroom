@@ -42,7 +42,7 @@ public sealed partial class GameForm : Form
         _wrappedPlayers = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
-        InitializeTimer(60);
+        InitializeTimer(30);
     }
 
     private void InitializeTimer(int fps)
@@ -80,9 +80,31 @@ public sealed partial class GameForm : Form
         Invalidate();
     }
 
+    private void PaintStats(Graphics graphics)
+    {
+        var stats = new List<(PlayerColor color, int Kills)> { (Colors.PlayerBlue, _game.MainPlayer.KillsCount) };
+        stats.AddRange(_wrappedPlayers.Select(bot => (bot.Color, bot.Bot.KillsCount)));
+    
+        var font = new Font("Arial", 15, FontStyle.Bold);
+        var x = 20;
+        var y = 20;
+        const int xOffset = 15;
+    
+        foreach (var player in stats.OrderByDescending(p => p.Kills))
+        {
+            var text = $"{player.color.ColorName}: {player.Kills}";
+            var textSize = graphics.MeasureString(text, font);
+            graphics.DrawString(text, font, player.color.Color, x, y);
+            x += (int)textSize.Width + xOffset;
+        }
+    }
+
     private void PaintMap(Graphics graphics)
     {
-        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 
+            0, 
+            Screen.PrimaryScreen.Bounds.Width, 
+            Screen.PrimaryScreen.Bounds.Height));
         foreach (var wall in _game.Map.Walls)
         {
             var wallBox = ResizeRectangle(wall);
@@ -93,7 +115,7 @@ public sealed partial class GameForm : Form
 
     private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
-        graphics.FillRectangle(Colors.PlayerFillBlue, ResizeRectangle(_game.MainPlayer.Box));
+        graphics.FillRectangle(Colors.PlayerBlue.Color, ResizeRectangle(_game.MainPlayer.Box));
         foreach (var bot in _wrappedPlayers.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
         {
             if (_debug)
@@ -103,7 +125,7 @@ public sealed partial class GameForm : Form
                     PaintFov(graphics, botFov);
             }
             
-            graphics.FillRectangle(bot.Color, ResizeRectangle(bot.Bot.Box));
+            graphics.FillRectangle(bot.Color.Color, ResizeRectangle(bot.Bot.Box));
         }
     }
 

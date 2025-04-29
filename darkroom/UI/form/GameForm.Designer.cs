@@ -36,6 +36,8 @@ sealed partial class GameForm
             PaintFov(e.Graphics, fov);
             PaintPlayers(e.Graphics, fov);
         }
+        
+        PaintStats(e.Graphics);
     }
 
     #region Windows Form Designer generated code

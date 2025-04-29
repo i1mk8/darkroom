@@ -11,11 +11,16 @@ public static class Colors
         Color.Transparent);
     public static readonly Pen Wall = new(ColorTranslator.FromHtml("#4A4C51"), 1.2f);
     
-    public static readonly Brush PlayerFillBlue = new SolidBrush(ColorTranslator.FromHtml("#6495ED"));
-    public static readonly Brush PlayerFillGreen = new SolidBrush(ColorTranslator.FromHtml("#4DE818"));
-    public static readonly Brush PlayerFillRed = new SolidBrush(ColorTranslator.FromHtml("#E81831"));
-    public static readonly Brush PlayerFillPurple = new SolidBrush(ColorTranslator.FromHtml("#A918E8"));
-    public static readonly Brush PlayerFillYellow = new SolidBrush(ColorTranslator.FromHtml("#FBE100"));
+    public static readonly PlayerColor PlayerBlue = new(new SolidBrush(ColorTranslator.FromHtml("#6495ED")),
+        "Синий");
+    public static readonly PlayerColor PlayerGreen = new(new SolidBrush(ColorTranslator.FromHtml("#4DE818")),
+        "Зелёный");
+    public static readonly PlayerColor PlayerRed = new(new SolidBrush(ColorTranslator.FromHtml("#E81831")),
+        "Красный");
+    public static readonly PlayerColor PlayerPurple = new(new SolidBrush(ColorTranslator.FromHtml("#A918E8")),
+        "Фиолетовый");
+    public static readonly PlayerColor PlayerYellow = new(new SolidBrush(ColorTranslator.FromHtml("#FBE100")),
+        "Жёлтый");
 
     public static readonly Brush FovFill = new SolidBrush(
         Color.FromArgb(30, ColorTranslator.FromHtml("#FFFFFF")));
@@ -23,4 +28,10 @@ public static class Colors
     {
         LineJoin = LineJoin.Round
     };
+}
+
+public class PlayerColor(Brush color, string colorName)
+{
+    public readonly Brush Color = color;
+    public readonly string ColorName = colorName;
 }

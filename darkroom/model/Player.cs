@@ -18,9 +18,11 @@ public class Player(Map map, float width, float height, float speed)
     protected const float ViewDistance = 10;
     protected const float ViewAngle = 90f;
     protected const float BaseAngleSpeed = 5f;
-    
+
+    public int KillsCount;
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; protected set; }
+    
     protected BulletProcessor BulletProcessor;
     private SoundController _soundController;
 
