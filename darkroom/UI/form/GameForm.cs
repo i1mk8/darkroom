@@ -7,9 +7,6 @@ namespace darkroom.UI.form;
 
 public sealed partial class GameForm : Form
 {
-    private const int FormWidth = 800;
-    private const int FormHeight = 800;
-    
     private readonly int _ratioX;
     private readonly int _ratioY;
 
@@ -31,8 +28,8 @@ public sealed partial class GameForm : Form
         
         _game = new Game();
         
-        _ratioX = FormWidth / _game.Map.Width;
-        _ratioY = FormHeight / _game.Map.Height;
+        _ratioX = Screen.PrimaryScreen.Bounds.Width / _game.Map.Width;
+        _ratioY = Screen.PrimaryScreen.Bounds.Height / _game.Map.Height;
 
         _keyEvent = new KeyEvent.KeyEvent(_game.MainPlayer);
         _singleKeyEvent = new SingleKeyEvent(_game.MainPlayer, ToggleDebug);
@@ -85,7 +82,7 @@ public sealed partial class GameForm : Form
 
     private void PaintMap(Graphics graphics)
     {
-        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 0, FormWidth, FormHeight));
+        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
         foreach (var wall in _game.Map.Walls)
         {
             var wallBox = ResizeRectangle(wall);

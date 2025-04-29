@@ -14,8 +14,8 @@ public class Game
 
     public Game()
     {
-        const int mapWidth = 50;
-        const int mapHeight = 50;
+        const int mapWidth = 80;
+        const int mapHeight = 45;
         const int mapWallOffset = 3;
         const int minMapWallSize = 5;
         const int maxMapWallSize = 10;

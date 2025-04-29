@@ -53,8 +53,8 @@ sealed partial class GameForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(800, 800);
-        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+        WindowState = FormWindowState.Maximized;
+        FormBorderStyle = FormBorderStyle.None;
         Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
         MaximizeBox = false;
         StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
