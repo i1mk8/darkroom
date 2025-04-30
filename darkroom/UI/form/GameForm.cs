@@ -99,6 +99,12 @@ public sealed partial class GameForm : Form
         }
     }
 
+    private void PaintBullets(Graphics graphics, Polygon mainPlayerFov)
+    {
+        foreach (var bullet in _game.BulletProcessor.Bullets.Where(bullet => mainPlayerFov.Contains(bullet.Box)))
+            graphics.FillRectangle(Colors.BulletBrush, ResizeRectangle(bullet.Box));
+    }
+
     private void PaintMap(Graphics graphics)
     {
         graphics.FillRectangle(Colors.BackgroundBrush, RectangleF.FromLTRB(0, 

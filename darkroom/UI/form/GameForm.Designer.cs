@@ -35,6 +35,7 @@ sealed partial class GameForm
         {
             PaintFov(e.Graphics, fov, Colors.PlayerBlue.Pen);
             PaintPlayers(e.Graphics, fov);
+            PaintBullets(e.Graphics, fov);
         }
         
         PaintStats(e.Graphics);

@@ -8,7 +8,7 @@ namespace darkroom.model;
 public class Game
 {
     public readonly Map Map;
-    private readonly BulletProcessor _bulletProcessor;
+    public readonly BulletProcessor BulletProcessor;
     public readonly Player MainPlayer;
     public readonly List<Bot> Bots = [];
 
@@ -21,7 +21,7 @@ public class Game
         const int maxMapWallSize = 10;
         Map = Map.Generate(mapWidth, mapHeight, mapWallOffset, minMapWallSize, maxMapWallSize);
         
-        _bulletProcessor = new BulletProcessor(Map);
+        BulletProcessor = new BulletProcessor(Map);
 
         const float playerWidth = 1f;
         const float playerHeight = 1f;
@@ -29,19 +29,19 @@ public class Game
         
         MainPlayer = new Player(Map, playerWidth, playerHeight, playerSpeed);
         var soundController = new SoundController(MainPlayer);
-        MainPlayer.Initialize(_bulletProcessor, soundController);
+        MainPlayer.Initialize(BulletProcessor, soundController);
 
         for (var i = 0; i < 3; i++)
         {
             var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
-            bot.Initialize(_bulletProcessor, soundController);
+            bot.Initialize(BulletProcessor, soundController);
             Bots.Add(bot);
         }
     }
 
     public void Tick()
     {
-        _bulletProcessor.Process();
+        BulletProcessor.Process();
         Parallel.ForEach(Bots, bot => bot.Process());
     }
 }

@@ -23,6 +23,8 @@ public static class Colors
     {
         LineJoin = LineJoin.Round
     };
+    
+    public static readonly Brush BulletBrush = new SolidBrush(ColorTranslator.FromHtml("#FFAC1C"));
 }
 
 public class PlayerColor

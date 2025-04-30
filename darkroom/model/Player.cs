@@ -12,8 +12,8 @@ namespace darkroom.model;
 /// <param name="speed">Скорость игрока</param>
 public class Player(Map map, float width, float height, float speed)
 {
-    protected const float BulletWidth = 0.1f;
-    protected const float BulletHeight = 0.1f;
+    protected const float BulletWidth = 0.3f;
+    protected const float BulletHeight = 0.3f;
     protected const float BulletSpeed = 0.5f;
     
     protected const float ViewDistance = 10;
@@ -158,7 +158,7 @@ public class Player(Map map, float width, float height, float speed)
     /// </summary>
     public void Shoot()
     {
-        const long shootCooldown = 1000;
+        const long shootCooldown = 500;
         if (_shootStopwatch.ElapsedMilliseconds < shootCooldown)
             return;
         
