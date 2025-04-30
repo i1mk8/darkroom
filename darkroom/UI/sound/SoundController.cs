@@ -20,15 +20,15 @@ public class SoundController(Player mainPlayer)
         _soundPlayer.PlayWalkSound(1);
     }
 
-    public void PlayShootSound(Player originPlayer)
+    public void PlayShootSound(Player shooter)
     {
         float volume;
 
-        if (originPlayer == mainPlayer)
+        if (shooter == mainPlayer)
             volume = 1f;
         else
         {
-            var distance = originPlayer.Box.DistanceTo(mainPlayer.Box);
+            var distance = shooter.Box.DistanceTo(mainPlayer.Box);
             volume = 1f / (1f + distance * 0.5f);
         }
         

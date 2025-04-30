@@ -45,11 +45,12 @@ public class BulletProcessor(Map map)
                 {
                     if (player == bullet.Shooter || !player.Box.IntersectsWith(bullet.Box))
                         continue;
-
-                    bullet.Shooter.KillsCount++;
                     
-                    Console.WriteLine($"Bullet Intersects Player: {player.Box}");
-                    player.Spawn();
+                    if (player.TakeShot())
+                    {
+                        Console.WriteLine($"Bullet Intersects Player: {player.Box}");
+                        bullet.Shooter.KillsCount++;
+                    }
                     
                     intersects = true;
                     break;

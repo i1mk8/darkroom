@@ -1,4 +1,5 @@
-﻿using darkroom.UI.sound;
+﻿using System.Diagnostics;
+using darkroom.UI.sound;
 
 namespace darkroom.model;
 
@@ -20,6 +21,8 @@ public class Player(Map map, float width, float height, float speed)
     protected const float BaseAngleSpeed = 5f;
 
     public int KillsCount;
+    private readonly Stopwatch _takeBulletStopwatch = new();
+    
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; protected set; }
     
@@ -37,6 +40,7 @@ public class Player(Map map, float width, float height, float speed)
         
         _soundController = soundController;
         
+        _takeBulletStopwatch.Start();
         Spawn();
         
         const float angleOffset = 0.5f;
@@ -159,5 +163,20 @@ public class Player(Map map, float width, float height, float speed)
             bot.NotifyAboutShot(bullet.Shooter);
         
         _soundController.PlayShootSound(this);
+    }
+
+    /// <summary>
+    /// Вызывается при попадании пули в игрока. Если после очередного попадания прошло мало времени, то оно не учитывается 
+    /// </summary>
+    /// <returns>Учитывается ли попадание</returns>
+    public bool TakeShot()
+    {
+        const long maxProtectTime = 3000;
+        if (_takeBulletStopwatch.ElapsedMilliseconds < maxProtectTime)
+            return false;
+        
+        Spawn();
+        _takeBulletStopwatch.Restart();
+        return true;
     }
 }

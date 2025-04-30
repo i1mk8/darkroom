@@ -42,7 +42,7 @@ public sealed partial class GameForm : Form
         _wrappedPlayers = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
-        InitializeTimer(30);
+        InitializeTimer(60);
     }
 
     private void InitializeTimer(int fps)
