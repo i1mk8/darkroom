@@ -33,7 +33,7 @@ sealed partial class GameForm
         var fov = _game.MainPlayer.Fov.GetFov();
         if (fov.Vertices.Count >= 3)
         {
-            PaintFov(e.Graphics, fov);
+            PaintFov(e.Graphics, fov, Colors.PlayerBlue.Pen);
             PaintPlayers(e.Graphics, fov);
         }
         

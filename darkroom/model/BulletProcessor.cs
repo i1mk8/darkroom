@@ -26,41 +26,37 @@ public class BulletProcessor(Map map)
     /// </summary>
     public void Process()
     {
-        const float speedOffset = 0.05f; 
-        
         foreach (var bullet in Bullets.ToList())
         {
-            for (var i = 0f; i < bullet.Speed; i += speedOffset)
-            {
-                bullet.MoveTo(bullet.Box.X + bullet.Direction.X * speedOffset, bullet.Box.Y + bullet.Direction.Y * speedOffset);
+            bullet.MoveTo(bullet.Box.X + bullet.Direction.X * bullet.Speed,
+                bullet.Box.Y + bullet.Direction.Y * bullet.Speed);
 
-                var intersects = false;
-                if (map.FindIntersect(bullet.Box) != null)
+            var intersects = false;
+            if (map.FindIntersect(bullet.Box) != null)
+            {
+                Console.WriteLine($"Bullet Intersects Wall: {map.FindIntersect(bullet.Box)}");
+                intersects = true;
+            }
+            
+            foreach (var player in Players)
+            {
+                if (player == bullet.Shooter || !player.Box.IntersectsWith(bullet.Box))
+                    continue;
+                
+                if (player.TakeShot())
                 {
-                    Console.WriteLine($"Bullet Intersects Wall: {map.FindIntersect(bullet.Box)}");
-                    intersects = true;
+                    Console.WriteLine($"Bullet Intersects Player: {player.Box}");
+                    bullet.Shooter.KillsCount++;
                 }
                 
-                foreach (var player in Players)
-                {
-                    if (player == bullet.Shooter || !player.Box.IntersectsWith(bullet.Box))
-                        continue;
-                    
-                    if (player.TakeShot())
-                    {
-                        Console.WriteLine($"Bullet Intersects Player: {player.Box}");
-                        bullet.Shooter.KillsCount++;
-                    }
-                    
-                    intersects = true;
-                    break;
-                }
+                intersects = true;
+                break;
+            }
 
-                if (intersects)
-                {
-                    Bullets.Remove(bullet);
-                    break;
-                }
+            if (intersects)
+            {
+                Bullets.Remove(bullet);
+                break;
             }
         }
     }

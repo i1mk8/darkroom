@@ -12,17 +12,18 @@ namespace darkroom.model;
 /// <param name="speed">Скорость игрока</param>
 public class Player(Map map, float width, float height, float speed)
 {
-    protected const float BulletWidth = 1f;
-    protected const float BulletHeight = 1f;
-    protected const float BulletSpeed = 10f;
+    protected const float BulletWidth = 0.1f;
+    protected const float BulletHeight = 0.1f;
+    protected const float BulletSpeed = 0.5f;
     
     protected const float ViewDistance = 10;
     protected const float ViewAngle = 90f;
     protected const float BaseAngleSpeed = 5f;
 
-    public int KillsCount;
+    private readonly Stopwatch _shootStopwatch = new();
     private readonly Stopwatch _takeBulletStopwatch = new();
-    
+
+    public int KillsCount;
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; protected set; }
     
@@ -40,7 +41,9 @@ public class Player(Map map, float width, float height, float speed)
         
         _soundController = soundController;
         
+        _shootStopwatch.Start();
         _takeBulletStopwatch.Start();
+        
         Spawn();
         
         const float angleOffset = 0.5f;
@@ -107,7 +110,6 @@ public class Player(Map map, float width, float height, float speed)
             return;
         }
         MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
-
     }
 
     /// <summary>
@@ -156,6 +158,10 @@ public class Player(Map map, float width, float height, float speed)
     /// </summary>
     public void Shoot()
     {
+        const long shootCooldown = 1000;
+        if (_shootStopwatch.ElapsedMilliseconds < shootCooldown)
+            return;
+        
         var bullet = new Bullet(this, BulletWidth, BulletHeight, BulletSpeed);
         BulletProcessor.AddBullet(bullet);
         
@@ -163,6 +169,7 @@ public class Player(Map map, float width, float height, float speed)
             bot.NotifyAboutShot(bullet.Shooter);
         
         _soundController.PlayShootSound(this);
+        _shootStopwatch.Restart();
     }
 
     /// <summary>
@@ -171,7 +178,7 @@ public class Player(Map map, float width, float height, float speed)
     /// <returns>Учитывается ли попадание</returns>
     public bool TakeShot()
     {
-        const long maxProtectTime = 3000;
+        const long maxProtectTime = 1000;
         if (_takeBulletStopwatch.ElapsedMilliseconds < maxProtectTime)
             return false;
         

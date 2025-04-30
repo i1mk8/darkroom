@@ -46,13 +46,16 @@ public class BulletProcessorTests
         var soundController = new SoundController(player);
         player.Initialize(processor, soundController);
         
-        var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
+        var bullet = new Bullet(player, 0.1f, 0.1f, 0.5f);
         var originalPosition = bullet.Box.Location;
         processor.AddBullet(bullet);
-        
+    
         processor.Process();
         
-        Assert.AreNotEqual(originalPosition, bullet.Box.Location);
+        var expectedX = originalPosition.X + bullet.Direction.X * bullet.Speed;
+        var expectedY = originalPosition.Y + bullet.Direction.Y * bullet.Speed;
+        Assert.AreEqual(expectedX, bullet.Box.X, 0.001f);
+        Assert.AreEqual(expectedY, bullet.Box.Y, 0.001f);
     }
 
     [TestMethod]
@@ -65,42 +68,42 @@ public class BulletProcessorTests
         var soundController = new SoundController(player);
         player.Initialize(processor, soundController);
         
-        player.MoveTo(5, 12);
-        var bullet = new Bullet(player, 0.5f, 0.5f, 10f);
+        player.MoveTo(9, 11);
+        var bullet = new Bullet(player, 0.5f, 0.5f, 0.5f);
         processor.AddBullet(bullet);
         
         processor.Process();
         
         Assert.AreEqual(0, processor.Bullets.Count);
     }
-
+    
     [TestMethod]
     public void Process_RemovesBulletWhenHitsPlayer()
     {
         var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
-        
+    
         var originPlayer = new Player(map, 1f, 1f, 0.2f);
         var soundController = new SoundController(originPlayer);
         originPlayer.Initialize(processor, soundController);
         originPlayer.MoveTo(0, 0);
-        
+    
         var target = new Player(map, 1f, 1f, 0.2f);
         target.Initialize(processor, new SoundController(originPlayer));
-        target.MoveTo(5, 0);
-        
-        var bullet = new Bullet(originPlayer, 0.5f, 0.5f, 10f);
+        target.MoveTo(1f, 0);
+    
+        var bullet = new Bullet(originPlayer, 0.1f, 0.1f, 0.5f);
         processor.AddBullet(bullet);
         
         processor.Process();
-        
+    
         Assert.AreEqual(0, processor.Bullets.Count);
     }
 
     [TestMethod]
     public void Process_DoesNotHitOriginPlayer()
     {
-        var map = new Map(50, 50, new List<RectangleF>());
+        var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
         
         var player = new Player(map, 1f, 1f, 0.2f);
@@ -119,19 +122,19 @@ public class BulletProcessorTests
     [TestMethod]
     public void Process_RemovesBulletWhenOutOfMapBounds()
     {
-        var map = new Map(50, 50, new List<RectangleF>());
+        var map = new Map(50, 50, []);
         var processor = new BulletProcessor(map);
-        
+    
         var player = new Player(map, 1f, 1f, 0.2f);
         var soundController = new SoundController(player);
         player.Initialize(processor, soundController);
-        player.MoveTo(0, 0);
+        player.MoveTo(49, 49);
         
-        var bullet = new Bullet(player, 0.5f, 0.5f, 60f);
+        var bullet = new Bullet(player, 0.1f, 0.1f, 0.5f);
         processor.AddBullet(bullet);
-        
+    
         processor.Process();
-        
+    
         Assert.AreEqual(0, processor.Bullets.Count);
     }
 }

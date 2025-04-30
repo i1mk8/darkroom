@@ -36,11 +36,9 @@ public class Fov(Map map,
     /// <returns>Полигон FOV</returns>
     public Polygon GetFov()
     {
-        var polygonVertices = new List<PointF>();
-        
         var origin = player.Box.Center();
-        polygonVertices.Add(origin);
-        
+        var polygonVertices = new List<PointF> { origin };
+
         for (var angle = BaseAngle - viewAngle / 2; angle <= BaseAngle + viewAngle / 2; angle += angleOffset)
             polygonVertices.Add(GetRayEndPoint(Utils.ToRadians(angle), origin.X, origin.Y));
         

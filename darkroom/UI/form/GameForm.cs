@@ -94,48 +94,50 @@ public sealed partial class GameForm : Form
         {
             var text = $"{player.color.ColorName}: {player.Kills}";
             var textSize = graphics.MeasureString(text, font);
-            graphics.DrawString(text, font, player.color.Color, x, y);
+            graphics.DrawString(text, font, player.color.Brush, x, y);
             x += (int)textSize.Width + xOffset;
         }
     }
 
     private void PaintMap(Graphics graphics)
     {
-        graphics.FillRectangle(Colors.BackgroundFill, RectangleF.FromLTRB(0, 
+        graphics.FillRectangle(Colors.BackgroundBrush, RectangleF.FromLTRB(0, 
             0, 
             Screen.PrimaryScreen.Bounds.Width, 
             Screen.PrimaryScreen.Bounds.Height));
         foreach (var wall in _game.Map.Walls)
         {
             var wallBox = ResizeRectangle(wall);
-            graphics.DrawRectangle(Colors.Wall, wallBox.X, wallBox.Y, wallBox.Width, wallBox.Height);
-            graphics.FillRectangle(Colors.WallFill, wallBox);
+            graphics.DrawRectangle(Colors.WallPen, wallBox.X, wallBox.Y, wallBox.Width, wallBox.Height);
+            graphics.FillRectangle(Colors.WallBrush, wallBox);
         }
     }
 
     private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
-        graphics.FillRectangle(Colors.PlayerBlue.Color, ResizeRectangle(_game.MainPlayer.Box));
+        graphics.FillRectangle(Colors.PlayerBlue.Brush, ResizeRectangle(_game.MainPlayer.Box));
         foreach (var bot in _wrappedPlayers.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
         {
             if (_debug)
             {
                 var botFov = bot.Bot.Fov.GetFov();
                 if (botFov.Vertices.Count >= 3)
-                    PaintFov(graphics, botFov);
+                    PaintFov(graphics, botFov, bot.Color.Pen);
             }
             
-            graphics.FillRectangle(bot.Color.Color, ResizeRectangle(bot.Bot.Box));
+            graphics.FillRectangle(bot.Color.Brush, ResizeRectangle(bot.Bot.Box));
         }
     }
 
-    private void PaintFov(Graphics graphics, Polygon fov)
+    private void PaintFov(Graphics graphics, Polygon fov, Pen aimColor)
     {
         var vertices = fov.Vertices.Select(p => new PointF(p.X * _ratioX, p.Y * _ratioY)).ToArray();
     
-        graphics.FillPolygon(Colors.FovFill, vertices);
-        graphics.DrawPolygon(Colors.Fov, vertices);
+        graphics.FillPolygon(Colors.FovBrush, vertices);
+        graphics.DrawPolygon(Colors.FovPen, vertices);
+        graphics.DrawLine(aimColor, vertices[0], vertices[vertices.Length / 2]);
     }
+    
     private RectangleF ResizeRectangle(RectangleF rectangle)
     {
         return RectangleF.FromLTRB(rectangle.Left * _ratioX,
