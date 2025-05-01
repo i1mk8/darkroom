@@ -1,4 +1,5 @@
 using darkroom.model;
+using darkroom.model.player;
 using darkroom.UI.form;
 using darkroom.utils;
 using Timer = System.Windows.Forms.Timer;
@@ -16,7 +17,7 @@ public sealed partial class GameForm : Form
     private readonly Game _game;
     
     private readonly KeyEvent _keyEvent;
-    private readonly List<BotWrapper> _wrappedPlayers;
+    private readonly List<BotWrapper> _wrappedBots;
     
     private bool _debug;
     
@@ -34,7 +35,7 @@ public sealed partial class GameForm : Form
         
         InitializeKeyEvent(out _keyEvent);
 
-        _wrappedPlayers = BotWrapper.Wrap(_game.Bots);
+        _wrappedBots = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
         InitializeTimer(60);
@@ -57,6 +58,7 @@ public sealed partial class GameForm : Form
             new(Keys.Left, false, _game.MainPlayer.Fov.MoveLeft),
             
             new(Keys.Up, true, _game.MainPlayer.Shoot),
+            new(Keys.Space, true, _game.MainPlayer.Shoot),
             new(Keys.Oemtilde, true, () => _debug = !_debug),
         };
         keyEvent = new KeyEvent(keyEventsActions);
@@ -114,7 +116,7 @@ public sealed partial class GameForm : Form
     private void PaintStats(Graphics graphics)
     {
         var stats = new List<(PlayerColor color, int Kills)> { (Colors.PlayerBlue, _game.MainPlayer.KillsCount) };
-        stats.AddRange(_wrappedPlayers.Select(bot => (bot.Color, bot.Bot.KillsCount)));
+        stats.AddRange(_wrappedBots.Select(bot => (bot.Color, bot.Bot.KillsCount)));
     
         var font = new Font("Arial", 15, FontStyle.Bold);
         var x = 20;
@@ -139,7 +141,13 @@ public sealed partial class GameForm : Form
     {
         foreach (var bullet in _game.BulletProcessor.Bullets.Where(bullet =>
                      _debug || mainPlayerFov.Contains(bullet.Box)))
-            graphics.FillRectangle(Colors.BulletBrush, ResizeRectangle(bullet.Box));
+        {
+            var color = Colors.PlayerBlue.Brush;
+            if (bullet.Shooter != _game.MainPlayer)
+                color = _wrappedBots.FirstOrDefault(bot => bot.Bot == bullet.Shooter)!.Color.Brush;
+            
+            graphics.FillRectangle(color, ResizeRectangle(bullet.Box));
+        }
     }
 
     /// <summary>
@@ -168,7 +176,7 @@ public sealed partial class GameForm : Form
     private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
         graphics.FillRectangle(Colors.PlayerBlue.Brush, ResizeRectangle(_game.MainPlayer.Box));
-        foreach (var bot in _wrappedPlayers.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
+        foreach (var bot in _wrappedBots.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
         {
             if (_debug)
             {
