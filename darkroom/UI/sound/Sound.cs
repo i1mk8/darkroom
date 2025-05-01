@@ -25,7 +25,7 @@ public class Sound
     /// <summary>
     /// Воспроизводит звук с указанной громкостью
     /// </summary>
-    /// <param name="volume">Уровень громкости (от 0.0 до 1.0)</param>
+    /// <param name="volume">Уровень громкости</param>
     public void PlaySound(float volume)
     {
         _audioFileReader.Position = 0;
@@ -36,7 +36,7 @@ public class Sound
     /// <summary>
     /// Воспроизводит звук только если он не воспроизводится в данный момент
     /// </summary>
-    /// <param name="volume">Уровень громкости (от 0.0 до 1.0)</param>
+    /// <param name="volume">Уровень громкости</param>
     public void PlaySoundOnce(float volume)
     {
         if (_waveOut.PlaybackState == PlaybackState.Stopped)

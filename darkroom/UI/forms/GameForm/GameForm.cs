@@ -137,7 +137,8 @@ public sealed partial class GameForm : Form
     /// <param name="mainPlayerFov">Поле зрения главного игрока</param>
     private void PaintBullets(Graphics graphics, Polygon mainPlayerFov)
     {
-        foreach (var bullet in _game.BulletProcessor.Bullets.Where(bullet => mainPlayerFov.Contains(bullet.Box)))
+        foreach (var bullet in _game.BulletProcessor.Bullets.Where(bullet =>
+                     _debug || mainPlayerFov.Contains(bullet.Box)))
             graphics.FillRectangle(Colors.BulletBrush, ResizeRectangle(bullet.Box));
     }
 

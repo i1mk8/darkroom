@@ -26,6 +26,10 @@
       <EmbeddedResource Include="UI\resources\HitSound.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="UI\resources\TakeShotSound.wav" />
+      <EmbeddedResource Include="UI\resources\TakeShotSound.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

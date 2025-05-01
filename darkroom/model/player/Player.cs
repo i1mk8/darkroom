@@ -187,6 +187,8 @@ public class Player(Map map, float width, float height, float speed)
             return false;
 
         _soundController.PlayHitSound(shooter);
+        _soundController.PlayTakeShotSound(this);
+        
         Spawn();
         _takeBulletStopwatch.Restart();
         return true;
