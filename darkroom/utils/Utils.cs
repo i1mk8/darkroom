@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace darkroom.utils;
 
@@ -44,4 +45,11 @@ public static class Utils
     /// <param name="num2">Число 2</param>
     /// <param name="delta">Максимальная погрешность</param>
     public static bool InaccurateEquals(float num1, float num2, float delta) => Math.Abs(num1 - num2) <= delta;
+
+    /// <summary>
+    /// Фабрика для создания объектов логирования
+    /// </summary>
+    public static readonly ILoggerFactory LoggerFactory =
+        Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
+            builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
 }

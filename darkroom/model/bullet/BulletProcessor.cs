@@ -1,4 +1,6 @@
 ﻿using darkroom.model.player;
+using darkroom.utils;
+using Microsoft.Extensions.Logging;
 
 namespace darkroom.model.bullet;
 
@@ -8,6 +10,8 @@ namespace darkroom.model.bullet;
 /// <param name="map">Игровая карта</param>
 public class BulletProcessor(Map map)
 {
+    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<BulletProcessor>();
+    
     public readonly List<Bullet> Bullets = [];
     public readonly List<Player> Players = [];
     
@@ -58,7 +62,7 @@ public class BulletProcessor(Map map)
         if (wall == null)
             return false;
 
-        Console.WriteLine($"Bullet Intersects Wall: {wall}");
+        _logger.LogDebug("Пуля попала в стену: {wall}", wall);
         return true;
     }
 
@@ -88,7 +92,7 @@ public class BulletProcessor(Map map)
         if (!target.TakeShot(bullet.Shooter))
             return;
 
-        Console.WriteLine($"Bullet Intersects Player: {target.Box}");
+        _logger.LogDebug("Пуля попала в игрока: {target}", target);
         bullet.Shooter.KillsCount++;
     }
 }

@@ -1,7 +1,7 @@
 using darkroom.model;
-using darkroom.model.player;
 using darkroom.UI.form;
 using darkroom.utils;
+using Microsoft.Extensions.Logging;
 using Timer = System.Windows.Forms.Timer;
 
 namespace darkroom.UI.forms.GameForm;
@@ -11,6 +11,8 @@ namespace darkroom.UI.forms.GameForm;
 /// </summary>
 public sealed partial class GameForm : Form
 {
+    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<GameForm>();
+    
     private readonly int _ratioX;
     private readonly int _ratioY;
     
@@ -91,7 +93,7 @@ public sealed partial class GameForm : Form
             
             var currentFps = fpsCounter.Update();
             if (currentFps != null)
-                Console.WriteLine($"Current Fps: {currentFps}");
+                _logger.LogInformation("Fps: {fps}", currentFps);
             
             timer.Interval = nextInterval;
         };

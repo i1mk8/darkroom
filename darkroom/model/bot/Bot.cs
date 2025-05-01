@@ -2,6 +2,7 @@
 using darkroom.model.player;
 using darkroom.UI.sound;
 using darkroom.utils;
+using Microsoft.Extensions.Logging;
 
 namespace darkroom.model.bot;
 
@@ -15,6 +16,8 @@ public class Bot : Player
     
     private const float MaxReactionDistance = 20f;
     private const float CollisionCheckOffset = 0.05f;
+    
+    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<Bot>();
     
     private readonly float _speed;
     private readonly Map _map;
@@ -80,7 +83,7 @@ public class Bot : Player
     /// <param name="player">Игрок, попавший в поле зрения</param>
     private void HandlePlayerDetection(Player player)
     {
-        Console.WriteLine($"Player Detected: {player.Box}");
+        _logger.LogDebug("Обнаружен игрок: {box}", player.Box);
         
         var direction = CalculateDirectionTo(player);
         RotateFovTowards(direction);
@@ -290,7 +293,7 @@ public class Bot : Player
             return;
         
         _path = _pathFinder.FindPath(Box.DecimalCords(), shooter.Box.DecimalCords());
-        Console.WriteLine($"Triggered On Shot: {shooter.Box}");
+        _logger.LogDebug("Реакция на выстрел: {box}", shooter.Box);
     }
     
     /// <summary>

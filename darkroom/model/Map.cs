@@ -1,4 +1,7 @@
-﻿namespace darkroom.model;
+﻿using darkroom.utils;
+using Microsoft.Extensions.Logging;
+
+namespace darkroom.model;
 
 /// <summary>
 ///  Игровая карта
@@ -8,6 +11,8 @@
 /// <param name="walls">Стены, расположенные на карте</param>
 public class Map(int width, int height, List<RectangleF> walls)
 {
+    private static readonly ILogger Logger = Utils.LoggerFactory.CreateLogger<Map>();
+    
     private static readonly Random Random = new();
     
     public readonly int Width = width;
@@ -55,7 +60,7 @@ public class Map(int width, int height, List<RectangleF> walls)
                     continue;
                 
                 walls.Add(normalizedWall.Value);
-                Console.WriteLine($"Wall: {normalizedWall}");
+                Logger.LogDebug("Стена: {wall}", normalizedWall);
             }
 
         return new Map(mapWidth, mapHeight, walls);

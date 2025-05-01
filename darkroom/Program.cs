@@ -1,4 +1,4 @@
-using darkroom.UI.form;
+using System.Text;
 using darkroom.UI.forms.GameForm;
 
 namespace darkroom;
@@ -11,6 +11,8 @@ static class Program
     [STAThread]
     static void Main()
     {
+        Console.OutputEncoding = Encoding.UTF8;
+        
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();

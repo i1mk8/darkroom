@@ -2,6 +2,8 @@
 using darkroom.model.bot;
 using darkroom.model.bullet;
 using darkroom.UI.sound;
+using darkroom.utils;
+using Microsoft.Extensions.Logging;
 
 namespace darkroom.model.player;
 
@@ -26,6 +28,8 @@ public class Player(Map map, float width, float height, float speed)
 
     private const long ShootCooldown = 500;
     private const long TakeShotCooldown = 1000;
+    
+    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<Player>();
 
     private readonly Stopwatch _shootStopwatch = new();
     private readonly Stopwatch _takeBulletStopwatch = new();
@@ -138,7 +142,7 @@ public class Player(Map map, float width, float height, float speed)
     {
         var position = GenerateRandomPoint();
         MoveTo(position.X, position.Y);
-        Console.WriteLine($"Player: {Box}");
+        _logger.LogDebug("Игрок: {box}", Box);
     }
 
     protected Point GenerateRandomPoint()
