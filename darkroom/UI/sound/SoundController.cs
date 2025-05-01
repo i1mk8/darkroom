@@ -15,11 +15,15 @@ public class SoundController(Player mainPlayer)
     private const string ShootSoundResource = "darkroom.UI.resources.ShootSound.wav";
     private const string ShootSoundPath = "ShootSound.wav";
     
+    private const string HitSoundResource = "darkroom.UI.resources.HitSound.wav";
+    private const string HitSoundPath = "HitSound.wav";
+    
     private const float MaxWalkSoundDistance = 10;
     private const float ShootSoundCoefficient = 0.5f;
     
     private readonly Sound _walkSound = new(WalkSoundResource, WalkSoundPath);
     private readonly Sound _shootSound = new(ShootSoundResource, ShootSoundPath);
+    private readonly Sound _hitSound = new(HitSoundResource, HitSoundPath);
     
     /// <summary>
     /// Воспроизводит звук шагов игрока
@@ -54,5 +58,11 @@ public class SoundController(Player mainPlayer)
         }
         
         _shootSound.PlaySound(volume);
+    }
+
+    public void PlayHitSound(Player shooter)
+    {
+        if (shooter == mainPlayer)
+            _hitSound.PlaySound(1);
     }
 }

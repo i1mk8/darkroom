@@ -179,12 +179,14 @@ public class Player(Map map, float width, float height, float speed)
     /// <summary>
     /// Вызывается при попадании пули в игрока. Если после очередного попадания прошло мало времени, то оно не учитывается 
     /// </summary>
+    /// <param name="shooter">Игрок, сделавший выстрел</param>
     /// <returns>Учитывается ли попадание</returns>
-    public bool TakeShot()
+    public bool TakeShot(Player shooter)
     {
         if (_takeBulletStopwatch.ElapsedMilliseconds < TakeShotCooldown)
             return false;
-        
+
+        _soundController.PlayHitSound(shooter);
         Spawn();
         _takeBulletStopwatch.Restart();
         return true;

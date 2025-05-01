@@ -85,7 +85,7 @@ public class BulletProcessor(Map map)
     /// <param name="bullet">Пуля</param>
     private void HandlePlayerHit(Player target, Bullet bullet)
     {
-        if (!target.TakeShot())
+        if (!target.TakeShot(bullet.Shooter))
             return;
 
         Console.WriteLine($"Bullet Intersects Player: {target.Box}");

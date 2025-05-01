@@ -11,7 +11,7 @@ namespace darkroom.model.bot;
 public class Bot : Player
 {
     private const float FovAngleOffset = 1f;
-    private const float FovDistanceOffset = 1.5f;
+    private const float FovDistanceOffset = 1f;
     
     private const float MaxReactionDistance = 20f;
     private const float CollisionCheckOffset = 0.05f;
@@ -304,14 +304,18 @@ public class Bot : Player
         
         return !IsLastPathPointEqualTo(shooterBox.DecimalCords());
     }
-    
+
     /// <summary>
     /// Проверка совпадения последней точки текущего пути с заданной точкой
     /// </summary>
     /// <param name="point">Точка</param>
-    private bool IsLastPathPointEqualTo(Point point) =>
-        Utils.InaccurateEquals(point.X, _path[^1].X, _speed) && 
-        Utils.InaccurateEquals(point.Y, _path[^1].Y, _speed);
+    private bool IsLastPathPointEqualTo(Point point)
+    {
+        if (_path.Count == 0)
+            return false;
+        return  Utils.InaccurateEquals(point.X, _path[^1].X, _speed) && 
+                Utils.InaccurateEquals(point.Y, _path[^1].Y, _speed);
+    } 
 
     public override void Spawn()
     {
