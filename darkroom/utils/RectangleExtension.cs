@@ -31,10 +31,6 @@ public static class RectangleExtension
     {
         var centerFrom = from.Center();
         var centerTo = to.Center();
-        
-        var dx = centerFrom.X - centerTo.X;
-        var dy = centerFrom.Y - centerTo.Y;
-        
-        return (float)Math.Sqrt(dx * dx + dy * dy);
+        return centerFrom.DistanceTo(centerTo);
     }
 }

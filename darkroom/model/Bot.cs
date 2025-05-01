@@ -8,6 +8,12 @@ namespace darkroom.model;
 /// </summary>
 public class Bot : Player
 {
+    private const float FovAngleOffset = 1f;
+    private const float FovDistanceOffset = 1.5f;
+    
+    private const float MaxReactionDistance = 20f;
+    private const float CollisionCheckOffset = 0.05f;
+    
     private readonly float _speed;
     private readonly Map _map;
     private readonly PathFinder _pathFinder;
@@ -29,44 +35,47 @@ public class Bot : Player
     public override void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
     {
         base.Initialize(bulletProcessor, soundController);
-        
-        const float angleOffset = 1f;
-        const float distanceOffset = 0.1f;
-        Fov = new Fov(_map, this, ViewDistance, ViewAngle, BaseAngleSpeed, angleOffset, distanceOffset);
+        InitializeFov();
     }
+    
+    /// <summary>
+    /// Инициализация поля зрения бота
+    /// </summary>
+    private void InitializeFov() =>
+        Fov = new Fov(_map, this, ViewDistance, ViewAngle, BaseAngleSpeed, FovAngleOffset, FovDistanceOffset);
 
     /// <summary>
     /// Обрабатывает логику поведения бота
     /// </summary>
     public void Process()
     {   
-        var fov = Fov.GetFov();
+        var visiblePlayers = GetPlayersInFov();
         
-        foreach (var player in BulletProcessor.Players
-                     .Where(player => player != this && fov.Contains(player.Box)))
+        foreach (var player in visiblePlayers)
         {
             HandlePlayerDetection(player);
-            
-            if (CanShoot(player))
-            {
-                Shoot();
+            if (TryShootPlayer(player))
                 return;
-            }
         }
         
-        if (_path.Count > 0)
-            ProcessPath();
-        else
-        {
-            _shouldUpdatePath = true;
-            _path = _pathFinder.FindPath(Box.DecimalCords(), GenerateRandomPoint());
-        }
+        ProcessMovement();
     }
     
     /// <summary>
-    /// Обработка попадания игрока или бота в поле зрения бота
+    /// Получает игроков в поле зрения бота
     /// </summary>
-    /// <param name="player">Игрок или бот, попавший в поле зрения</param>
+    /// <returns>Игроки в поле зрения бота</returns>
+    private IEnumerable<Player> GetPlayersInFov()
+    {
+        var fov = Fov.GetFov();
+        return BulletProcessor.Players
+            .Where(player => player != this && fov.Contains(player.Box));
+    }
+    
+    /// <summary>
+    /// Обработка попадания игрока в поле зрения бота
+    /// </summary>
+    /// <param name="player">Игрок, попавший в поле зрения</param>
     private void HandlePlayerDetection(Player player)
     {
         Console.WriteLine($"Player Detected: {player.Box}");
@@ -79,6 +88,68 @@ public class Bot : Player
     }
     
     /// <summary>
+    /// Пытается выстрелить по игроку
+    /// </summary>
+    /// <param name="player">Игрок, по которому производится выстрел</param>
+    /// <returns>true - успешный выстрел; false - выстрел не возможен</returns>
+    private bool TryShootPlayer(Player player)
+    {
+        if (!CanShoot(player)) 
+            return false;
+        
+        Shoot();
+        return true;
+    }
+    
+    /// <summary>
+    /// Обработка движения бота
+    /// </summary>
+    private void ProcessMovement()
+    {
+        if (_path.Count > 0)
+            FollowPath();
+        else
+            GenerateNewRandomPath();
+    }
+    
+    /// <summary>
+    /// Обработка движения по пути
+    /// </summary>
+    private void FollowPath()
+    {
+        var nextPoint = _path[0];
+        var reached = CheckPointReached(nextPoint);
+
+        if (!reached)
+        {
+            MoveTowards(nextPoint);
+            RotateFovTowardsTarget(nextPoint);
+        }
+        else
+        {
+            MoveTo(nextPoint.X, nextPoint.Y);
+            _path.RemoveAt(0);
+        }
+    }
+    
+    /// <summary>
+    /// Проверка достижения точки пути
+    /// </summary>
+    /// <param name="point">Точка пути</param>
+    private bool CheckPointReached(Point point) => 
+        Utils.InaccurateEquals(point.X, Box.X, _speed) && 
+        Utils.InaccurateEquals(point.Y, Box.Y, _speed);
+    
+    /// <summary>
+    /// Генерация нового случайного пути
+    /// </summary>
+    private void GenerateNewRandomPath()
+    {
+        _shouldUpdatePath = true;
+        _path = _pathFinder.FindPath(Box.DecimalCords(), GenerateRandomPoint());
+    }
+    
+    /// <summary>
     /// Метод, проверяющий может ли пуля, выпущенная ботом, долеть до игрока или бота
     /// </summary>
     /// <param name="player">Игрок или бот, в которого летит пуля</param>
@@ -86,28 +157,59 @@ public class Bot : Player
     {
         var origin = Box.Center();
         var target = player.Box.Center();
+        var direction = CalculateBulletDirection(origin, target);
         
+        return !CheckBulletCollisions(origin, direction, origin.DistanceTo(target));
+    }
+    
+    /// <summary>
+    /// Расчет направления полета пули
+    /// </summary>
+    /// <param name="origin">Стартовая точка полета пули</param>
+    /// <param name="target">Конечная точка полета пули</param>
+    /// <returns>Направление полета пули</returns>
+    private PointF CalculateBulletDirection(PointF origin, PointF target)
+    {
         var direction = new PointF(target.X - origin.X, target.Y - origin.Y);
-        var distance = MathF.Sqrt(direction.X * direction.X + direction.Y * direction.Y);
-        
-        const float offset = 0.05f;
-        direction = new PointF(direction.X / distance, direction.Y / distance);
-        
-        for (float t = 0; t < distance; t += offset)
+        var distance = origin.DistanceTo(target);
+        return direction.NormalizeDirection(distance);
+    }
+    
+    /// <summary>
+    /// Проверка столкновений пули с окружением (границы карты и стены)
+    /// </summary>
+    /// <param name="origin">Стартовая точка полета пули</param>
+    /// <param name="direction">Направление полета пули</param>
+    /// <param name="maxDistance">Максимальная дистанция полета пули</param>
+    private bool CheckBulletCollisions(PointF origin, PointF direction, float maxDistance)
+    {
+        for (var i = 0f; i< maxDistance; i += CollisionCheckOffset)
         {
-            var box = new RectangleF(origin.X + direction.X * t - BulletWidth / 2, 
-                origin.Y + direction.Y * t - BulletHeight / 2,
-                BulletWidth,
-                BulletHeight);
-                
-            if (_map.FindIntersect(box) != null)
+            var bulletBox = CreateBulletBox(origin, direction, i);
+            if (_map.FindIntersect(bulletBox) != null)
             {
                 _shouldUpdatePath = false;
-                return false;
+                return true;
             }
         }
+        return false;
+    }
 
-        return true;
+    /// <summary>
+    /// Создает хитбокс пули
+    /// </summary>
+    /// <param name="origin">Стартовая точка полета пули</param>
+    /// <param name="direction">Направление полета пули</param>
+    /// <param name="offset">Коефициент смещения от стартовой точки</param>
+    /// <returns>Хитбокс пули</returns>
+    private RectangleF CreateBulletBox(PointF origin, PointF direction, float offset)
+    {
+        return new RectangleF(
+            origin.X + direction.X * offset - BulletWidth / 2,
+            origin.Y + direction.Y * offset - BulletHeight / 2,
+            BulletWidth,
+            BulletHeight
+        );
     }
     
     /// <summary>
@@ -141,28 +243,6 @@ public class Bot : Player
     }
     
     /// <summary>
-    /// Двигает бота его направление взгляда по пути
-    /// </summary>
-    private void ProcessPath()
-    {
-        var nextPoint = _path[0];
-        var reachedX = Utils.InaccurateEquals(nextPoint.X, Box.X, _speed);
-        var reachedY = Utils.InaccurateEquals(nextPoint.Y, Box.Y, _speed);
-
-        if (!reachedX || !reachedY)
-        {
-            MoveTowards(nextPoint);
-            var direction = new PointF(nextPoint.X - Box.X, nextPoint.Y - Box.Y);
-            RotateFovTowards(direction);
-        }
-        else
-        {
-            MoveTo(nextPoint.X, nextPoint.Y);
-            _path.RemoveAt(0);
-        }
-    }
-    
-    /// <summary>
     /// Двигает бота к заданной точке
     /// </summary>
     /// <param name="target">Точка</param>
@@ -183,6 +263,16 @@ public class Bot : Player
             else
                 MoveBack();
         }
+    }
+    
+    /// <summary>
+    /// Поворот Fov в сторону цели
+    /// </summary>
+    /// <param name="target">Цель</param>
+    private void RotateFovTowardsTarget(Point target)
+    {
+        var direction = new PointF(target.X - Box.X, target.Y - Box.Y);
+        RotateFovTowards(direction);
     }
     
     /// <summary>
@@ -208,17 +298,19 @@ public class Bot : Player
     /// <param name="shooterBox">Бокс стрелющего игрока или бота</param>
     private bool ShouldReactToShot(RectangleF shooterBox)
     {
-        const float maxDistance = 20f;
-        if (Box.DistanceTo(shooterBox) > maxDistance)
+        if (Box.DistanceTo(shooterBox) > MaxReactionDistance)
             return false;
         
-        if (_path.Count == 0) return true;
-        
-        var lastPathPoint = _path[^1];
-        var shooterPoint = shooterBox.DecimalCords();
-        return !(Utils.InaccurateEquals(shooterPoint.X, lastPathPoint.X, _speed) && 
-                Utils.InaccurateEquals(shooterPoint.Y, lastPathPoint.Y, _speed));
+        return (_path.Count == 0) || IsLastPathPointEqualTo(shooterBox.DecimalCords());
     }
+    
+    /// <summary>
+    /// Проверка совпадения последней точки текущего пути с заданной точкой
+    /// </summary>
+    /// <param name="point">Точка</param>
+    private bool IsLastPathPointEqualTo(Point point) =>
+        Utils.InaccurateEquals(point.X, _path[^1].X, _speed) && 
+        Utils.InaccurateEquals(point.Y, _path[^1].Y, _speed);
 
     public override void Spawn()
     {
