@@ -3,6 +3,9 @@ using darkroom.utils;
 
 namespace darkroom.UI.sound;
 
+/// <summary>
+/// Контроллер для управления звуковыми эффектами
+/// </summary>
 public class SoundController(Player mainPlayer)
 {
     private const string WalkSoundResource = "darkroom.UI.resources.WalkSound.wav";
@@ -16,7 +19,11 @@ public class SoundController(Player mainPlayer)
     
     private readonly Sound _walkSound = new(WalkSoundResource, WalkSoundPath);
     private readonly Sound _shootSound = new(ShootSoundResource, ShootSoundPath);
-
+    
+    /// <summary>
+    /// Воспроизводит звук шагов игрока
+    /// </summary>
+    /// <param name="originPlayer">Игрок, вызвавший звук шагов</param>
     public void PlayWalkSound(Player originPlayer)
     {
         if (originPlayer == mainPlayer)
@@ -28,7 +35,11 @@ public class SoundController(Player mainPlayer)
         
         _walkSound.PlaySoundOnce(1);
     }
-
+    
+    /// <summary>
+    /// Воспроизводит звук выстрела игрока
+    /// </summary>
+    /// <param name="shooter">Игрок, совершивший выстрел</param>
     public void PlayShootSound(Player shooter)
     {
         float volume;
