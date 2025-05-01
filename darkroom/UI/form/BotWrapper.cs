@@ -21,5 +21,3 @@ public class BotWrapper(Bot bot, PlayerColor color)
         return wrappedBots;
     }
 }
-
-

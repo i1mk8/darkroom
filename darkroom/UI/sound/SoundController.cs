@@ -5,19 +5,28 @@ namespace darkroom.UI.sound;
 
 public class SoundController(Player mainPlayer)
 {
-    private readonly SoundPlayer _soundPlayer = new();
+    private const string WalkSoundResource = "darkroom.UI.resources.WalkSound.wav";
+    private const string WalkSoundPath = "WalkSound.wav";
+    
+    private const string ShootSoundResource = "darkroom.UI.resources.ShootSound.wav";
+    private const string ShootSoundPath = "ShootSound.wav";
+    
+    private const float MaxWalkSoundDistance = 10;
+    private const float ShootSoundCoefficient = 0.5f;
+    
+    private readonly Sound _walkSound = new(WalkSoundResource, WalkSoundPath);
+    private readonly Sound _shootSound = new(ShootSoundResource, ShootSoundPath);
 
     public void PlayWalkSound(Player originPlayer)
     {
         if (originPlayer == mainPlayer)
             return;
         
-        const float maxDistance = 10f;
         var distance = originPlayer.Box.DistanceTo(mainPlayer.Box);
-        if (distance > maxDistance)
+        if (distance > MaxWalkSoundDistance)
             return;
         
-        _soundPlayer.PlayWalkSound(1);
+        _walkSound.PlaySoundOnce(1);
     }
 
     public void PlayShootSound(Player shooter)
@@ -29,9 +38,9 @@ public class SoundController(Player mainPlayer)
         else
         {
             var distance = shooter.Box.DistanceTo(mainPlayer.Box);
-            volume = 1f / (1f + distance * 0.5f);
+            volume = 1f / (1f + distance * ShootSoundCoefficient);
         }
         
-        _soundPlayer.PlayShootSound(volume);
+        _shootSound.PlaySound(volume);
     }
 }
