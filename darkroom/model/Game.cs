@@ -1,4 +1,7 @@
-﻿using darkroom.UI.sound;
+﻿using darkroom.model.bot;
+using darkroom.model.bullet;
+using darkroom.model.player;
+using darkroom.UI.sound;
 
 namespace darkroom.model;
 

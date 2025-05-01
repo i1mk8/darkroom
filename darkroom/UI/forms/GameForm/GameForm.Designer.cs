@@ -1,6 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 
-namespace darkroom.UI.form;
+namespace darkroom.UI.forms.GameForm;
 
 sealed partial class GameForm
 {

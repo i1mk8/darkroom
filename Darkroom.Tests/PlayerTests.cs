@@ -1,5 +1,7 @@
 ﻿using darkroom.model;
 using System.Drawing;
+using darkroom.model.bullet;
+using darkroom.model.player;
 using darkroom.UI.sound;
 
 namespace Darkroom.Tests;

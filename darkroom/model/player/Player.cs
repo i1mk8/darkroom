@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using darkroom.model.bot;
+using darkroom.model.bullet;
 using darkroom.UI.sound;
 
-namespace darkroom.model;
+namespace darkroom.model.player;
 
 /// <summary>
 /// Игрок

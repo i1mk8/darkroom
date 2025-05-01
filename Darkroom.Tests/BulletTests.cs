@@ -1,4 +1,6 @@
 ﻿using darkroom.model;
+using darkroom.model.bullet;
+using darkroom.model.player;
 using darkroom.UI.sound;
 
 namespace Darkroom.Tests;

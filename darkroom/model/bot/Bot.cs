@@ -1,7 +1,9 @@
-﻿using darkroom.UI.sound;
+﻿using darkroom.model.bullet;
+using darkroom.model.player;
+using darkroom.UI.sound;
 using darkroom.utils;
 
-namespace darkroom.model;
+namespace darkroom.model.bot;
 
 /// <summary>
 /// Бот (игрок, управлемый ИИ)

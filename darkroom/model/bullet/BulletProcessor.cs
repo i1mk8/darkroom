@@ -1,4 +1,6 @@
-﻿namespace darkroom.model;
+﻿using darkroom.model.player;
+
+namespace darkroom.model.bullet;
 
 /// <summary>
 /// Обработчик полета пуль

@@ -1,6 +1,7 @@
-﻿using darkroom.model;
+﻿using darkroom.model.bot;
+using darkroom.UI.form;
 
-namespace darkroom.UI.form;
+namespace darkroom.UI.forms.GameForm;
 
 /// <summary>
 /// Обёртка для бота, связывающая его с цветом

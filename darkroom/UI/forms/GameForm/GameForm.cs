@@ -1,8 +1,9 @@
 using darkroom.model;
+using darkroom.UI.form;
 using darkroom.utils;
 using Timer = System.Windows.Forms.Timer;
 
-namespace darkroom.UI.form;
+namespace darkroom.UI.forms.GameForm;
 
 /// <summary>
 /// Форма, в которой отрисовывается игра

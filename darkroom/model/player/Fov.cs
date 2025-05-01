@@ -1,6 +1,6 @@
 ﻿using darkroom.utils;
 
-namespace darkroom.model;
+namespace darkroom.model.player;
 
 /// <summary>
 /// Область видимости игрока

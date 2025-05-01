@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using darkroom.model;
+using darkroom.model.player;
 
 namespace Darkroom.Tests;
 
