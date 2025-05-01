@@ -284,12 +284,11 @@ public class Bot : Player
         if (shooter == this)
             return;
         
-        var shooterBox = shooter.Box;
-        if (!ShouldReactToShot(shooterBox))
+        if (!ShouldReactToShot(shooter.Box))
             return;
         
-        _path = _pathFinder.FindPath(Box.DecimalCords(), shooterBox.DecimalCords());
-        Console.WriteLine($"Triggered On Shot: {shooterBox.DecimalCords()}");
+        _path = _pathFinder.FindPath(Box.DecimalCords(), shooter.Box.DecimalCords());
+        Console.WriteLine($"Triggered On Shot: {shooter.Box}");
     }
     
     /// <summary>
@@ -301,7 +300,7 @@ public class Bot : Player
         if (Box.DistanceTo(shooterBox) > MaxReactionDistance)
             return false;
         
-        return (_path.Count == 0) || IsLastPathPointEqualTo(shooterBox.DecimalCords());
+        return !IsLastPathPointEqualTo(shooterBox.DecimalCords());
     }
     
     /// <summary>
