@@ -3,10 +3,22 @@
 namespace darkroom.model;
 
 /// <summary>
-/// Игровой мир, совокупность игровых моделей
+/// Игра, совокупность игровых моделей
 /// </summary>
 public class Game
 {
+    private const int MapWidth = 80;
+    private const int MapHeight = 45;
+    private const int WallOffset = 3;
+    private const int WallMinSize = 5;
+    private const int WallMaxSize = 10;
+    
+    private const float PlayerWidth = 1f;
+    private const float PlayerHeight = 1f;
+    private const float PlayerSpeed = 0.2f;
+
+    private const int BotsCount = 3;
+    
     public readonly Map Map;
     public readonly BulletProcessor BulletProcessor;
     public readonly Player MainPlayer;
@@ -14,31 +26,26 @@ public class Game
 
     public Game()
     {
-        const int mapWidth = 80;
-        const int mapHeight = 45;
-        const int mapWallOffset = 3;
-        const int minMapWallSize = 5;
-        const int maxMapWallSize = 10;
-        Map = Map.Generate(mapWidth, mapHeight, mapWallOffset, minMapWallSize, maxMapWallSize);
+
+        Map = Map.Generate(MapWidth, MapHeight, WallOffset, WallMinSize, WallMaxSize);
         
         BulletProcessor = new BulletProcessor(Map);
-
-        const float playerWidth = 1f;
-        const float playerHeight = 1f;
-        const float playerSpeed = 0.2f;
         
-        MainPlayer = new Player(Map, playerWidth, playerHeight, playerSpeed);
+        MainPlayer = new Player(Map, PlayerWidth, PlayerHeight, PlayerSpeed);
         var soundController = new SoundController(MainPlayer);
         MainPlayer.Initialize(BulletProcessor, soundController);
 
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < BotsCount; i++)
         {
-            var bot = new Bot(Map, playerWidth, playerHeight, playerSpeed);
+            var bot = new Bot(Map, PlayerWidth, PlayerHeight, PlayerSpeed);
             bot.Initialize(BulletProcessor, soundController);
             Bots.Add(bot);
         }
     }
-
+    
+    /// <summary>
+    /// Игровой тик
+    /// </summary>
     public void Tick()
     {
         BulletProcessor.Process();
