@@ -2,6 +2,9 @@
 
 namespace darkroom.UI.form;
 
+/// <summary>
+/// Цвета
+/// </summary>
 public static class Colors
 {
     public static readonly Brush BackgroundBrush = new SolidBrush(ColorTranslator.FromHtml("#1E2124")); 
@@ -27,12 +30,17 @@ public static class Colors
     public static readonly Brush BulletBrush = new SolidBrush(ColorTranslator.FromHtml("#FFAC1C"));
 }
 
+/// <summary>
+/// Цвет игрока с заданным hex кодом и названием
+/// </summary>
 public class PlayerColor
 {
     public readonly Brush Brush; 
     public readonly Pen Pen;
     public readonly string ColorName;
     
+    /// <param name="color">Hex код цвета</param>
+    /// <param name="colorName">Название цвета</param>
     public PlayerColor(string color, string colorName)
     {
         var colorTranslator = ColorTranslator.FromHtml(color);

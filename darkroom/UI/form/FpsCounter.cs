@@ -2,6 +2,9 @@
 
 namespace darkroom.UI.form;
 
+/// <summary>
+/// Счетчик fps
+/// </summary>
 public class FpsCounter
 {
     private readonly Stopwatch _fpsWatch = new();
@@ -11,7 +14,13 @@ public class FpsCounter
     {
         _fpsWatch.Start();
     }
-
+    
+    /// <summary>
+    /// Обновляет счётчик Fps
+    /// </summary>
+    /// <returns>
+    /// Текущее значение fps, если прошла 1 секунда с последнего обновления. Иначе возвращает null
+    /// </returns>
     public int? Update()
     {
         _frameCount++;
