@@ -75,6 +75,7 @@ public class BulletProcessor(Map map)
 
         return false;
     }
+    
     /// <summary>
     /// Обрабатывает попадание пули в игрока
     /// </summary>

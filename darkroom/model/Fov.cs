@@ -73,10 +73,7 @@ public class Fov(Map map,
     /// <param name="angle">Устанавлевамое значение</param>
     private void SetBaseAngle(float angle)
     {
-        if (angle > 360)
-            angle -= 360 * (int)(angle / 360);
-        else if (angle < -360)
-            angle += 360 * (int)(angle / -360);
-        BaseAngle = angle;
+        angle %= 360;
+        BaseAngle = angle < 0 ? angle + 360 : angle;
     }
 }
