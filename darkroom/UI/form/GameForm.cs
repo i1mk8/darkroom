@@ -1,5 +1,4 @@
 using darkroom.model;
-using darkroom.UI.KeyEvent;
 using darkroom.utils;
 using Timer = System.Windows.Forms.Timer;
 
@@ -12,15 +11,13 @@ public sealed partial class GameForm : Form
 {
     private readonly int _ratioX;
     private readonly int _ratioY;
-
-    private readonly KeyEvent.KeyEvent _keyEvent;
-    private readonly SingleKeyEvent _singleKeyEvent;
     
+    private readonly Game _game;
+    
+    private readonly KeyEvent _keyEvent;
     private readonly List<BotWrapper> _wrappedPlayers;
     
     private bool _debug;
-    
-    private readonly Game _game;
     
     public GameForm()
     {
@@ -33,19 +30,38 @@ public sealed partial class GameForm : Form
         
         _ratioX = Screen.PrimaryScreen.Bounds.Width / _game.Map.Width;
         _ratioY = Screen.PrimaryScreen.Bounds.Height / _game.Map.Height;
-
-        _keyEvent = new KeyEvent.KeyEvent(_game.MainPlayer);
-        _singleKeyEvent = new SingleKeyEvent(_game.MainPlayer, ToggleDebug);
-
-        KeyDown += _keyEvent.KeyDown;
-        KeyUp += _keyEvent.KeyUp;
-        KeyDown += _singleKeyEvent.KeyDown;
-        KeyUp += _singleKeyEvent.KeyUp;
+        
+        InitializeKeyEvent(out _keyEvent);
 
         _wrappedPlayers = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
         InitializeTimer(60);
+    }
+    
+    /// <summary>
+    /// Инициализирует обработчик нажатий
+    /// </summary>
+    /// <param name="keyEvent">Обработчик нажатий</param>
+    private void InitializeKeyEvent(out KeyEvent keyEvent)
+    {
+        var keyEventsActions = new List<KeyEventAction>
+        {
+            new(Keys.W, false, _game.MainPlayer.MoveBack),
+            new(Keys.A, false, _game.MainPlayer.MoveLeft),
+            new(Keys.S, false, _game.MainPlayer.MoveForward),
+            new(Keys.D, false, _game.MainPlayer.MoveRight),
+            
+            new(Keys.Right, false, _game.MainPlayer.Fov.MoveRight),
+            new(Keys.Left, false, _game.MainPlayer.Fov.MoveLeft),
+            
+            new(Keys.Up, true, _game.MainPlayer.Shoot),
+            new(Keys.Oemtilde, true, () => _debug = !_debug),
+        };
+        keyEvent = new KeyEvent(keyEventsActions);
+
+        KeyDown += keyEvent.KeyDown;
+        KeyUp += keyEvent.KeyUp;
     }
     
     /// <summary>
@@ -190,9 +206,4 @@ public sealed partial class GameForm : Form
             rectangle.Right * _ratioX,
             rectangle.Bottom * _ratioY);
     }
-    
-    /// <summary>
-    /// Переключает режим отладки (постоянное отображение ботов)
-    /// </summary>
-    private void ToggleDebug() => _debug = !_debug;
 }
