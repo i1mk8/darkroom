@@ -14,11 +14,16 @@ public class Player(Map map, float width, float height, float speed)
 {
     protected const float BulletWidth = 0.3f;
     protected const float BulletHeight = 0.3f;
-    protected const float BulletSpeed = 0.5f;
+    private const float BulletSpeed = 0.5f;
     
+    private const float AngleOffset = 0.5f;
+    private const float DistanceOffset = 0.05f;
     protected const float ViewDistance = 10;
     protected const float ViewAngle = 90f;
     protected const float BaseAngleSpeed = 5f;
+
+    private const long ShootCooldown = 500;
+    private const long TakeShotCooldown = 1000;
 
     private readonly Stopwatch _shootStopwatch = new();
     private readonly Stopwatch _takeBulletStopwatch = new();
@@ -46,9 +51,7 @@ public class Player(Map map, float width, float height, float speed)
         
         Spawn();
         
-        const float angleOffset = 0.5f;
-        const float distanceOffset = 0.05f;
-        Fov = new Fov(map, this, ViewDistance, ViewAngle, BaseAngleSpeed, angleOffset, distanceOffset);
+        Fov = new Fov(map, this, ViewDistance, ViewAngle, BaseAngleSpeed, AngleOffset, DistanceOffset);
     }
 
     /// <summary>
@@ -158,8 +161,7 @@ public class Player(Map map, float width, float height, float speed)
     /// </summary>
     public void Shoot()
     {
-        const long shootCooldown = 500;
-        if (_shootStopwatch.ElapsedMilliseconds < shootCooldown)
+        if (_shootStopwatch.ElapsedMilliseconds < ShootCooldown)
             return;
         
         var bullet = new Bullet(this, BulletWidth, BulletHeight, BulletSpeed);
@@ -178,8 +180,7 @@ public class Player(Map map, float width, float height, float speed)
     /// <returns>Учитывается ли попадание</returns>
     public bool TakeShot()
     {
-        const long maxProtectTime = 1000;
-        if (_takeBulletStopwatch.ElapsedMilliseconds < maxProtectTime)
+        if (_takeBulletStopwatch.ElapsedMilliseconds < TakeShotCooldown)
             return false;
         
         Spawn();
