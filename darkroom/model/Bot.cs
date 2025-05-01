@@ -118,7 +118,7 @@ public class Bot : Player
     private void FollowPath()
     {
         var nextPoint = _path[0];
-        var reached = CheckPointReached(nextPoint);
+        var reached = IsPointReached(nextPoint);
 
         if (!reached)
         {
@@ -136,7 +136,7 @@ public class Bot : Player
     /// Проверка достижения точки пути
     /// </summary>
     /// <param name="point">Точка пути</param>
-    private bool CheckPointReached(Point point) => 
+    private bool IsPointReached(Point point) => 
         Utils.InaccurateEquals(point.X, Box.X, _speed) && 
         Utils.InaccurateEquals(point.Y, Box.Y, _speed);
     
@@ -159,7 +159,7 @@ public class Bot : Player
         var target = player.Box.Center();
         var direction = CalculateBulletDirection(origin, target);
         
-        return !CheckBulletCollisions(origin, direction, origin.DistanceTo(target));
+        return !IsBulletIntersectingMap(origin, direction, origin.DistanceTo(target));
     }
     
     /// <summary>
@@ -181,7 +181,7 @@ public class Bot : Player
     /// <param name="origin">Стартовая точка полета пули</param>
     /// <param name="direction">Направление полета пули</param>
     /// <param name="maxDistance">Максимальная дистанция полета пули</param>
-    private bool CheckBulletCollisions(PointF origin, PointF direction, float maxDistance)
+    private bool IsBulletIntersectingMap(PointF origin, PointF direction, float maxDistance)
     {
         for (var i = 0f; i< maxDistance; i += CollisionCheckOffset)
         {
