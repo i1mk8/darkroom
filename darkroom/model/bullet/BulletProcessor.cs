@@ -10,7 +10,7 @@ namespace darkroom.model.bullet;
 /// <param name="map">Игровая карта</param>
 public class BulletProcessor(Map map)
 {
-    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<BulletProcessor>();
+    private readonly ILogger _logger = Utils.GetLogger<BulletProcessor>();
     
     public readonly List<Bullet> Bullets = [];
     public readonly List<Player> Players = [];

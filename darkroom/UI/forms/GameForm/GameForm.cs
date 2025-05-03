@@ -11,7 +11,7 @@ namespace darkroom.UI.forms.GameForm;
 /// </summary>
 public sealed partial class GameForm : Form
 {
-    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<GameForm>();
+    private readonly ILogger _logger = Utils.GetLogger<GameForm>();
     
     private readonly int _ratioX;
     private readonly int _ratioY;

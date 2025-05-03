@@ -17,7 +17,7 @@ public class Bot : Player
     private const float MaxReactionDistance = 20f;
     private const float CollisionCheckOffset = 0.05f;
     
-    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<Bot>();
+    private readonly ILogger _logger = Utils.GetLogger<Bot>();
     
     private readonly float _speed;
     private readonly Map _map;

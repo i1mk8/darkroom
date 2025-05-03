@@ -29,7 +29,7 @@ public class Player(Map map, float width, float height, float speed)
     private const long ShootCooldown = 500;
     private const long TakeShotCooldown = 1000;
     
-    private readonly ILogger _logger = Utils.LoggerFactory.CreateLogger<Player>();
+    private readonly ILogger _logger = Utils.GetLogger<Player>();
 
     private readonly Stopwatch _shootStopwatch = new();
     private readonly Stopwatch _takeBulletStopwatch = new();

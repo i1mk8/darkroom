@@ -11,7 +11,7 @@ namespace darkroom.model;
 /// <param name="walls">Стены, расположенные на карте</param>
 public class Map(int width, int height, List<RectangleF> walls)
 {
-    private static readonly ILogger Logger = Utils.LoggerFactory.CreateLogger<Map>();
+    private static readonly ILogger Logger = Utils.GetLogger<Map>();
     
     private static readonly Random Random = new();
     

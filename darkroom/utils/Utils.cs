@@ -47,9 +47,17 @@ public static class Utils
     public static bool InaccurateEquals(float num1, float num2, float delta) => Math.Abs(num1 - num2) <= delta;
 
     /// <summary>
-    /// Фабрика для создания объектов логирования
+    /// Создает логер для заданого класса. Включает или выключает debug-информацию в зависимости от типа сборки
     /// </summary>
-    public static readonly ILoggerFactory LoggerFactory =
-        Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
-            builder.AddConsole());
+    /// <typeparam name="T">Класс</typeparam>
+    /// <returns>Логер для заданого класса</returns>
+    public static ILogger GetLogger<T>()
+    {
+        #if DEBUG
+            var factory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+        #else
+            var factory = LoggerFactory.Create(builder => builder.AddConsole());
+        #endif
+        return factory.CreateLogger<T>();
+    }
 }
