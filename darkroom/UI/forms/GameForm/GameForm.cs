@@ -40,7 +40,7 @@ public sealed partial class GameForm : Form
         _wrappedBots = BotWrapper.Wrap(_game.Bots);
         
         InitializeComponent();
-        InitializeTimer(60);
+        InitializeTimer();
     }
     
     /// <summary>
@@ -72,30 +72,19 @@ public sealed partial class GameForm : Form
     /// <summary>
     /// Инициализирует таймер с заданным fps.
     /// </summary>
-    /// <param name="fps">Fps (количество кадров в секунду)</param>
-    private void InitializeTimer(int fps)
+    private void InitializeTimer()
     {
         var timer = new Timer();
-        var interval = 1000 / fps;
         timer.Interval = 1;
         
-        var stopWatch = new System.Diagnostics.Stopwatch();
         var fpsCounter = new FpsCounter();
-
         timer.Tick += (_, _) =>
         {
-            stopWatch.Restart();
-
             OnTimerTick();
-
-            stopWatch.Stop();
-            var nextInterval = (int)Math.Max(1, interval - stopWatch.ElapsedMilliseconds);
             
             var currentFps = fpsCounter.Update();
             if (currentFps != null)
                 _logger.LogInformation("Fps: {fps}", currentFps);
-            
-            timer.Interval = nextInterval;
         };
     
         timer.Start();

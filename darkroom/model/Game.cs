@@ -18,7 +18,7 @@ public class Game
     
     private const float PlayerWidth = 1f;
     private const float PlayerHeight = 1f;
-    private const float PlayerSpeed = 0.2f;
+    private const float PlayerSpeed = 0.15f;
 
     private const int BotsCount = 3;
     
@@ -29,7 +29,6 @@ public class Game
 
     public Game()
     {
-
         Map = Map.Generate(MapWidth, MapHeight, WallOffset, WallMinSize, WallMaxSize);
         
         BulletProcessor = new BulletProcessor(Map);

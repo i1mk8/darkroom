@@ -57,7 +57,7 @@ public class Fov(Map map,
     {
         var direction = new PointF(MathF.Cos(angle), MathF.Sin(angle));
         
-        for (float distance = 0; distance < viewDistance; distance += distanceOffset)
+        for (var distance = 0f; distance < viewDistance; distance += distanceOffset)
         {
             var point = new PointF(originX + direction.X * distance, originY + direction.Y * distance);
             if (map.FindIntersect(point) != null)

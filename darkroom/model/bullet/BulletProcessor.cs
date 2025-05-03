@@ -34,10 +34,10 @@ public class BulletProcessor(Map map)
     {
         foreach (var bullet in Bullets.ToList())
         {
-            MoveBullet(bullet);
-            
             if (IsBulletIntersectingMap(bullet) || IsBulletIntersectingPlayers(bullet))
                 Bullets.Remove(bullet);
+            
+            MoveBullet(bullet);
         }
     }
 

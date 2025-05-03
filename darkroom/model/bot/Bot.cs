@@ -11,8 +11,8 @@ namespace darkroom.model.bot;
 /// </summary>
 public class Bot : Player
 {
-    private const float FovAngleOffset = 1f;
-    private const float FovDistanceOffset = 1f;
+    private const float FovAngleOffset = 2f;
+    private const float FovDistanceOffset = 0.5f;
     
     private const float MaxReactionDistance = 20f;
     private const float CollisionCheckOffset = 0.05f;

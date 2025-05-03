@@ -18,13 +18,13 @@ public class Player(Map map, float width, float height, float speed)
 {
     protected const float BulletWidth = 0.3f;
     protected const float BulletHeight = 0.3f;
-    private const float BulletSpeed = 0.5f;
+    private const float BulletSpeed = 0.375f;
     
     private const float AngleOffset = 0.5f;
     private const float DistanceOffset = 0.05f;
-    protected const float ViewDistance = 10;
-    protected const float ViewAngle = 90f;
-    protected const float BaseAngleSpeed = 5f;
+    protected const float ViewDistance = 12;
+    protected const float ViewAngle = 72f;
+    protected const float BaseAngleSpeed = 3.75f;
 
     private const long ShootCooldown = 500;
     private const long TakeShotCooldown = 1000;

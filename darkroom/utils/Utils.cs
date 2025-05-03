@@ -51,5 +51,5 @@ public static class Utils
     /// </summary>
     public static readonly ILoggerFactory LoggerFactory =
         Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
-            builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            builder.AddConsole());
 }

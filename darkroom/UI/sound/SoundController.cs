@@ -21,7 +21,7 @@ public class SoundController(Player mainPlayer)
     private const string TakeShotSoundResource = "darkroom.UI.resources.TakeShotSound.wav";
     private const string TakeShotSoundPath = "TakeShotSound.wav";
     
-    private const float WalkSoundVolume = 4f;
+    private const float WalkSoundVolume = 3.5f;
     private const float ShootSoundVolume = 1f;
     private const float HitSoundVolume = 0.8f;
     private const float TakeShotSoundVolume = 1f;
