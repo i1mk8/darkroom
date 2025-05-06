@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace darkroom.utils;
 
@@ -21,22 +20,6 @@ public static class Utils
     /// <param name="angle">Угол в радианах</param>
     /// <returns>Угол в градусах</returns>
     public static float ToDegrees(float angle) => angle * 180 / (float)Math.PI;
-
-    /// <summary>
-    /// Распаковывает встроенный ресурс на диск
-    /// </summary>
-    /// <param name="resourceName">Интендификатор встроенного ресурса</param>
-    /// <param name="destination">Имя распакованного ресурса на диске</param>
-    public static void ExtractResource(string resourceName, string destination)
-    {
-        using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-        try
-        {
-            using var file = new FileStream(destination, FileMode.Create, FileAccess.Write);
-            resource.CopyTo(file);
-        }
-        catch (IOException) {}
-    }
     
     /// <summary>
     /// Неточное проверка равенства двух чисел

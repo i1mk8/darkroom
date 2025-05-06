@@ -1,5 +1,4 @@
-﻿using darkroom.utils;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 
 namespace darkroom.UI.sound;
 
@@ -11,13 +10,10 @@ public class Sound
     private readonly AudioFileReader _audioFileReader;
     private readonly WaveOutEvent _waveOut;
     
-    /// <param name="resource">Имя ресурса звукового файла в сборке</param>
-    /// <param name="destination">Путь для сохранения извлечённого звукового файла</param>
-    public Sound(string resource, string destination)
+    /// <param name="path">Путь до звукового файла</param>
+    public Sound(string path)
     {
-        Utils.ExtractResource(resource, destination);
-        
-        _audioFileReader = new AudioFileReader(destination);
+        _audioFileReader = new AudioFileReader(path);
         _waveOut = new WaveOutEvent();
         _waveOut.Init(_audioFileReader);
     }

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace darkroom.UI.form;
+namespace darkroom.UI.forms.MainForm;
 
 /// <summary>
 /// Счетчик fps

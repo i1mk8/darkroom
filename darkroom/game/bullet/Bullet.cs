@@ -1,7 +1,7 @@
-﻿using darkroom.model.player;
+﻿using darkroom.game.player;
 using darkroom.utils;
 
-namespace darkroom.model.bullet;
+namespace darkroom.game.bullet;
 
 /// <summary>
 /// Пуля

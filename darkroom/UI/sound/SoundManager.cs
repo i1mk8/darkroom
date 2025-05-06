@@ -1,5 +1,5 @@
-﻿using darkroom.model;
-using darkroom.model.player;
+﻿using darkroom.game.player;
+using darkroom.UI.resources;
 using darkroom.utils;
 
 namespace darkroom.UI.sound;
@@ -7,20 +7,8 @@ namespace darkroom.UI.sound;
 /// <summary>
 /// Контроллер для управления звуковыми эффектами
 /// </summary>
-public class SoundController(Player mainPlayer)
+public class SoundManager(Player mainPlayer)
 {
-    private const string WalkSoundResource = "darkroom.UI.resources.WalkSound.wav";
-    private const string WalkSoundPath = "WalkSound.wav";
-    
-    private const string ShootSoundResource = "darkroom.UI.resources.ShootSound.wav";
-    private const string ShootSoundPath = "ShootSound.wav";
-    
-    private const string HitSoundResource = "darkroom.UI.resources.HitSound.wav";
-    private const string HitSoundPath = "HitSound.wav";
-    
-    private const string TakeShotSoundResource = "darkroom.UI.resources.TakeShotSound.wav";
-    private const string TakeShotSoundPath = "TakeShotSound.wav";
-    
     private const float WalkSoundVolume = 3.5f;
     private const float ShootSoundVolume = 1f;
     private const float HitSoundVolume = 0.8f;
@@ -29,10 +17,10 @@ public class SoundController(Player mainPlayer)
     private const float MaxWalkSoundDistance = 10;
     private const float ShootSoundCoefficient = 0.5f;
     
-    private readonly Sound _walkSound = new(WalkSoundResource, WalkSoundPath);
-    private readonly Sound _shootSound = new(ShootSoundResource, ShootSoundPath);
-    private readonly Sound _hitSound = new(HitSoundResource, HitSoundPath);
-    private readonly Sound _takeShotSound = new(TakeShotSoundResource, TakeShotSoundPath);
+    private readonly Sound _walkSound = new(Resources.WalkSoundPath);
+    private readonly Sound _shootSound = new(Resources.ShootSoundPath);
+    private readonly Sound _hitSound = new(Resources.HitSoundPath);
+    private readonly Sound _takeShotSound = new(Resources.TakeShotSoundPath);
     
     /// <summary>
     /// Воспроизводит звук шагов игрока

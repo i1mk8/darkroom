@@ -1,4 +1,4 @@
-﻿namespace darkroom.UI.form;
+﻿namespace darkroom.UI.forms.FormsData;
 
 /// <summary>
 /// Обработчик нажатия клавиш

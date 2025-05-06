@@ -1,9 +1,9 @@
-﻿using darkroom.model.bot;
-using darkroom.model.bullet;
-using darkroom.model.player;
+﻿using darkroom.game.bot;
+using darkroom.game.bullet;
+using darkroom.game.player;
 using darkroom.UI.sound;
 
-namespace darkroom.model;
+namespace darkroom.game;
 
 /// <summary>
 /// Игра, совокупность игровых моделей
@@ -23,7 +23,7 @@ public class Game
     private const int BotsCount = 3;
     
     public readonly Map Map;
-    public readonly BulletProcessor BulletProcessor;
+    public readonly BulletController BulletController;
     public readonly Player MainPlayer;
     public readonly List<Bot> Bots = [];
 
@@ -31,16 +31,16 @@ public class Game
     {
         Map = Map.Generate(MapWidth, MapHeight, WallOffset, WallMinSize, WallMaxSize);
         
-        BulletProcessor = new BulletProcessor(Map);
+        BulletController = new BulletController(Map);
         
         MainPlayer = new Player(Map, PlayerWidth, PlayerHeight, PlayerSpeed);
-        var soundController = new SoundController(MainPlayer);
-        MainPlayer.Initialize(BulletProcessor, soundController);
+        var soundController = new SoundManager(MainPlayer);
+        MainPlayer.Initialize(BulletController, soundController);
 
         for (var i = 0; i < BotsCount; i++)
         {
             var bot = new Bot(Map, PlayerWidth, PlayerHeight, PlayerSpeed);
-            bot.Initialize(BulletProcessor, soundController);
+            bot.Initialize(BulletController, soundController);
             Bots.Add(bot);
         }
     }
@@ -48,9 +48,9 @@ public class Game
     /// <summary>
     /// Игровой тик
     /// </summary>
-    public void Tick()
+    public virtual void Tick()
     {
-        BulletProcessor.Process();
+        BulletController.Process();
         Parallel.ForEach(Bots, bot => bot.Process());
     }
 }

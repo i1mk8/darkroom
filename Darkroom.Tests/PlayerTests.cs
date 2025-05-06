@@ -1,14 +1,17 @@
-﻿using darkroom.model;
-using System.Drawing;
-using darkroom.model.bullet;
-using darkroom.model.player;
+﻿using System.Drawing;
+using darkroom.game;
+using darkroom.game.bullet;
+using darkroom.game.player;
 using darkroom.UI.sound;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using Resources = darkroom.UI.resources.Resources;
 
 namespace Darkroom.Tests;
 
 [TestClass]
 public class PlayerTests
 {
+    public PlayerTests() => Resources.ExtractAll();
         
     [TestMethod]
     public void MoveTo_ValidPosition()
@@ -95,8 +98,8 @@ public class PlayerTests
     {
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveForward();
@@ -110,8 +113,8 @@ public class PlayerTests
         var wall = new RectangleF(50, 60, 10, 10);
         var map = new Map(100, 100, [wall]);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveForward();
@@ -124,8 +127,8 @@ public class PlayerTests
     {
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveBack();
@@ -139,8 +142,8 @@ public class PlayerTests
         var wall = new RectangleF(50, 40, 10, 10);
         var map = new Map(100, 100, [wall]);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveBack();
@@ -153,8 +156,8 @@ public class PlayerTests
     {
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveRight();
@@ -168,8 +171,8 @@ public class PlayerTests
         var wall = new RectangleF(60, 50, 10, 10);
         var map = new Map(100, 100, [wall]);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveRight();
@@ -182,8 +185,8 @@ public class PlayerTests
     {
         var map = new Map(100, 100, []);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveLeft();
@@ -197,8 +200,8 @@ public class PlayerTests
         var wall = new RectangleF(40, 50, 10, 10);
         var map = new Map(100, 100, [wall]);
         var player = new Player(map, 10, 10, 5);
-        var bulletProcessor = new BulletProcessor(map);
-        player.Initialize(bulletProcessor, new SoundController(player));
+        var bulletProcessor = new BulletController(map);
+        player.Initialize(bulletProcessor, new SoundManager(player));
         player.MoveTo(50, 50);
             
         player.MoveLeft();

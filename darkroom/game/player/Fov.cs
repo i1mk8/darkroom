@@ -1,6 +1,6 @@
 ﻿using darkroom.utils;
 
-namespace darkroom.model.player;
+namespace darkroom.game.player;
 
 /// <summary>
 /// Область видимости игрока
@@ -25,6 +25,7 @@ public class Fov(Map map,
     /// Поворачивает взгляд направо
     /// </summary>
     public void MoveRight() => SetBaseAngle(BaseAngle + baseAngleSpeed);
+    
     /// <summary>
     /// Поворачивает взгляд налево
     /// </summary>

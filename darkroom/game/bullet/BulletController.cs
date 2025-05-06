@@ -1,16 +1,16 @@
-﻿using darkroom.model.player;
+﻿using darkroom.game.player;
 using darkroom.utils;
 using Microsoft.Extensions.Logging;
 
-namespace darkroom.model.bullet;
+namespace darkroom.game.bullet;
 
 /// <summary>
 /// Обработчик полета пуль
 /// </summary>
 /// <param name="map">Игровая карта</param>
-public class BulletProcessor(Map map)
+public class BulletController(Map map)
 {
-    private readonly ILogger _logger = Utils.GetLogger<BulletProcessor>();
+    private readonly ILogger _logger = Utils.GetLogger<BulletController>();
     
     public readonly List<Bullet> Bullets = [];
     public readonly List<Player> Players = [];

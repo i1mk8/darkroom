@@ -17,21 +17,48 @@
 
     <ItemGroup>
       <None Remove="UI\resources\shoot-sound.wav" />
-      <EmbeddedResource Include="UI\resources\ShootSound.wav">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="UI\resources\WalkSound.wav" />
-      <EmbeddedResource Include="UI\resources\WalkSound.wav">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="UI\resources\HitSound.wav" />
-      <EmbeddedResource Include="UI\resources\HitSound.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="UI\resources\TakeShotSound.wav" />
-      <EmbeddedResource Include="UI\resources\TakeShotSound.wav">
+      <EmbeddedResource Include="UI\resources\sounds\HitSound.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+      <EmbeddedResource Include="UI\resources\sounds\ShootSound.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="UI\resources\sounds\TakeShotSound.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="UI\resources\sounds\WalkSound.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="UI\resources\images\StartMenuBackground.png" />
+      <None Remove="UI\resources\images\icon.ico" />
+      <EmbeddedResource Include="UI\resources\images\icon.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="UI\resources\fonts\DoomFont.ttf" />
+      <None Remove="UI\resources\fonts\PixelizerFont.ttf" />
+      <EmbeddedResource Include="UI\resources\fonts\PixelizerFont.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="UI\resources\sounds\MenuSound.wav" />
+      <EmbeddedResource Include="UI\resources\sounds\MenuSound.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="UI\forms\game\TraningForm\TraningForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="UI\MainForm\MainForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UI\forms\" />
     </ItemGroup>
 
 </Project>

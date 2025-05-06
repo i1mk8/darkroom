@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
-using darkroom.model.bot;
-using darkroom.model.bullet;
+using darkroom.game.bot;
+using darkroom.game.bullet;
 using darkroom.UI.sound;
 using darkroom.utils;
 using Microsoft.Extensions.Logging;
 
-namespace darkroom.model.player;
+namespace darkroom.game.player;
 
 /// <summary>
 /// Игрок
@@ -38,19 +38,19 @@ public class Player(Map map, float width, float height, float speed)
     public RectangleF Box { get; private set; } = new(-1, -1, width, height);
     public Fov Fov { get; protected set; }
     
-    protected BulletProcessor BulletProcessor;
-    private SoundController _soundController;
+    protected BulletController BulletController;
+    private SoundManager _soundManager;
 
     /// <summary>
     /// Инициализирует поле зрения, обработчик полета пуль и спавнит игрока
-    /// <param name="bulletProcessor">Обработчик полета пуль</param>
+    /// <param name="bulletController">Обработчик полета пуль</param>
     /// </summary>
-    public virtual void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
+    public virtual void Initialize(BulletController bulletController, SoundManager soundManager)
     {
-        BulletProcessor = bulletProcessor;
-        BulletProcessor.AddPlayer(this);
+        BulletController = bulletController;
+        BulletController.AddPlayer(this);
         
-        _soundController = soundController;
+        _soundManager = soundManager;
         
         _shootStopwatch.Start();
         _takeBulletStopwatch.Start();
@@ -86,7 +86,7 @@ public class Player(Map map, float width, float height, float speed)
         var intersect = MoveTo(Box.X, Box.Y + speed);
         if (intersect == null)
         {
-            _soundController.PlayWalkSound(this);
+            _soundManager.PlayWalkSound(this);
             return;
         }
         MoveTo(Box.X, Box.Y + (intersect.Value.Top - Box.Bottom));
@@ -101,7 +101,7 @@ public class Player(Map map, float width, float height, float speed)
         var intersect = MoveTo(Box.X, Box.Y - speed);
         if (intersect == null)
         {
-            _soundController.PlayWalkSound(this);
+            _soundManager.PlayWalkSound(this);
             return;
         }
         MoveTo(Box.X, Box.Y - (Box.Top - intersect.Value.Bottom));
@@ -115,7 +115,7 @@ public class Player(Map map, float width, float height, float speed)
         var intersect = MoveTo(Box.X + speed, Box.Y);
         if (intersect == null)
         {
-            _soundController.PlayWalkSound(this);
+            _soundManager.PlayWalkSound(this);
             return;
         }
         MoveTo(Box.X + (intersect.Value.Left - Box.Right), Box.Y);
@@ -129,7 +129,7 @@ public class Player(Map map, float width, float height, float speed)
         var intersect = MoveTo(Box.X - speed, Box.Y);
         if (intersect == null)
         {
-            _soundController.PlayWalkSound(this);
+            _soundManager.PlayWalkSound(this);
             return;
         }
         MoveTo(Box.X - (Box.Left - intersect.Value.Right), Box.Y);
@@ -171,12 +171,12 @@ public class Player(Map map, float width, float height, float speed)
             return;
         
         var bullet = new Bullet(this, BulletWidth, BulletHeight, BulletSpeed);
-        BulletProcessor.AddBullet(bullet);
+        BulletController.AddBullet(bullet);
         
-        foreach (var bot in BulletProcessor.Players.OfType<Bot>())
+        foreach (var bot in BulletController.Players.OfType<Bot>())
             bot.NotifyAboutShot(bullet.Shooter);
         
-        _soundController.PlayShootSound(this);
+        _soundManager.PlayShootSound(this);
         _shootStopwatch.Restart();
     }
 
@@ -190,8 +190,8 @@ public class Player(Map map, float width, float height, float speed)
         if (_takeBulletStopwatch.ElapsedMilliseconds < TakeShotCooldown)
             return false;
 
-        _soundController.PlayHitSound(shooter);
-        _soundController.PlayTakeShotSound(this);
+        _soundManager.PlayHitSound(shooter);
+        _soundManager.PlayTakeShotSound(this);
         
         Spawn();
         _takeBulletStopwatch.Restart();

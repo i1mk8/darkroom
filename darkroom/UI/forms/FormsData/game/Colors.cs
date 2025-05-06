@@ -1,6 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 
-namespace darkroom.UI.forms.GameForm;
+namespace darkroom.UI.forms.FormsData.game;
 
 /// <summary>
 /// Цвета
@@ -26,8 +26,6 @@ public static class Colors
     {
         LineJoin = LineJoin.Round
     };
-    
-    public static readonly Brush BulletBrush = new SolidBrush(ColorTranslator.FromHtml("#FFAC1C"));
 }
 
 /// <summary>

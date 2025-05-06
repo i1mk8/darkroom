@@ -1,10 +1,10 @@
-﻿using darkroom.model.bullet;
-using darkroom.model.player;
+﻿using darkroom.game.bullet;
+using darkroom.game.player;
 using darkroom.UI.sound;
 using darkroom.utils;
 using Microsoft.Extensions.Logging;
 
-namespace darkroom.model.bot;
+namespace darkroom.game.bot;
 
 /// <summary>
 /// Бот (игрок, управлемый ИИ)
@@ -37,18 +37,12 @@ public class Bot : Player
         _pathFinder = new PathFinder(map, Box);
     }
 
-    public override void Initialize(BulletProcessor bulletProcessor, SoundController soundController)
+    public override void Initialize(BulletController bulletController, SoundManager soundManager)
     {
-        base.Initialize(bulletProcessor, soundController);
-        InitializeFov();
+        base.Initialize(bulletController, soundManager);
+        Fov = new Fov(_map, this, ViewDistance, ViewAngle, BaseAngleSpeed, FovAngleOffset, FovDistanceOffset);
     }
     
-    /// <summary>
-    /// Инициализация поля зрения бота
-    /// </summary>
-    private void InitializeFov() =>
-        Fov = new Fov(_map, this, ViewDistance, ViewAngle, BaseAngleSpeed, FovAngleOffset, FovDistanceOffset);
-
     /// <summary>
     /// Обрабатывает логику поведения бота
     /// </summary>
@@ -73,7 +67,7 @@ public class Bot : Player
     private IEnumerable<Player> GetPlayersInFov()
     {
         var fov = Fov.GetFov();
-        return BulletProcessor.Players
+        return BulletController.Players
             .Where(player => player != this && fov.Contains(player.Box));
     }
     

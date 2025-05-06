@@ -1,4 +1,4 @@
-﻿namespace darkroom.model.bot;
+﻿namespace darkroom.game.bot;
 
 /// <summary>
 /// Строит путь для бота

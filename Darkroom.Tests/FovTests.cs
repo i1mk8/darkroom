@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using darkroom.model;
-using darkroom.model.player;
+using darkroom.game;
+using darkroom.game.player;
 
 namespace Darkroom.Tests;
 

@@ -1,7 +1,7 @@
 ﻿using darkroom.utils;
 using Microsoft.Extensions.Logging;
 
-namespace darkroom.model;
+namespace darkroom.game;
 
 /// <summary>
 ///  Игровая карта
