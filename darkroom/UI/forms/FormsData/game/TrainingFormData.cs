@@ -6,7 +6,7 @@
 public class TrainingFormData : GameFormData
 {
     protected override darkroom.game.Game GetGame() => new Game();
-    protected override IFormData GetRepeatFormData() => new TrainingFormData();
+    public override IFormData GetRepeatFormData() => new TrainingFormData();
 
     protected override void PaintStats(Graphics graphics) { }
 }

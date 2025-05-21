@@ -1,10 +1,12 @@
 ﻿using System.Drawing.Text;
-using darkroom.UI.forms.FormsData.game;
+using darkroom.UI.forms.FormsData.KeyEvent;
 using darkroom.UI.resources;
-using darkroom.UI.sound;
 
 namespace darkroom.UI.forms.FormsData.menu;
 
+/// <summary>
+/// Универсальный пользовательский интерйефс меню
+/// </summary>
 public class MenuFormData : IFormData
 {
     private const int OriginalWidth = 1920;
@@ -23,9 +25,13 @@ public class MenuFormData : IFormData
     private readonly string _title;
     public readonly Menu Menu;
     
-    private readonly KeyEvent _keyEvent;
-    public KeyEvent keyEvent => _keyEvent;
-
+    public KeyEventController keyEventController { get; }
+    
+    /// <summary>
+    /// Конструктор пользовательского интерфейса меню
+    /// </summary>
+    /// <param name="title">Заголовок</param>
+    /// <param name="menu">Меню</param>
     public MenuFormData(string title, Menu menu)
     {
         _title = title;
@@ -35,20 +41,14 @@ public class MenuFormData : IFormData
         _startY = GetStartY();
         
         InitializeFonts(out _titleFont, out _font);
-        _keyEvent = new MenuController(this).GetKeyEvent();
+        keyEventController = new MenuController(this);
     }
     
-    public static MenuFormData GetMainMenu()
-    {
-        var menuItems = new List<MenuItem>
-        {
-            new("ОБУЧЕНИЕ", () => MainForm.MainForm.GetInstance().ShowData(new TrainingFormData())),
-            new("ИГРАТЬ", () => MainForm.MainForm.GetInstance().ShowData(new GameFormData())),
-            new("ВЫХОД", Application.Exit)
-        };
-        return new MenuFormData("DARKROOM", new Menu(menuItems));
-    }
-    
+    /// <summary>
+    /// Возвращае стартувую координату по Y, с которой начинается отрисовка.
+    /// Расчитывается таким образом, чтобы элементы интерфейса находились по центру
+    /// </summary>
+    /// <returns>Стартувая координата по Y, с которой начинается отрисовка</returns>
     private int GetStartY()
     {
         var spacing = _scale.ScaleY(OriginalLineSpacing);
@@ -57,6 +57,11 @@ public class MenuFormData : IFormData
         return (Screen.PrimaryScreen.Bounds.Height - height) / 2;
     }
     
+    /// <summary>
+    /// Инициализирует шрифты
+    /// </summary>
+    /// <param name="titleFont">Шрифт загловка</param>
+    /// <param name="font">Шрифт эелементов меню</param>
     private void InitializeFonts(out Font titleFont, out Font font)
     {
         var fontCollection = new PrivateFontCollection();
@@ -68,7 +73,11 @@ public class MenuFormData : IFormData
         var fontSize = _scale.ScaleNum(OriginalFontSize);
         font = new Font(fontCollection.Families[0], fontSize);
     }
-
+    
+    /// <summary>
+    /// Рисует задний фон и заголовок
+    /// </summary>
+    /// <param name="graphics">Графика для рисования</param>
     private void PaintBackground(Graphics graphics)
     {
         graphics.FillRectangle(Colors.BackgroundBrush,
@@ -84,7 +93,11 @@ public class MenuFormData : IFormData
             Screen.PrimaryScreen.Bounds.Width / 2 - size.Width / 2,
             _startY);
     }
-
+    
+    /// <summary>
+    /// Рисует элементы меню
+    /// </summary>
+    /// <param name="graphics">Графика для рисования</param>
     private void PaintMenu(Graphics graphics)
     {
         var spacing = _scale.ScaleY(OriginalLineSpacing);

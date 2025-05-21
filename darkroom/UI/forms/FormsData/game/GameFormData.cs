@@ -1,35 +1,35 @@
-﻿using darkroom.UI.forms.FormsData.menu;
+﻿using darkroom.UI.forms.FormsData.KeyEvent;
+using darkroom.UI.forms.FormsData.menu;
 using darkroom.utils;
 
 namespace darkroom.UI.forms.FormsData.game;
 
 /// <summary>
-/// Пользоывательский интерфейс игры
+/// Пользовательский интерфейс игры
 /// </summary>
 public class GameFormData : IFormData
 {
-    private readonly darkroom.game.Game _game;
+    public readonly darkroom.game.Game Game;
 
     private readonly Scale _scale;
     
     private readonly List<BotWrapper> _wrappedBots;
     private readonly List<RectangleF> _scaledWalls;
 
-    private bool _debug;
-    private bool _pause;
+    public bool Debug;
+    public bool Pause;
     
-    private readonly KeyEvent _keyEvent;
-    public KeyEvent keyEvent => _keyEvent;
+    public KeyEventController keyEventController { get; }
 
     public GameFormData()
     {
-        _game = GetGame();
+        Game = GetGame();
         
-        _scale = new Scale(_game.Map.Width, _game.Map.Height);
-        _scaledWalls = _game.Map.Walls.Select(wall => _scale.ScaleRectangle(wall)).ToList();
-        _wrappedBots = BotWrapper.Wrap(_game.Bots);
+        _scale = new Scale(Game.Map.Width, Game.Map.Height);
+        _scaledWalls = Game.Map.Walls.Select(wall => _scale.ScaleRectangle(wall)).ToList();
+        _wrappedBots = BotWrapper.Wrap(Game.Bots);
         
-        InitializeKeyEvent(out _keyEvent);
+        keyEventController = new GameController(this);
     }
     
     /// <summary>
@@ -42,63 +42,14 @@ public class GameFormData : IFormData
     /// Возвращает сцену пользовательского интерфейса, отображаемая при перезапусе текущей сцены 
     /// </summary>
     /// <returns>Сцена пользовательского интерфейса</returns>
-    protected virtual IFormData GetRepeatFormData()  => new GameFormData();
-    
-    /// <summary>
-    /// Инициализирует меню паузы
-    /// </summary>
-    /// <returns>Меню паузы</returns>
-    private MenuFormData GetPauseMenu()
-    {
-        var menuItems = new List<MenuItem>
-        {
-            new("ПРОДОЛЖИТЬ", () =>
-            {
-                _pause = false;
-                _keyEvent.PressedKeys.Clear();
-                MainForm.MainForm.GetInstance().ShowData(this);
-            }),
-            new("ЗАНОВО", () => MainForm.MainForm.GetInstance().ShowData(GetRepeatFormData())),
-            new("ГЛАВНОЕ МЕНЮ", () => MainForm.MainForm.GetInstance().ShowData(MenuFormData.GetMainMenu()))
-        };
-        return new MenuFormData("ПАУЗА", new Menu(menuItems));
-    }
-    
-    /// <summary>
-    /// Инициализирует обработчик нажатий
-    /// </summary>
-    /// <param name="keyEvent">Обработчик нажатий</param>
-    private void InitializeKeyEvent(out KeyEvent keyEvent)
-    {
-        var keyEventsActions = new List<KeyEventAction>
-        {
-            new(Keys.W, false, _game.MainPlayer.MoveBack),
-            new(Keys.A, false, _game.MainPlayer.MoveLeft),
-            new(Keys.S, false, _game.MainPlayer.MoveForward),
-            new(Keys.D, false, _game.MainPlayer.MoveRight),
-            
-            new(Keys.Right, false, _game.MainPlayer.Fov.MoveRight),
-            new(Keys.Left, false, _game.MainPlayer.Fov.MoveLeft),
-            
-            new(Keys.Up, true, _game.MainPlayer.Shoot),
-            new(Keys.Space, true, _game.MainPlayer.Shoot),
-            
-            new(Keys.Oemtilde, true, () => _debug = !_debug),
-            new(Keys.Escape, true, () =>
-            {
-                _pause = true;
-                MainForm.MainForm.GetInstance().ShowData(GetPauseMenu());
-            })
-        };
-        keyEvent = new KeyEvent(keyEventsActions);
-    }
+    public virtual IFormData GetRepeatFormData()  => new GameFormData();
     
     public void OnTimerTick()
     {
-        if (_pause)
+        if (Pause)
             return;
-        _game.Tick();
-        _keyEvent.Proceed();
+        Game.Tick();
+        keyEventController.KeyEvent.Proceed();
     }
     
     /// <summary>
@@ -115,7 +66,7 @@ public class GameFormData : IFormData
         
         var players = new List<(PlayerColor Color, int Kills)>
         {
-            (Colors.PlayerBlue, _game.MainPlayer.KillsCount)
+            (Colors.PlayerBlue, Game.MainPlayer.KillsCount)
         };
         players.AddRange(_wrappedBots.Select(bot => (bot.Color, bot.Bot.KillsCount)));
 
@@ -145,11 +96,11 @@ public class GameFormData : IFormData
     /// <param name="mainPlayerFov">Поле зрения главного игрока</param>
     private void PaintBullets(Graphics graphics, Polygon mainPlayerFov)
     {
-        foreach (var bullet in _game.BulletController.Bullets.Where(bullet =>
-                     _debug || mainPlayerFov.Contains(bullet.Box)))
+        foreach (var bullet in Game.BulletController.Bullets.Where(bullet =>
+                     Debug || mainPlayerFov.Contains(bullet.Box)))
         {
             var color = Colors.PlayerBlue.Brush;
-            if (bullet.Shooter != _game.MainPlayer)
+            if (bullet.Shooter != Game.MainPlayer)
                 color = _wrappedBots.FirstOrDefault(bot => bot.Bot == bullet.Shooter)!.Color.Brush;
             
             graphics.FillRectangle(color, _scale.ScaleRectangle(bullet.Box));
@@ -180,10 +131,10 @@ public class GameFormData : IFormData
     /// <param name="mainPlayerFov">Поле зрения главного игрока</param>
     private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
-        graphics.FillRectangle(Colors.PlayerBlue.Brush, _scale.ScaleRectangle(_game.MainPlayer.Box));
-        foreach (var bot in _wrappedBots.Where(player => _debug || mainPlayerFov.Contains(player.Bot.Box)))
+        graphics.FillRectangle(Colors.PlayerBlue.Brush, _scale.ScaleRectangle(Game.MainPlayer.Box));
+        foreach (var bot in _wrappedBots.Where(player => Debug || mainPlayerFov.Contains(player.Bot.Box)))
         {
-            if (_debug)
+            if (Debug)
             {
                 var botFov = bot.Bot.Fov.GetFov();
                 if (botFov.Vertices.Count >= 3)
@@ -212,7 +163,7 @@ public class GameFormData : IFormData
     {
         PaintMap(graphics);
 
-        var fov = _game.MainPlayer.Fov.GetFov();
+        var fov = Game.MainPlayer.Fov.GetFov();
         if (fov.Vertices.Count >= 3)
         {
             PaintFov(graphics, fov, Colors.PlayerBlue.Pen);

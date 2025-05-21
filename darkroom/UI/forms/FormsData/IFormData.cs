@@ -1,4 +1,6 @@
-﻿namespace darkroom.UI.forms.FormsData;
+﻿using darkroom.UI.forms.FormsData.KeyEvent;
+
+namespace darkroom.UI.forms.FormsData;
 
 /// <summary>
 /// Характеризует сцену пользовательского интерфейса
@@ -8,7 +10,7 @@ public interface IFormData
     /// <summary>
     /// Обработчик нажатия клавиш
     /// </summary>
-    public KeyEvent keyEvent { get; }
+    public KeyEventController keyEventController { get; }
     
     /// <summary>
     /// Вызывается на каждом игровом тике

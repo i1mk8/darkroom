@@ -1,4 +1,4 @@
-﻿namespace darkroom.UI.forms.FormsData;
+﻿namespace darkroom.UI.forms.FormsData.KeyEvent;
 
 /// <summary>
 /// Обработчик нажатия клавиш
