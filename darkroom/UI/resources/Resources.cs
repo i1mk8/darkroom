@@ -2,6 +2,9 @@
 
 namespace darkroom.UI.resources;
 
+/// <summary>
+/// Распаковывает ресурсы
+/// </summary>
 public static class Resources
 {
     // Звуки

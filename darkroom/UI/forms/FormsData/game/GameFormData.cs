@@ -55,6 +55,7 @@ public class GameFormData : IFormData
             new("ПРОДОЛЖИТЬ", () =>
             {
                 _pause = false;
+                _keyEvent.PressedKeys.Clear();
                 MainForm.MainForm.GetInstance().ShowData(this);
             }),
             new("ЗАНОВО", () => MainForm.MainForm.GetInstance().ShowData(GetRepeatFormData())),

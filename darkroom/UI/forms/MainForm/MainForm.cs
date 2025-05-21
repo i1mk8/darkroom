@@ -65,12 +65,12 @@ public sealed partial class MainForm : Form
     {
         if (_currentFormData != null)
         {
-            KeyUp -= _currentFormData.keyEvent.KeyUp;
             KeyDown -= _currentFormData.keyEvent.KeyDown;
+            KeyUp -= _currentFormData.keyEvent.KeyUp;
         }
         
         _currentFormData = data;
-        KeyUp += _currentFormData.keyEvent.KeyUp;
         KeyDown += _currentFormData.keyEvent.KeyDown;
+        KeyUp += _currentFormData.keyEvent.KeyUp;
     }
 }

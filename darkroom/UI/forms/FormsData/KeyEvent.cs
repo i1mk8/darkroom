@@ -6,17 +6,17 @@
 /// <param name="actions">Действия, которые будут выполнены при нажатии клавиш</param>
 public class KeyEvent(List<KeyEventAction> actions)
 {
-    private readonly List<Keys> _pressedKeys = [];
+    public readonly List<Keys> PressedKeys = [];
     
     /// <summary>
     /// Вызывается при нажатии клавиши
     /// </summary>
     public void KeyDown(object? sender, KeyEventArgs e)
     {
-        if (_pressedKeys.Contains(e.KeyCode)) 
+        if (PressedKeys.Contains(e.KeyCode)) 
             return;
         
-        _pressedKeys.Add(e.KeyCode);
+        PressedKeys.Add(e.KeyCode);
         foreach (var action in actions.Where(action => action.KeyCode == e.KeyCode && action.Single))
             action.Action();
     }
@@ -26,8 +26,8 @@ public class KeyEvent(List<KeyEventAction> actions)
     /// </summary>
     public void KeyUp(object? sender, KeyEventArgs e)
     {
-        if (_pressedKeys.Contains(e.KeyCode))
-            _pressedKeys.Remove(e.KeyCode);
+        if (PressedKeys.Contains(e.KeyCode))
+            PressedKeys.Remove(e.KeyCode);
     }
     
     /// <summary>
@@ -35,7 +35,7 @@ public class KeyEvent(List<KeyEventAction> actions)
     /// </summary>
     public void Proceed()
     {
-        foreach (var action in _pressedKeys.SelectMany(key=>
+        foreach (var action in PressedKeys.SelectMany(key=>
                      actions.Where(action => action.KeyCode == key && !action.Single)))
             action.Action();
     }
