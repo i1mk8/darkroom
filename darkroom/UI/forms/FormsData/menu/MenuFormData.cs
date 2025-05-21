@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Text;
+using System.Net.Mime;
 using darkroom.UI.forms.FormsData.KeyEvent;
 using darkroom.UI.resources;
 
@@ -13,14 +14,19 @@ public class MenuFormData : IFormData
     private const int OriginalHeight = 1080;
 
     private const int OriginalTitleFontSize = 200;
-    private const int OriginalFontSize = 100;
+    private const int OriginalMenuItemFontSize = 100;
+    private const int OriginalHintFontSize = 25;
+    
     private const int OriginalLineSpacing = 60;
+    private const int OriginalHintLineSpacing = 40;
+    private const int OriginalHintOffset = 60;
     
     private readonly Scale _scale;
     private readonly int _startY;
     
     private readonly Font _titleFont;
-    private readonly Font _font;
+    private readonly Font _menuItemFont;
+    private readonly Font _hintFont;
     
     private readonly string _title;
     public readonly Menu Menu;
@@ -40,7 +46,7 @@ public class MenuFormData : IFormData
         _scale = new Scale(OriginalWidth, OriginalHeight);
         _startY = GetStartY();
         
-        InitializeFonts(out _titleFont, out _font);
+        InitializeFonts(out _titleFont, out _menuItemFont, out _hintFont);
         keyEventController = new MenuController(this);
     }
     
@@ -52,7 +58,7 @@ public class MenuFormData : IFormData
     private int GetStartY()
     {
         var spacing = _scale.ScaleY(OriginalLineSpacing);
-        var font = _scale.ScaleNum(OriginalFontSize);
+        var font = _scale.ScaleNum(OriginalMenuItemFontSize);
         var height = _scale.ScaleNum(OriginalTitleFontSize) + Menu.Items.Sum(_ => font + spacing);
         return (Screen.PrimaryScreen.Bounds.Height - height) / 2;
     }
@@ -61,8 +67,9 @@ public class MenuFormData : IFormData
     /// Инициализирует шрифты
     /// </summary>
     /// <param name="titleFont">Шрифт загловка</param>
-    /// <param name="font">Шрифт эелементов меню</param>
-    private void InitializeFonts(out Font titleFont, out Font font)
+    /// <param name="menuItemFont">Шрифт эелементов меню</param>
+    /// <param name="hintFont">Шрифт подксказки</param>
+    private void InitializeFonts(out Font titleFont, out Font menuItemFont, out Font hintFont)
     {
         var fontCollection = new PrivateFontCollection();
         fontCollection.AddFontFile(Resources.PixelizerFontPath);
@@ -70,8 +77,11 @@ public class MenuFormData : IFormData
         var titleFontSize = _scale.ScaleNum(OriginalTitleFontSize);
         titleFont = new Font(fontCollection.Families[0], titleFontSize);
         
-        var fontSize = _scale.ScaleNum(OriginalFontSize);
-        font = new Font(fontCollection.Families[0], fontSize);
+        var menuItemFontSize = _scale.ScaleNum(OriginalMenuItemFontSize);
+        menuItemFont = new Font(fontCollection.Families[0], menuItemFontSize);
+        
+        var hintFontSize = _scale.ScaleNum(OriginalHintFontSize);
+        hintFont = new Font(fontCollection.Families[0], hintFontSize);
     }
     
     /// <summary>
@@ -101,7 +111,7 @@ public class MenuFormData : IFormData
     private void PaintMenu(Graphics graphics)
     {
         var spacing = _scale.ScaleY(OriginalLineSpacing);
-        var font = _scale.ScaleNum(OriginalFontSize);
+        var fontSize = _scale.ScaleNum(OriginalMenuItemFontSize);
         
         var y = _startY + _scale.ScaleNum(OriginalTitleFontSize) + spacing;
         foreach (var menuItem in Menu.Items)
@@ -110,13 +120,38 @@ public class MenuFormData : IFormData
             if (menuItem.Selected)
                 brush = Colors.FontBrush;
             
-            var size = graphics.MeasureString(menuItem.Text, _font);
+            var size = graphics.MeasureString(menuItem.Text, _menuItemFont);
             graphics.DrawString(menuItem.Text, 
-                _font,
+                _menuItemFont,
                 brush, 
                 Screen.PrimaryScreen.Bounds.Width / 2 - size.Width / 2,
                 y);
-            y += font + spacing;
+            y += fontSize + spacing;
+        }
+    }
+
+    private void PaintHint(Graphics graphics)
+    {
+        var hints = new List<string>
+        {
+            "СТРЕЛОЧКИ ВВЕРХ/ВНИЗ ДЛЯ ПЕРЕМЕЩЕНИЯ ПО МЕНЮ",
+            "ENTER ДЛЯ ВЫБОРА"
+        };
+        
+        var fontSize = _scale.ScaleNum(OriginalHintFontSize);
+        var spacing = _scale.ScaleY(OriginalHintLineSpacing);
+        var offset = _scale.ScaleNum(OriginalHintOffset);
+
+        var y = Screen.PrimaryScreen.Bounds.Height - (hints.Sum(_ => fontSize + spacing) - spacing + offset);
+        foreach (var hint in hints)
+        {
+            var size = graphics.MeasureString(hint, _hintFont);
+            graphics.DrawString(hint, 
+                _hintFont,
+                Colors.FontBrush, 
+                Screen.PrimaryScreen.Bounds.Width / 2 - size.Width / 2,
+                y);
+            y += fontSize + spacing;
         }
     }
     
@@ -126,5 +161,6 @@ public class MenuFormData : IFormData
     {
         PaintBackground(graphics);
         PaintMenu(graphics);
+        PaintHint(graphics);
     }
 }

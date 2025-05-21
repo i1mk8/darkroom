@@ -46,6 +46,8 @@
       <EmbeddedResource Include="UI\resources\sounds\MenuSound.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="UI\resources\fonts\TicketingFont.ttf" />
+      <None Remove="UI\resources\fonts\TDAFont.ttf" />
     </ItemGroup>
 
     <ItemGroup>
