@@ -48,6 +48,10 @@
       </EmbeddedResource>
       <None Remove="UI\resources\fonts\TicketingFont.ttf" />
       <None Remove="UI\resources\fonts\TDAFont.ttf" />
+      <None Remove="UI\resources\fonts\RobotoFont.ttf" />
+      <EmbeddedResource Include="UI\resources\fonts\RobotoFont.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

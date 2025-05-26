@@ -30,6 +30,9 @@ public static class Resources
     // Шрифты
     private const string PixelizerFontResource = "darkroom.UI.resources.fonts.PixelizerFont.ttf";
     public const string PixelizerFontPath = "PixelizerFont.ttf";
+    
+    private const string RobotoFontResource = "darkroom.UI.resources.fonts.RobotoFont.ttf";
+    public const string RobotoFontPath = "RobotoFont.ttf";
 
     private static readonly List<Tuple<string, string>> ResourcesList =
     [
@@ -41,7 +44,8 @@ public static class Resources
         
         new(IconImageResource, IconImagePath),
         
-        new(PixelizerFontResource, PixelizerFontPath)
+        new(PixelizerFontResource, PixelizerFontPath),
+        new(RobotoFontResource, RobotoFontPath)
     ];
 
     /// <summary>

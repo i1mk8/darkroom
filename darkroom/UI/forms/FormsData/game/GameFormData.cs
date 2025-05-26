@@ -1,4 +1,6 @@
-﻿using darkroom.UI.forms.FormsData.KeyEvent;
+﻿using System.Drawing.Text;
+using darkroom.UI.forms.FormsData.KeyEvent;
+using darkroom.UI.resources;
 using darkroom.utils;
 
 namespace darkroom.UI.forms.FormsData.game;
@@ -19,6 +21,7 @@ public class GameFormData : IFormData
     private readonly List<BotWrapper> _wrappedBots;
     private readonly List<RectangleF> _scaledWalls;
 
+    private readonly PrivateFontCollection _fontCollection = new();
     private readonly Font _font;
 
     public bool Debug;
@@ -67,11 +70,11 @@ public class GameFormData : IFormData
     /// <param name="font">Шрифт</param>
     private void InitializeFont(out Font font)
     {
-        const string fontName = "Arial";
         const int fontSize = 15;
-        const FontStyle fontStyle = FontStyle.Bold;
         
-        font = new Font(fontName, _interfaceScale.ScaleNum(fontSize), fontStyle);
+        _fontCollection.AddFontFile(Resources.RobotoFontPath);
+        var titleFontSize = _interfaceScale.ScaleNum(fontSize);
+        font = new Font(_fontCollection.Families[0], titleFontSize);
     }
     
     /// <summary>
@@ -95,7 +98,7 @@ public class GameFormData : IFormData
         var entries = players.Select(p => 
         {
             var text = $"{p.Color.ColorName}: {p.Kills}";
-            var size = graphics.MeasureString(text, _font);
+            var size = TextRenderer.MeasureText(text, _font);
             return (text, p.Color.Brush, size.Width, p.Kills);
         }).ToList();
         

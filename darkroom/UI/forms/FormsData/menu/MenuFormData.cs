@@ -1,5 +1,4 @@
 ﻿using System.Drawing.Text;
-using System.Net.Mime;
 using darkroom.UI.forms.FormsData.KeyEvent;
 using darkroom.UI.resources;
 
@@ -24,6 +23,7 @@ public class MenuFormData : IFormData
     private readonly Scale _scale;
     private readonly int _startY;
     
+    private readonly PrivateFontCollection _fontCollection = new();
     private readonly Font _titleFont;
     private readonly Font _menuItemFont;
     private readonly Font _hintFont;
@@ -71,17 +71,16 @@ public class MenuFormData : IFormData
     /// <param name="hintFont">Шрифт подксказки</param>
     private void InitializeFonts(out Font titleFont, out Font menuItemFont, out Font hintFont)
     {
-        var fontCollection = new PrivateFontCollection();
-        fontCollection.AddFontFile(Resources.PixelizerFontPath);
+        _fontCollection.AddFontFile(Resources.PixelizerFontPath);
         
         var titleFontSize = _scale.ScaleNum(OriginalTitleFontSize);
-        titleFont = new Font(fontCollection.Families[0], titleFontSize);
+        titleFont = new Font(_fontCollection.Families[0], titleFontSize);
         
         var menuItemFontSize = _scale.ScaleNum(OriginalMenuItemFontSize);
-        menuItemFont = new Font(fontCollection.Families[0], menuItemFontSize);
+        menuItemFont = new Font(_fontCollection.Families[0], menuItemFontSize);
         
         var hintFontSize = _scale.ScaleNum(OriginalHintFontSize);
-        hintFont = new Font(fontCollection.Families[0], hintFontSize);
+        hintFont = new Font(_fontCollection.Families[0], hintFontSize);
     }
     
     /// <summary>
