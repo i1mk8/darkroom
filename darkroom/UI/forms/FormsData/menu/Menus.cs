@@ -1,4 +1,5 @@
 ﻿using darkroom.UI.forms.FormsData.game;
+using darkroom.UI.forms.FormsData.training;
 
 namespace darkroom.UI.forms.FormsData.menu;
 

@@ -16,12 +16,12 @@ public class GameFormData : IFormData
     public readonly darkroom.game.Game Game;
 
     private readonly Scale _gameScale;
-    private readonly Scale _interfaceScale;
+    protected readonly Scale InterfaceScale;
     
     private readonly List<BotWrapper> _wrappedBots;
     private readonly List<RectangleF> _scaledWalls;
 
-    private readonly PrivateFontCollection _fontCollection = new();
+    protected readonly PrivateFontCollection FontCollection = new();
     private readonly Font _font;
 
     public bool Debug;
@@ -34,14 +34,14 @@ public class GameFormData : IFormData
         Game = GetGame();
         
         _gameScale = new Scale(Game.Map.Width, Game.Map.Height);
-        _interfaceScale = new Scale(OriginalWidth, OriginalHeight);
+        InterfaceScale = new Scale(OriginalWidth, OriginalHeight);
         
         _scaledWalls = Game.Map.Walls.Select(wall => _gameScale.ScaleRectangle(wall)).ToList();
         _wrappedBots = BotWrapper.Wrap(Game.Bots);
         
         InitializeFont(out _font);
-        
-        keyEventController = new GameController(this);
+
+        keyEventController = GetController();
     }
     
     /// <summary>
@@ -55,6 +55,8 @@ public class GameFormData : IFormData
     /// </summary>
     /// <returns>Сцена пользовательского интерфейса</returns>
     public virtual IFormData GetRepeatFormData()  => new GameFormData();
+    
+    public virtual KeyEventController GetController() => new GameController(this);
     
     public void OnTimerTick()
     {
@@ -72,22 +74,22 @@ public class GameFormData : IFormData
     {
         const int fontSize = 15;
         
-        _fontCollection.AddFontFile(Resources.RobotoFontPath);
-        var titleFontSize = _interfaceScale.ScaleNum(fontSize);
-        font = new Font(_fontCollection.Families[0], titleFontSize);
+        FontCollection.AddFontFile(Resources.RobotoFontPath);
+        var titleFontSize = InterfaceScale.ScaleNum(fontSize);
+        font = new Font(FontCollection.Families[0], titleFontSize);
     }
     
     /// <summary>
     /// Отрисовывает статистику игроков
     /// </summary>
     /// <param name="graphics">Графика для рисования</param>
-    protected virtual void PaintStats(Graphics graphics)
+    private void PaintStats(Graphics graphics)
     {
         const int horizontalSpacing = 15;
         const int verticalPosition = 20;
         
-        var scaledHorizontalSpacing = _interfaceScale.ScaleNum(horizontalSpacing);
-        var scaledVerticalPosition = _interfaceScale.ScaleNum(verticalPosition);
+        var scaledHorizontalSpacing = InterfaceScale.ScaleNum(horizontalSpacing);
+        var scaledVerticalPosition = InterfaceScale.ScaleNum(verticalPosition);
         
         var players = new List<(PlayerColor Color, int Kills)>
         {
@@ -117,7 +119,7 @@ public class GameFormData : IFormData
     /// </summary>
     /// <param name="graphics">Графика для рисования</param>
     /// <param name="mainPlayerFov">Поле зрения главного игрока</param>
-    private void PaintBullets(Graphics graphics, Polygon mainPlayerFov)
+    protected void PaintBullets(Graphics graphics, Polygon mainPlayerFov)
     {
         foreach (var bullet in Game.BulletController.Bullets.Where(bullet =>
                      Debug || mainPlayerFov.Contains(bullet.Box)))
@@ -134,7 +136,7 @@ public class GameFormData : IFormData
     /// Отрисовывает карту: стены и фон
     /// </summary>
     /// <param name="graphics">Графика для рисования</param>
-    private void PaintMap(Graphics graphics)
+    protected void PaintMap(Graphics graphics)
     {
         graphics.FillRectangle(Colors.BackgroundBrush, RectangleF.FromLTRB(0, 
             0, 
@@ -152,7 +154,7 @@ public class GameFormData : IFormData
     /// </summary>
     /// <param name="graphics">Графика для рисования</param>
     /// <param name="mainPlayerFov">Поле зрения главного игрока</param>
-    private void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
+    protected void PaintPlayers(Graphics graphics, Polygon mainPlayerFov)
     {
         graphics.FillRectangle(Colors.PlayerBlue.Brush, _gameScale.ScaleRectangle(Game.MainPlayer.Box));
         foreach (var bot in _wrappedBots.Where(player => Debug || mainPlayerFov.Contains(player.Bot.Box)))
@@ -174,7 +176,7 @@ public class GameFormData : IFormData
     /// <param name="graphics">Графика для рисования</param>
     /// <param name="fov">Поле зрения</param>
     /// <param name="aimColor">Цвет линии прицела</param>
-    private void PaintFov(Graphics graphics, Polygon fov, Pen aimColor)
+    protected void PaintFov(Graphics graphics, Polygon fov, Pen aimColor)
     {
         var vertices = _gameScale.ScalePolygon(fov).Vertices.ToArray();
         graphics.FillPolygon(Colors.FovBrush, vertices);
@@ -182,7 +184,7 @@ public class GameFormData : IFormData
         graphics.DrawLine(aimColor, vertices[0], vertices[vertices.Length / 2]);
     }
 
-    public void OnPaint(Graphics graphics)
+    public virtual void OnPaint(Graphics graphics)
     {
         PaintMap(graphics);
 

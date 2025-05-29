@@ -43,13 +43,14 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
       <None Remove="UI\resources\sounds\MenuSound.wav" />
-      <EmbeddedResource Include="UI\resources\sounds\MenuSound.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="UI\resources\fonts\TicketingFont.ttf" />
       <None Remove="UI\resources\fonts\TDAFont.ttf" />
       <None Remove="UI\resources\fonts\RobotoFont.ttf" />
       <EmbeddedResource Include="UI\resources\fonts\RobotoFont.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="UI\resources\sounds\SelectSound.wav" />
+      <EmbeddedResource Include="UI\resources\sounds\SelectSound.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>

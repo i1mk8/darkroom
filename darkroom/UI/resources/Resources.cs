@@ -20,8 +20,8 @@ public static class Resources
     private const string TakeShotSoundResource = "darkroom.UI.resources.sounds.TakeShotSound.wav";
     public const string TakeShotSoundPath = "TakeShotSound.wav";
     
-    private const string MenuSoundResource = "darkroom.UI.resources.sounds.MenuSound.wav";
-    public const string MenuSoundPath = "MenuSound.wav";
+    private const string SelectSoundResource = "darkroom.UI.resources.sounds.SelectSound.wav";
+    public const string SelectSoundPath = "SelectSound.wav";
     
     // Изображения
     private const string IconImageResource = "darkroom.UI.resources.images.icon.ico";
@@ -40,7 +40,7 @@ public static class Resources
         new(ShootSoundResource, ShootSoundPath),
         new(HitSoundResource, HitSoundPath),
         new(TakeShotSoundResource, TakeShotSoundPath),
-        new(MenuSoundResource, MenuSoundPath),
+        new(SelectSoundResource, SelectSoundPath),
         
         new(IconImageResource, IconImagePath),
         
