@@ -18,7 +18,7 @@ public class Game
     
     private const float PlayerWidth = 1f;
     private const float PlayerHeight = 1f;
-    private const float PlayerSpeed = 0.15f;
+    private const float PlayerSpeed = 0.2f;
 
     private const int BotsCount = 3;
     
